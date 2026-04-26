@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('gaji_bersih', 15, 2)->nullable();
             $table->enum('status_bayar', ['Draft', 'Terbit', 'Dibayar'])->nullable();
             $table->timestamp('dibuat_pada')->useCurrent();
+            $table->decimal('bonus', 15, 2)->nullable()->after('total_potongan');
 
             // relasi
             $table->foreign('nip')->references('nip')->on('profil_pegawai');
