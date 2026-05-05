@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
-=======
 
 //landingPage
 Route::get('/', function () {
@@ -21,4 +19,3 @@ Route::get('/register', function () {
 //dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
->>>>>>> main
