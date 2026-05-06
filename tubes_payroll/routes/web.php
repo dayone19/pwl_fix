@@ -17,11 +17,15 @@ Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
-//dashboard
+Route::middleware(['auth'])->group(function (){
+    //dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-//users
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
-Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+// 7. USER MANAGEMENT / AKSES KONTROL (SYSTEM AREA)
+    // Gunakan UserController hanya untuk menampilkan daftar (index), update, dan hapus.
+    // Pendaftaran akun baru sudah di-handle oleh KaryawanController@store
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+});

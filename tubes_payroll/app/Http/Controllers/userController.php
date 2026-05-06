@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\pengguna; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,9 +12,22 @@ class userController extends Controller
 {
     public function index()
     {
-        // Mengurutkan berdasarkan NIP agar rapi
-        $users = pengguna::orderBy('nip', 'asc')->paginate(7); 
-        return view('halaman.users', compact('users'));
+        // Kita pakai DB builder supaya Join-nya aman dan kolom terpanggil semua
+        $data_karyawan = DB::table('pengguna')
+            ->leftJoin('profil_pegawai', 'pengguna.nip', '=', 'profil_pegawai.nip')
+            ->select(
+                'pengguna.nip', 
+                'pengguna.nama', 
+                'pengguna.email', 
+                'pengguna.role', 
+                'pengguna.foto',
+                'profil_pegawai.nama_lengkap',
+                'profil_pegawai.id as id_profil'
+            )
+            ->orderBy('pengguna.nip', 'asc')
+            ->paginate(7);
+
+        return view('halaman.users', compact('data_karyawan'));
     }
 
     public function store(Request $request)
@@ -64,10 +78,15 @@ class userController extends Controller
 
     public function destroy($nip)
     {
-        $user = pengguna::where('nip', $nip)->firstOrFail();
-        $namaUser = $user->nama;
-        $user->delete();
+        DB::transaction(function () use ($nip) {
+            // Hapus detail profil dulu (karena dia merujuk ke NIP pengguna)
+            DB::table('profil_pegawai')->where('nip', $nip)->delete();
+            
+            // Baru hapus akun penggunanya
+            $user = pengguna::where('nip', $nip)->firstOrFail();
+            $user->delete();
+        });
 
-        return redirect()->back()->with('success', 'User ' . $namaUser . ' telah dihapus!');
+        return redirect()->back()->with('success', 'User dan Profil terkait telah dihapus!');
     }
 }
