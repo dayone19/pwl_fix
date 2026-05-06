@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 //landingPage
 Route::get('/', function () {
-    return view('landingPage'); 
+    return view('landingPage');
 });
 
 //Login
@@ -19,3 +20,5 @@ Route::get('/register', function () {
 //dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+//users
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
