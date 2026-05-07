@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\LoginController;
 
 //landingPage
 Route::get('/', function () {
-    return view('landingPage');
+    return view('landing');
 });
 
 //Login
@@ -20,6 +21,8 @@ Route::get('/register', function () {
 Route::middleware(['auth'])->group(function (){
     //dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::resource('karyawan', KaryawanController::class);
 
 // 7. USER MANAGEMENT / AKSES KONTROL (SYSTEM AREA)
     // Gunakan UserController hanya untuk menampilkan daftar (index), update, dan hapus.
