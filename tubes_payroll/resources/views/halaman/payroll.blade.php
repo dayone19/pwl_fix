@@ -16,6 +16,7 @@
             </div>
         </div>
         
+        
         <button class="bg-white border border-slate-200 text-slate-600 px-6 py-4 rounded-2xl font-black transition-all shadow-sm flex items-center gap-3 text-[10px] uppercase tracking-widest hover:bg-slate-50">
             <i class="fas fa-print"></i> Cetak Slip Gaji
         </button>

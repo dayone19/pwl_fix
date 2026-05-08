@@ -47,6 +47,7 @@
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left">
+                
                 <thead>
                     <tr class="bg-slate-50/50">
                         <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Karyawan</th>
