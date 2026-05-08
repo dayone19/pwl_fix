@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\absensiController;
 
 //landingPage
 Route::get('/', function () {
@@ -17,6 +18,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
+
+Route::get('/absensi', [absensiController::class, 'index'])->name('absensi.index');
 
 Route::middleware(['auth'])->group(function (){
     //dashboard
