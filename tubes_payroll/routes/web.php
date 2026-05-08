@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\absensiController;
+use App\Http\Controllers\karyawanController;
 
 //landingPage
 Route::get('/', function () {
