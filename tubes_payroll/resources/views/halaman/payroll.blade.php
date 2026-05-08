@@ -16,12 +16,12 @@
             </div>
         </div>
         
-        
         <button class="bg-white border border-slate-200 text-slate-600 px-6 py-4 rounded-2xl font-black transition-all shadow-sm flex items-center gap-3 text-[10px] uppercase tracking-widest hover:bg-slate-50">
             <i class="fas fa-print"></i> Cetak Slip Gaji
         </button>
     </div>
 
+    
     <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 overflow-hidden p-6">
         <table class="w-full text-left border-separate border-spacing-y-4">
             <thead>
