@@ -21,7 +21,7 @@
         </button>
     </div>
 
-    
+
     <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 overflow-hidden p-6">
         <table class="w-full text-left border-separate border-spacing-y-4">
             <thead>
@@ -43,6 +43,7 @@
                     </th>
                 </tr>
             </thead>
+            
             <tbody>
                 @forelse($payroll as $pay)
                 <tr class="group hover:scale-[1.01] transition-all duration-300">

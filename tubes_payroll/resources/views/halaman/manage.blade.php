@@ -56,7 +56,7 @@
                         <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Total Terima</th>
                         <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Tindakan</th>
                     </tr>
-                    
+
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     @forelse($karyawan as $k)
@@ -99,6 +99,7 @@
                         </td>
                     </tr>
                     @empty
+                    
                     <tr>
                         <td colspan="6" class="px-6 py-12 text-center">
                             <i class="fas fa-user-slash text-4xl text-slate-100 mb-4 block"></i>
