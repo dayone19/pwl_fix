@@ -54,11 +54,7 @@
         <div class="p-8 md:p-16 flex flex-col justify-center overflow-y-auto">
             <div class="mb-8">
                 <h3 class="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">Login Kru</h3>
-<<<<<<< HEAD
-                <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2 leading-none">Otoritasi Identitas Mekanik & Staff</p>
-=======
                 <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2 leading-none">Otoritasi Identitas Teknisi & Staff</p>
->>>>>>> 584c1726d4258d8eed488003dc4a8051c2ed1480
             </div>
 
             @if ($errors->any())
@@ -73,15 +69,9 @@
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Pilih Posisi :</label>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="relative">
-<<<<<<< HEAD
-                            <input type="radio" name="role" id="mekanik" value="mekanik" class="peer hidden" checked>
-                            <label for="mekanik" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
-                                <span class="text-xs font-black uppercase italic leading-none">Mekanik</span>
-=======
                             <input type="radio" name="role" id="teknisi" value="teknisi" class="peer hidden" checked>
                             <label for="teknisi" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
                                 <span class="text-xs font-black uppercase italic leading-none">teknisi</span>
->>>>>>> 584c1726d4258d8eed488003dc4a8051c2ed1480
                                 <span class="text-[9px] text-slate-400 mt-1 uppercase tracking-tighter">Payroll Check</span>
                             </label>
                         </div>
@@ -110,14 +100,6 @@
                 </div>
 
                 <div class="space-y-4">
-<<<<<<< HEAD
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 italic">NIP / ID Karyawan</label>
-                        <input type="text" name="nip" value="{{ old('nip') }}" required
-                               class="w-full mt-2 px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-600 outline-none transition font-semibold" 
-                               placeholder="Contoh: 123456">
-                    </div>
-=======
                     <!-- NIP -->
                     <div>
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 italic">NIP / ID Karyawan</label>
@@ -130,32 +112,21 @@
                     </div>
 
                     <!-- Pass-Key -->
->>>>>>> 584c1726d4258d8eed488003dc4a8051c2ed1480
                     <div>
                         <div class="flex justify-between items-center ml-1">
                             <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Pass-Key</label>
                         </div>
                         <div class="relative mt-2">
                             <input type="password" name="kata_sandi" id="passwordInput" required
-<<<<<<< HEAD
-                                   class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-600 outline-none transition font-semibold" 
-                                   placeholder="••••••••">
-=======
                                 class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-600 outline-none transition font-semibold" 
                                 placeholder="••••••••">
->>>>>>> 584c1726d4258d8eed488003dc4a8051c2ed1480
                             
                             <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-600 transition p-2">
                                 <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
                                 </svg>
                             </button>
                         </div>
-<<<<<<< HEAD
-                    </div>
-                </div>
-=======
 
                         <!-- Container Checklist -->
                         <div id="passwordFeedback" class="mt-3 ml-2 opacity-0 transition-all duration-300">
@@ -174,7 +145,6 @@
                             <p id="pwValidText" class="hidden text-[11px] font-bold text-green-500 italic">✓ Password Valid</p>
                         </div>
                     </div>
->>>>>>> 584c1726d4258d8eed488003dc4a8051c2ed1480
                 
                 <button type="submit" class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl shadow-orange-900/10 hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em] italic">
                     Masuk Dashboard →
@@ -190,21 +160,22 @@
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-<<<<<<< HEAD
-                // Icon Mata Dicoret (Hidden)
-                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />`;
+                
+                // ICON MATA TERBUKA
+                eyeIcon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                `;
             } else {
                 passwordInput.type = 'password';
-                // Icon Mata Terbuka (Show)
-                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />`;
-            }
-        }
-    </script>
-=======
-                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />`;
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />`;
+                
+                // ICON MATA TERTUTUP
+                eyeIcon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                `;
             }
         }
 
@@ -320,6 +291,5 @@
             right: 0;
         }
     </style>
->>>>>>> 584c1726d4258d8eed488003dc4a8051c2ed1480
 </body>
 </html>
