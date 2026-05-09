@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\absensiController;
 use App\Http\Controllers\karyawanController;
+use App\http\Controllers\penggajianController;
 
 //landingPage
 Route::get('/', function () {
@@ -36,3 +37,7 @@ Route::resource('karyawan', KaryawanController::class);
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
 });
+
+//penggajian
+Route::get('/penggajian', [PenggajianController::class, 'index']);
+Route::put('/penggajian/{id}/bayar', [PenggajianController::class, 'bayar']);
