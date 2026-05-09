@@ -1,10 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\absensiController;
+use App\Http\Controllers\karyawanController;
 
 //landingPage
 Route::get('/', function () {
-    return view('landingPage'); 
+    return view('landing');
 });
 
 //Login
@@ -16,6 +20,19 @@ Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
-//dashboard
+Route::get('/absensi', [absensiController::class, 'index'])->name('absensi.index');
+
+Route::middleware(['auth'])->group(function (){
+    //dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+Route::resource('karyawan', KaryawanController::class);
+
+// 7. USER MANAGEMENT / AKSES KONTROL (SYSTEM AREA)
+    // Gunakan UserController hanya untuk menampilkan daftar (index), update, dan hapus.
+    // Pendaftaran akun baru sudah di-handle oleh KaryawanController@store
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+});
