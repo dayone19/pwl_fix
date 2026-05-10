@@ -19,7 +19,7 @@ class DashboardController extends Controller
             return redirect()->route('login');
         }
 
-        // 2. Ambil DAFTAR SEMUA USER untuk tabel (ini variabel $users yang tadi hilang)
+        // 2. Ambil daftar semua user untuk tabel
         $users = pengguna::orderBy('nip', 'asc')->paginate(7);
 
         // 3. Ambil data statistik pendukung
@@ -28,7 +28,7 @@ class DashboardController extends Controller
                                     ->orderBy('bulan', 'desc')
                                     ->first();
 
-        // 4. Kirim ke view (Pastikan 'users' masuk ke dalam compact)
+        // 4. Kirim ke view 
         return view('dashboard', compact('user', 'users', 'totalPegawai', 'stats'));
     }
 }

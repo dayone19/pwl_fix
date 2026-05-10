@@ -12,7 +12,6 @@ class userController extends Controller
 {
     public function index()
     {
-        // Kita pakai DB builder supaya Join-nya aman dan kolom terpanggil semua
         $data_karyawan = DB::table('pengguna')
             ->leftJoin('profil_pegawai', 'pengguna.nip', '=', 'profil_pegawai.nip')
             ->select(
@@ -33,11 +32,11 @@ class userController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip'        => 'required|string|unique:pengguna,nip', // Pakai NIP
-            'nama'       => 'required|string|max:255',             // Pakai nama
+            'nip'        => 'required|string|unique:pengguna,nip',
+            'nama'       => 'required|string|max:255',
             'kata_sandi' => 'required|string|min:8',
             'role'       => 'required',
-            'foto'       => 'nullable|string'                      // Bisa dikosongi dulu
+            'foto'       => 'nullable|string' 
         ]);
 
         pengguna::create([
@@ -51,9 +50,9 @@ class userController extends Controller
         return redirect()->back()->with('success', 'User ' . $request->nama . ' berhasil ditambahkan!');
     }
 
-    public function update(Request $request, $nip) // Parameter pakai $nip
+    public function update(Request $request, $nip) 
     {
-        // Cari user berdasarkan NIP (karena primary key kita nip)
+        // Cari user berdasarkan NIP
         $user = pengguna::where('nip', $nip)->firstOrFail();
         
         $request->validate([
@@ -79,10 +78,10 @@ class userController extends Controller
     public function destroy($nip)
     {
         DB::transaction(function () use ($nip) {
-            // Hapus detail profil dulu (karena dia merujuk ke NIP pengguna)
+            // Hapus detail profil
             DB::table('profil_pegawai')->where('nip', $nip)->delete();
             
-            // Baru hapus akun penggunanya
+            // hapus akun penggunanya
             $user = pengguna::where('nip', $nip)->firstOrFail();
             $user->delete();
         });

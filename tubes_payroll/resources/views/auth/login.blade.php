@@ -11,7 +11,7 @@
         .mesh-bg { 
             background-color: #0f172a; 
             background-image: radial-gradient(at 50% 50%, hsla(25,95%,30%,1) 0, transparent 80%), 
-                              radial-gradient(at 0% 0%, hsla(210,40%,15%,1) 0, transparent 50%); 
+                            radial-gradient(at 0% 0%, hsla(210,40%,15%,1) 0, transparent 50%); 
         }
         input[type="radio"]:checked + label {
             border-color: #ea580c;

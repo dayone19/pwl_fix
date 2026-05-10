@@ -12,12 +12,12 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login'); // Pastikan file blade kamu ada di resources/views/auth/login.blade.php
+        return view('auth.login'); 
     }
 
-   public function login(Request $request)
+    public function login(Request $request)
 {
-    // 1. Validasi input (Ini sudah benar)
+    // 1. Validasi input
     $credentials = $request->validate([
         'nip'        => 'required',
         'kata_sandi' => 'required',
@@ -25,7 +25,6 @@ class LoginController extends Controller
     ]);
 
     // 2. Cek login 
-    // PERHATIKAN: Key harus tetap 'password', isinya baru ambil dari input 'kata_sandi'
     if (Auth::attempt([
     'nip'      => $request->nip, 
     'password' => $request->kata_sandi, 
