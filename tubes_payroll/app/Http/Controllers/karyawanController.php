@@ -28,7 +28,7 @@ class KaryawanController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validasi Input (Menambahkan tempat_lahir dan tanggal_lahir)
+        // 1. Validasi Input 
         $request->validate([
             'nip'                  => 'required|min:6|unique:pengguna,nip',
             'email'                => 'required|email|unique:pengguna,email',
@@ -45,7 +45,7 @@ class KaryawanController extends Controller
         try {
             DB::beginTransaction();
 
-            // 2. Gabungkan Tempat dan Tanggal Lahir untuk kolom tempat_tanggal_lahir
+            // 2. penggabungan tempat dan tanggal lahir untuk kolom tempat_tanggal_lahir
             $tempatTanggalGabung = strtoupper($request->tempat_lahir) . ', ' . $request->tanggal_lahir;
 
             // 3. Olah Foto
