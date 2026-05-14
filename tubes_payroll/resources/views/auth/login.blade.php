@@ -66,33 +66,36 @@
             <form action="{{ route('login') }}" method="POST" class="space-y-6">
                 @csrf 
                 <div class="space-y-3">
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Pilih Posisi :</label>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Pilih Divisi :</label>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="relative">
-                            <input type="radio" name="role" id="teknisi" value="teknisi" class="peer hidden" checked>
+                            <input type="radio" name="id_divisi" id="teknisi" value="4" class="peer hidden" {{ old('id_divisi') == '4' ? 'checked' : '' }}>
                             <label for="teknisi" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
-                                <span class="text-xs font-black uppercase italic leading-none">teknisi</span>
+                                <span class="text-xs font-black uppercase italic leading-none">Teknis</span>
                                 <span class="text-[9px] text-slate-400 mt-1 uppercase tracking-tighter">Payroll Check</span>
                             </label>
                         </div>
+
                         <div class="relative">
-                            <input type="radio" name="role" id="akuntan" value="akuntan" class="peer hidden">
+                            <input type="radio" name="id_divisi" id="akuntan" value="3" class="peer hidden" {{ old('id_divisi') == '3' ? 'checked' : '' }}>
                             <label for="akuntan" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
-                                <span class="text-xs font-black uppercase italic leading-none">Akuntan</span>
+                                <span class="text-xs font-black uppercase italic leading-none">Finance</span>
                                 <span class="text-[9px] text-slate-400 mt-1 uppercase tracking-tighter">Generate Payroll</span>
                             </label>
                         </div>
+
                         <div class="relative">
-                            <input type="radio" name="role" id="hrd" value="hrd" class="peer hidden">
+                            <input type="radio" name="id_divisi" id="hrd" value="2" class="peer hidden" {{ old('id_divisi') == '2' ? 'checked' : '' }}>
                             <label for="hrd" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
-                                <span class="text-xs font-black uppercase italic leading-none">HRD</span>
+                                <span class="text-xs font-black uppercase italic leading-none">HR</span>
                                 <span class="text-[9px] text-slate-400 mt-1 uppercase tracking-tighter">Data Management</span>
                             </label>
                         </div>
+
                         <div class="relative">
-                            <input type="radio" name="role" id="manager" value="manager" class="peer hidden">
+                            <input type="radio" name="id_divisi" id="manager" value="1" class="peer hidden" {{ old('id_divisi') == '1' ? 'checked' : '' }}>
                             <label for="manager" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
-                                <span class="text-xs font-black uppercase italic leading-none">Manager</span>
+                                <span class="text-xs font-black uppercase italic leading-none">Management</span>
                                 <span class="text-[9px] text-slate-400 mt-1 uppercase tracking-tighter">Approve Request</span>
                             </label>
                         </div>
@@ -128,7 +131,6 @@
                             </button>
                         </div>
 
-                        <!-- Container Checklist -->
                         <div id="passwordFeedback" class="mt-3 ml-2 opacity-0 transition-all duration-300">
                             <ul id="passwordError" class="space-y-1">
                                 <li id="reqLen" class="text-[11px] text-red-500 flex items-center gap-2 transition-colors italic">
@@ -141,7 +143,6 @@
                                     <span>•</span> Minimal 1 angka
                                 </li>
                             </ul>
-                            <!-- Teks Valid yang akan muncul -->
                             <p id="pwValidText" class="hidden text-[11px] font-bold text-green-500 italic">✓ Password Valid</p>
                         </div>
                     </div>
@@ -161,7 +162,6 @@
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 
-                // ICON MATA TERBUKA
                 eyeIcon.innerHTML = `
                 <path stroke-linecap="round" stroke-linejoin="round"
                 d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
@@ -171,7 +171,6 @@
             } else {
                 passwordInput.type = 'password';
                 
-                // ICON MATA TERTUTUP
                 eyeIcon.innerHTML = `
                 <path stroke-linecap="round" stroke-linejoin="round"
                 d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
@@ -185,10 +184,8 @@
             const passwordInput = document.getElementById('passwordInput');
             const passwordError = document.getElementById('passwordError');
             const pwValidText = document.getElementById('pwValidText'); 
-            // PERBAIKAN: Tambahkan variabel feedback ini
             const passwordFeedback = document.getElementById('passwordFeedback');
 
-            // --- 1. LOGIKA VALIDASI NIP ---
             if (nipInput) {
                 nipInput.addEventListener('focus', function() {
                     nipHint.classList.replace('opacity-0', 'opacity-100');
@@ -217,10 +214,8 @@
                 });
             }
 
-            // --- 2. LOGIKA VALIDASI PASSWORD ---
             if (passwordInput) {
                 passwordInput.addEventListener('focus', function() {
-                    // Gunakan passwordFeedback sesuai ID di HTML
                     passwordFeedback.classList.replace('opacity-0', 'opacity-100');
                     checkPassword(this.value);
                 });

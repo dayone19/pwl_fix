@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\pengguna; // Panggil model pengguna kamu
+use App\Models\pengguna; 
 
 class LoginController extends Controller
 {
@@ -16,27 +16,30 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-{
-    // 1. Validasi input
-    $credentials = $request->validate([
-        'nip'        => 'required',
-        'kata_sandi' => 'required',
-        'role'       => 'required'
-    ]);
+    {
+        $request->validate([
+            'nip'         => 'required',
+            'kata_sandi'  => 'required',
+            'id_divisi'   => 'required' 
+        ]);
 
-    // 2. Cek login 
-    if (Auth::attempt([
-    'nip'      => $request->nip, 
-    'password' => $request->kata_sandi, 
-    'role'     => $request->role
-])) {
-    $request->session()->regenerate();
-    return redirect()->intended('dashboard');
-}
+        if (Auth::attempt([
+            'nip'      => $request->nip, 
+            'password' => $request->kata_sandi, 
+        ])) {
+            
+            $user = Auth::user();
 
-    // 3. Jika gagal
-    return back()->withErrors(['nip' => 'Kombinasi ID, Password, atau Posisi salah.'])->withInput();
-}
+            if ($user->id_divisi == $request->id_divisi) {
+                $request->session()->regenerate();
+                return redirect()->intended('dashboard');
+            }
+
+            Auth::logout();
+        }
+
+        return back()->withErrors(['nip' => 'Kombinasi ID, Password, atau Divisi salah.'])->withInput();
+    }
 
     public function logout(Request $request)
     {
