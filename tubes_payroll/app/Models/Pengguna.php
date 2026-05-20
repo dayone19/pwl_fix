@@ -1,8 +1,9 @@
 <?php
 namespace App\Models;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Pengguna extends Model
+class Pengguna extends Authenticatable
 {
     protected $table = 'pengguna';
     protected $fillable = [
@@ -14,6 +15,11 @@ class Pengguna extends Model
         'foto',
         'apakah_aktif'
     ];
+
+    public function getAuthPassword()
+    {
+        return $this->kata_sandi;
+    }
 
     public function peran()
     {
@@ -28,5 +34,25 @@ class Pengguna extends Model
     public function cutiDisetujui()
     {
         return $this->hasMany(Cuti::class, 'disetujui_oleh_id');
+    }
+
+    public function absensi(): HasMany
+    {
+        return $this->hasMany(Absensi::class, 'id'); 
+    }
+
+    public function cuti(): HasMany
+    {
+        return $this->hasMany(Cuti::class, 'id');
+    }
+
+    public function profil()
+    {
+        return $this->hasOne(ProfilPegawai::class, 'id', 'id');
+    }
+
+    public function divisi()
+    {
+        return $this->belongsTo(Divisi::class, 'id_divisi');
     }
 }

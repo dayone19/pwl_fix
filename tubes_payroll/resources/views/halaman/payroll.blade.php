@@ -7,133 +7,87 @@
         <div>
             <div class="flex items-center gap-4">
                 <div class="w-14 h-14 bg-slate-900 rounded-3xl flex items-center justify-center text-orange-500 shadow-2xl rotate-3">
-                    <i class="fas fa-money-check-dollar text-2xl"></i>
+                    <i class="fas fa-id-card-clip text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-black text-slate-900 italic uppercase tracking-tighter leading-none">Rincian Payroll</h1>
-                    <p class="text-orange-600 text-[10px] font-black mt-1 uppercase tracking-[0.3em] italic">Laporan Gaji Bersih Kru</p>
+                    <h1 class="text-3xl font-black text-slate-900 italic uppercase tracking-tighter leading-none">Individu Payroll</h1>
+                    <p class="text-orange-600 text-[10px] font-black mt-1 uppercase tracking-[0.3em] italic">Data Gaji Kru per Personel</p>
                 </div>
             </div>
         </div>
         
-        <button class="bg-white border border-slate-200 text-slate-600 px-6 py-4 rounded-2xl font-black transition-all shadow-sm flex items-center gap-3 text-[10px] uppercase tracking-widest hover:bg-slate-50">
-            <i class="fas fa-print"></i> Cetak Slip Gaji
-        </button>
-    </div>
-
-
-    <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 overflow-hidden p-6">
-        <table class="w-full text-left border-separate border-spacing-y-4">
-            <thead>
-                <tr class="bg-slate-900">
-                    <th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-white rounded-l-[30px] border-y border-l border-slate-900">
-                        Nama Pegawai
-                    </th>
-                    <th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-yellow-400 text-center border-y border-slate-900">
-                        Gaji Pokok
-                    </th>
-                    <th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-green-400 text-center border-y border-slate-900">
-                        Tunjangan
-                    </th>
-                    <th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-red-400 text-center border-y border-slate-900">
-                        Potongan
-                    </th>
-                    <th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 text-right rounded-r-[30px] border-y border-r border-slate-900 bg-slate-800/50">
-                        Gaji Bersih
-                    </th>
-                </tr>
-            </thead>
-            
-            <tbody>
-                @forelse($payroll as $pay)
-                <tr class="group hover:scale-[1.01] transition-all duration-300">
-                    <td class="px-8 py-6 bg-slate-50 rounded-l-[35px] border-y border-l border-slate-100 group-hover:bg-white group-hover:border-orange-200 transition-colors">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center font-black text-slate-400 border border-slate-200 italic group-hover:bg-slate-900 group-hover:text-orange-500 transition-all">
-                                {{ strtoupper(substr($pay->nama_pegawai, 0, 2)) }}
-                            </div>
-                            <div>
-                                <p class="font-black text-slate-800 uppercase italic tracking-tighter leading-none mb-1">{{ $pay->nama_pegawai }}</p>
-                                <span class="font-mono text-[9px] text-slate-400 font-bold tracking-widest uppercase">NIP: {{ $pay->nip }}</span>
-                            </div>
-                        </div>
-                    </td>
-
-                    <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors italic font-bold text-slate-600 text-sm">
-                        Rp {{ number_format($pay->gaji_pokok, 0, ',', '.') }}
-                    </td>
-
-                    <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors text-green-600 font-black text-sm italic">
-                        + Rp {{ number_format($pay->tunjangan, 0, ',', '.') }}
-                    </td>
-
-                    <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors text-red-600 font-black text-sm italic">
-                        - Rp {{ number_format($pay->potongan, 0, ',', '.') }}
-                    </td>
-
-                    <td class="px-8 py-6 bg-slate-50 rounded-r-[35px] border-y border-r border-slate-100 text-right group-hover:bg-white group-hover:border-orange-200 transition-colors">
-                        <span class="px-4 py-2 bg-blue-600 text-white rounded-xl text-[11px] font-black italic shadow-lg shadow-blue-100">
-                            Rp {{ number_format($pay->gaji_bersih, 0, ',', '.') }}
-                        </span>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="px-8 py-20 text-center">
-                        <div class="flex flex-col items-center gap-2 opacity-20">
-                            <i class="fas fa-file-invoice-dollar text-5xl mb-2"></i>
-                            <p class="font-black uppercase italic tracking-widest text-xs">Data penggajian belum tersedia</p>
-                        </div>
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-
-    <div class="mt-10 flex justify-center items-center gap-4">
-        @if ($payroll->onFirstPage())
-            <span class="text-slate-300 text-[10px] font-black uppercase italic cursor-not-allowed">Prev</span>
-        @else
-            <a href="{{ $payroll->previousPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase italic hover:text-orange-600 transition-colors">Prev</a>
-        @endif
-
-        <div class="flex items-center gap-2">
-            @php
-                $curr = $payroll->currentPage();
-                $last = $payroll->lastPage();
-                $start = max($curr - 1, 1);
-                $end = min($start + 2, $last);
-                if ($end - $start < 2 && $start > 1) { $start = max($end - 2, 1); }
-            @endphp
-
-            @if($start > 1)
-                <a href="{{ $payroll->url(1) }}" class="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 text-slate-600 font-bold rounded-xl hover:border-orange-500 shadow-sm text-xs">1</a>
-                @if($start > 2) <span class="text-slate-400 font-bold px-1">...</span> @endif
-            @endif
-
-            @for ($i = $start; $i <= $end; $i++)
-                @if ($i == $curr)
-                    <span class="w-10 h-10 flex items-center justify-center bg-slate-900 text-orange-500 font-black rounded-xl shadow-lg italic text-xs border-b-2 border-orange-600">
-                        {{ $i }}
-                    </span>
-                @else
-                    <a href="{{ $payroll->url($i) }}" class="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 text-slate-600 font-bold rounded-xl hover:border-orange-500 hover:text-orange-600 transition-all shadow-sm text-xs">
-                        {{ $i }}
-                    </a>
-                @endif
-            @endfor
-
-            @if($end < $last)
-                @if($end < $last - 1) <span class="text-slate-400 font-bold px-1">...</span> @endif
-                <a href="{{ $payroll->url($last) }}" class="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 text-slate-600 font-bold rounded-xl hover:border-orange-500 shadow-sm text-xs">{{ $last }}</a>
-            @endif
+        <div class="flex gap-3">
+            <button class="bg-white border border-slate-200 text-slate-600 px-6 py-4 rounded-2xl font-black transition-all shadow-sm flex items-center gap-3 text-[10px] uppercase tracking-widest hover:bg-slate-50">
+                <i class="fas fa-file-export"></i> Export Laporan
+            </button>
         </div>
+    </div>
 
-        @if ($payroll->hasMorePages())
-            <a href="{{ $payroll->nextPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase italic hover:text-orange-600 transition-colors">Next</a>
-        @else
-            <span class="text-slate-300 text-[10px] font-black uppercase italic cursor-not-allowed">Next</span>
-        @endif
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        @forelse($bulanLalu as $pay)
+        <div class="group bg-white rounded-[40px] shadow-sm border border-slate-100 overflow-hidden hover:shadow-2xl hover:shadow-orange-100 transition-all duration-500">
+            <div class="p-8 flex justify-between items-start border-b border-slate-50 bg-slate-50/50 group-hover:bg-white transition-colors">
+                <div class="flex items-center gap-5">
+                    <div class="w-16 h-16 bg-slate-900 rounded-[24px] flex items-center justify-center text-orange-500 font-black text-xl italic shadow-lg group-hover:rotate-6 transition-transform uppercase">
+                        {{-- Ambil inisial dari relasi pegawai atau default --}}
+                        {{ substr($pay->pegawai->nama_lengkap ?? 'User', 0, 2) }}
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-black text-slate-900 uppercase italic tracking-tighter leading-none mb-2">
+                            {{ $pay->bulan }} {{-- Tampilkan bulannya, misal 2026-05 --}}
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-full bg-orange-100 text-orange-600 font-black text-[9px] uppercase tracking-widest">
+                                {{ $pay->pegawai->divisi->nama_divisi ?? 'STAFF' }}
+                            </span>
+                            <span class="font-mono text-[10px] text-slate-400 font-bold tracking-tighter">NIP: {{ $pay->nip }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 italic">Status</p>
+                    <span class="text-xs font-black italic uppercase {{ $pay->status_bayar == 'dibayar' ? 'text-green-600' : 'text-orange-500' }}">
+                        {{ $pay->status_bayar }} <i class="fas {{ $pay->status_bayar == 'dibayar' ? 'fa-circle-check' : 'fa-clock' }} ml-1"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="p-8 grid grid-cols-3 gap-4 bg-white">
+                <div class="bg-slate-50 p-4 rounded-3xl border border-slate-100 group-hover:border-orange-100 transition-all">
+                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-2 italic">Periode Mulai</p>
+                    <p class="text-[10px] font-bold text-slate-700 leading-none">{{ $pay->periode_mulai }}</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-3xl border border-slate-100 group-hover:border-green-100 transition-all text-center">
+                    <p class="text-[8px] font-black text-green-400 uppercase tracking-widest mb-2 italic">Tunjangan & Bonus</p>
+                    <p class="text-xs font-bold text-green-600 leading-none">
+                        + {{ number_format($pay->total_tunjangan + $pay->bonus, 0, ',', '.') }}
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-3xl border border-slate-100 group-hover:border-red-100 transition-all text-right">
+                    <p class="text-[8px] font-black text-red-400 uppercase tracking-widest mb-2 italic">Potongan</p>
+                    <p class="text-xs font-bold text-red-600 leading-none">
+                        - {{ number_format($pay->total_potongan, 0, ',', '.') }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="px-8 py-6 bg-slate-900 flex justify-between items-center group-hover:bg-orange-600 transition-colors duration-500">
+                <div>
+                    <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.2em] italic mb-1">Gaji Bersih Diterima</p>
+                    <p class="text-2xl font-black text-white italic tracking-tighter leading-none">
+                        Rp {{ number_format($pay->gaji_bersih, 0, ',', '.') }}
+                    </p>
+                </div>
+                <button class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-white hover:bg-white hover:text-slate-900 transition-all shadow-inner">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        @empty
+        <div class="lg:col-span-2 py-20 text-center opacity-20">
+            <i class="fas fa-file-invoice-dollar text-6xl mb-4 text-slate-400"></i>
+            <p class="font-black uppercase italic tracking-[0.3em] text-sm">Belum ada riwayat penggajian</p>
+        </div>
+        @endforelse
     </div>
 @endsection

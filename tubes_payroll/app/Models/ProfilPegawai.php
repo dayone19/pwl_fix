@@ -47,4 +47,10 @@ class ProfilPegawai extends Model
     {
         return $this->hasMany(RiwayatPegawai::class, 'pegawai_id');
     }
+
+
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'id_jabatan');
+    }
 }

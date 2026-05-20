@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -81,82 +82,82 @@
             </div>
 
             <nav class="flex-1 space-y-8 overflow-y-auto no-scrollbar nav-mask">
-    {{-- SECTION: MONITORING --}}
-    <div>
-        <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
-            <i class="fas fa-gauge-high text-[8px]"></i> Monitoring
-        </p>
-        <ul class="space-y-2">
-            <li>
-                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 rounded-2xl text-sm font-bold transition hover:text-white group">
-                    <i class="fas fa-desktop w-5 transition group-hover:text-orange-500"></i>
-                    Dashboard Utama
-                </a>
-            </li>
-        </ul>
-    </div>
+                {{-- SECTION: MONITORING --}}
+                <div>
+                    <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
+                        <i class="fas fa-gauge-high text-[8px]"></i> Monitoring
+                    </p>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 rounded-2xl text-sm font-bold transition hover:text-white group">
+                                <i class="fas fa-desktop w-5 transition group-hover:text-orange-500"></i>
+                                Dashboard Utama
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
-    {{-- SECTION: WORKSHOP AREA --}}
-    <div>
-        <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
-            <i class="fas fa-toolbox text-[8px]"></i> Workshop Area
-        </p>
-        <ul class="space-y-2">
-            {{-- DATA teknisi: Aktif jika URL adalah karyawan/index atau karyawan/show --}}
-            @if(in_array(Auth::user()->role, ['hrd', 'manager']))
-            <li>
-                <a href="{{ route('karyawan.index') }}" 
-                   class="{{ (request()->routeIs('karyawan.index') || request()->routeIs('karyawan.show')) ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
-                    <i class="fas fa-user-gear w-5 group-hover:text-orange-400"></i> Data teknisi
-                </a>
-            </li>
-            @endif
+                {{-- SECTION: WORKSHOP AREA --}}
+                <div>
+                    <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
+                        <i class="fas fa-toolbox text-[8px]"></i> Workshop Area
+                    </p>
+                    <ul class="space-y-2">
+                        {{-- DATA MEKANIK & ABSENSI: MANAJEMEN & HRD --}}
+                        @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['MANAJEMEN', 'HRD']))
+                        <li>
+                            <a href="{{ route('karyawan.index') }}" 
+                            class="{{ (request()->routeIs('karyawan.index') || request()->routeIs('karyawan.show')) ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                                <i class="fas fa-user-gear w-5 group-hover:text-orange-400"></i> Data teknisi
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('absensi.index') }}" class="{{ request()->routeIs('absensi.*') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                                <i class="fas fa-stopwatch w-5 group-hover:text-orange-400"></i> Rekap Absensi
+                            </a>
+                        </li>
+                        @endif
 
-            {{-- PRESENSI: Hanya HRD & Manager --}}
-            @if(in_array(Auth::user()->role, ['hrd', 'manager']))
-            <li>
-                <a href="{{ route('absensi.index') }}" class="{{ request()->routeIs('absensi.*') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
-                    <i class="fas fa-stopwatch w-5 group-hover:text-orange-400"></i> Rekap Absensi
-                </a>
-            </li>
-            @endif
+                        {{-- PAYROLL & INSENTIF & CUTI: Semua Divisi --}}
+                        <li>
+                            <a href="{{ route('payroll.index') }}" class="{{ request()->routeIs('payroll.index') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                                <i class="fas fa-file-invoice-dollar w-5 group-hover:text-orange-400"></i> Payroll & Insentif
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('cuti.index') }}" class="{{ request()->routeIs('cuti.index') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                                <i class="fas fa-calendar-day w-5 group-hover:text-orange-400"></i> Manajemen Cuti
+                            </a>
+                        </li>
+                        
+                        {{-- KELOLA GAJI: MANAJEMEN & FINANCE --}}
+                        @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['MANAJEMEN', 'FINANCE']))
+                        <li>
+                            <a href="{{ route('payroll.manage') }}" class="{{ request()->routeIs('payroll.manage') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                                <i class="fas fa-calculator w-5 group-hover:text-orange-400"></i> Kelola Gaji
+                            </a>
+                        </li>
+                        @endif
+                    </ul>
+                </div>
 
-            {{-- PAYROLL & INSENTIF: Semua Role --}}
-            <li>
-                <a href="{{ route('payroll.index') }}" class="{{ request()->routeIs('payroll.index') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
-                    <i class="fas fa-file-invoice-dollar w-5 group-hover:text-orange-400"></i> Payroll & Insentif
-                </a>
-            </li>
-            
-            {{-- KELOLA GAJI: Hanya Akuntan & Manager (HRD & teknisi Hidden) --}}
-            @if(in_array(Auth::user()->role, ['akuntan', 'manager']))
-            <li>
-                <a href="{{ route('payroll.manage') }}" class="{{ request()->routeIs('payroll.manage') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
-                    <i class="fas fa-calculator w-5 group-hover:text-orange-400"></i> Kelola Gaji
-                </a>
-            </li>
-            @endif
-        </ul>
-    </div>
-
-    {{-- SECTION: SYSTEM --}}
-    @if(in_array(Auth::user()->role, ['hrd', 'manager']))
-    <div>
-        <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
-            <i class="fas fa-gears text-[8px]"></i> System
-        </p>
-        <ul class="space-y-2">
-            {{-- AKSES KONTROL: Aktif jika di halaman user ATAU sedang proses tambah karyawan (karyawan.create) --}}
-            <li>
-                <a href="{{ route('users.index') }}" 
-                   class="{{ (request()->routeIs('users.*') || request()->routeIs('karyawan.create')) ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
-                    <i class="fas fa-key w-5 group-hover:text-orange-400"></i> Akses Kontrol
-                </a>
-            </li>
-        </ul>
-    </div>
-    @endif
-</nav>
+                {{-- SECTION: SYSTEM: MANAJEMEN & HRD --}}
+                @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['MANAJEMEN', 'HRD']))
+                <div>
+                    <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
+                        <i class="fas fa-gears text-[8px]"></i> System
+                    </p>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="{{ route('users.index') }}" 
+                            class="{{ (request()->routeIs('users.*') || request()->routeIs('karyawan.create')) ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                                <i class="fas fa-key w-5 group-hover:text-orange-400"></i> Akses Kontrol
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                @endif
+            </nav>
 
             <div class="pt-6 border-t border-white/5 mt-auto">
                 <div class="bg-white/5 p-4 rounded-3xl border border-white/5 mb-4 group hover:bg-white/10 transition-all cursor-default">
@@ -168,8 +169,12 @@
                             <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-[#0f172a] rounded-full"></div>
                         </div>
                         <div class="overflow-hidden">
-                            <p class="text-[10px] font-black text-white truncate uppercase italic leading-none mb-1">{{ Auth::user()->nama }}</p>
-                            <p class="text-[9px] text-slate-500 truncate uppercase tracking-widest">{{ Auth::user()->role }}</p>
+                            <p class="text-[10px] font-black text-white truncate uppercase italic leading-none mb-1">
+                                {{ Auth::user()->nama }}
+                            </p>
+                            <p class="text-[9px] text-slate-500 truncate uppercase tracking-widest">
+                                {{ Auth::user()->divisi?->nama_divisi ?? 'Tanpa Divisi' }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -198,18 +203,22 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <div class="flex flex-col items-end mr-2 hidden sm:flex">
-                    <span class="text-[10px] font-black text-slate-900 uppercase">System Online</span>
-                    <span class="text-[9px] font-bold text-green-500 uppercase flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> Sinkron Berhasil
-                    </span>
-                </div>
-                <button class="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-orange-600 transition-all relative group">
-                    <i class="fas fa-bell transition group-hover:bounce"></i>
-                    <span class="absolute top-3 right-3 w-2 h-2 bg-orange-600 rounded-full border-2 border-white"></span>
-                </button>
+            <div class="hidden lg:flex items-center gap-4 bg-white p-4 rounded-[30px] border border-slate-100 shadow-sm">
+            <div class="text-right">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">Last Sync</p>
+                <p class="text-xs font-bold text-slate-900 uppercase italic">{{ date('D, d M Y') }}</p>
             </div>
+            <div class="w-px h-8 bg-slate-100"></div>
+            <div class="flex items-center gap-3">
+                 <div class="text-right">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">Status</p>
+                    <p class="text-[10px] font-black text-green-500 uppercase">Online</p>
+                </div>
+                <div class="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-orange-600">
+                    <i class="fas fa-bolt"></i>
+                </div>
+            </div>
+        </div>
         </header>
 
         <div class="relative min-h-[80vh]">

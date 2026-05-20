@@ -23,13 +23,13 @@
         <div class="bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm relative overflow-hidden group">
             <i class="fas fa-money-bill-wave absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-10 group-hover:text-orange-500 transition-all"></i>
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Estimasi Keluar</p>
-            <h3 class="text-2xl font-black text-slate-900">Rp {{ number_format($totalEstimasiGaji, 0, ',', '.') }}</h3>
+            <h3 class="text-2xl font-black text-slate-900">Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}</h3>
         </div>
         
         <div class="bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm relative overflow-hidden group">
             <i class="fas fa-users absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-10 group-hover:text-blue-500 transition-all"></i>
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Kru & Personel</p>
-            <h3 class="text-2xl font-black text-slate-900">{{ $jumlahKaryawan }} <span class="text-sm text-slate-400 italic">Orang</span></h3>
+            <h3 class="text-2xl font-black text-slate-900">{{ $totalPegawai }} <span class="text-sm text-slate-400 italic">Orang</span></h3>
         </div>
 
         <div class="bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm relative overflow-hidden group">

@@ -5,9 +5,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\absensiController;
 use App\Http\Controllers\karyawanController;
-use App\http\Controllers\penggajianController;
+use App\http\Controllers\payrollController;
 use App\http\Controllers\dashboardController;
-
+use App\Http\Controllers\CutiController;
 
 //landingPage
 Route::get('/', function () {
@@ -41,6 +41,12 @@ Route::middleware(['auth'])->group(function (){
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
     //penggajian
-    Route::get('/penggajian', [PenggajianController::class, 'index']);
-    Route::put('/penggajian/{id}/bayar', [PenggajianController::class, 'bayar']);
+    Route::get('/hitung-payroll', [PayrollController::class, 'dataPayroll'])->name('payroll.index');
+    Route::get('/payroll/manage', [PayrollController::class, 'manage'])->name('payroll.manage');
+    
+    //pengajuan cuti
+    Route::get('/cuti', [CutiController::class, 'index'])->name('cuti.index');
+
+    // Proses kirim formulir pengajuan cuti
+    Route::post('/cuti/ajukan', [CutiController::class, 'store'])->name('cuti.store');
 });
