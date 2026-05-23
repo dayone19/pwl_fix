@@ -22,10 +22,10 @@
             <thead>
                 <tr class="bg-slate-900">
                     <th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-white rounded-l-[30px] border-y border-l border-slate-900">
-                        Identitas teknisi
+                        Identitas Karyawan
                     </th>
                     <th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-purple-400 text-center border-y border-slate-900">
-                        Jabatan & Role
+                        Jabatan 
                     </th>
                     <th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 text-right rounded-r-[30px] border-y border-r border-slate-900 bg-slate-800/50">
                         Kontrol Aksi

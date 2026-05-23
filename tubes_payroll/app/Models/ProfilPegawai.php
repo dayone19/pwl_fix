@@ -54,6 +54,6 @@ class ProfilPegawai extends Model
 
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'jabatan_id');
+        return $this->belongsTo(Jabatan::class, 'id_jabatan', 'id');
     }
 }

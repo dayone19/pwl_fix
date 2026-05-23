@@ -31,6 +31,12 @@
                     <div class="mt-1 inline-block px-3 py-1 bg-slate-100 rounded-lg border border-slate-200">
                         <p class="text-[11px] font-black text-slate-500 uppercase tracking-widest">NIP: {{ $user->nip }}</p>
                     </div>
+
+                    <div class="mt-1.5 flex items-center gap-1.5 text-orange-600">
+                        <i class="fas fa-briefcase text-xs"></i>
+                        <p class="text-[12px] font-black uppercase tracking-wider">{{ $namaJabatan }}</p>
+                    </div>
+
                 </div>
 
                 <div class="flex flex-wrap gap-2">

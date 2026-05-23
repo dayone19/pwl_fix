@@ -34,6 +34,9 @@ Route::middleware(['auth', 'prevent-back-history'
 
     //absensi
     Route::get('/absensi', [absensiController::class, 'index'])->name('absensi.index');
+    Route::get('/absensi/pdf', [AbsensiController::class, 'exportPdf'])->name('absensi.pdf');//untuk pdf nya
+    Route::get('/absensi/pribadi', [absensiController::class, 'pribadi'])->name('absensi.pribadi');//untuk absensi peibadi
+    Route::get('/absensi/pribadi/pdf', [absensiController::class, 'pribadiPdf'])->name('absensi.pribadi.pdf');//untuk expor pdf
 
     //data karyawan
     Route::resource('karyawan', KaryawanController::class);
@@ -61,6 +64,5 @@ Route::middleware(['auth', 'prevent-back-history'
     Route::get('/pekerjaan', [pekerjaanController::class, 'index'])->name('pekerjaan.index');
     Route::post('/pekerjaan/{id}/ambil', [pekerjaanController::class, 'ambil'])->name('pekerjaan.ambil');
     Route::post('/pekerjaan/{id}/selesai', [pekerjaanController::class, 'selesai'])->name('pekerjaan.selesai');
-    //  bagian input keluhan (admin service)
-    Route::post('/keluhan/store', [pekerjaanController::class, 'store'])->name('keluhan.store');
+    Route::post('/keluhan/store', [pekerjaanController::class, 'store'])->name('keluhan.store');//  bagian input keluhan (admin service)
 });

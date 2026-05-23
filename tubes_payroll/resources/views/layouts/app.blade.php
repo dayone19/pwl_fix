@@ -108,29 +108,24 @@
                         <li>
                             <a href="{{ route('karyawan.index') }}" 
                             class="{{ (request()->routeIs('karyawan.index') || request()->routeIs('karyawan.show')) ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
-                                <i class="fas fa-user-gear w-5 group-hover:text-orange-400"></i> Data teknisi
+                                <i class="fas fa-user-gear w-5 group-hover:text-orange-400"></i> Data Karyawan
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('absensi.index') }}" class="{{ request()->routeIs('absensi.*') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
-                                <i class="fas fa-stopwatch w-5 group-hover:text-orange-400"></i> Rekap Absensi
+                                <i class="fas fa-stopwatch w-5 group-hover:text-orange-400"></i> Rekap Absensi (Admin)
                             </a>
                         </li>
                         @endif
 
                         {{-- PEKERJAAN KHUSUS DIVISI TEKNIS --}}
                         @if(Str::upper(Auth::user()->divisi?->nama_divisi) == 'TEKNIS')
-
                         <li>
                             <a href="{{ route('pekerjaan.index') }}" 
                             class="{{ request()->routeIs('pekerjaan.*') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
-                                
-                                <i class="fas fa-screwdriver-wrench w-5 group-hover:text-orange-400"></i>
-                                
-                                Pekerjaan Bengkel
+                                <i class="fas fa-screwdriver-wrench w-5 group-hover:text-orange-400"></i> Pekerjaan Bengkel
                             </a>
                         </li>
-
                         @endif
 
                         {{-- PAYROLL & INSENTIF & CUTI: Semua Divisi --}}
@@ -139,6 +134,14 @@
                                 <i class="fas fa-file-invoice-dollar w-5 group-hover:text-orange-400"></i> Payroll & Insentif
                             </a>
                         </li>
+                        
+                        {{-- MENU BARU: REKAP ABSENSI PRIBADI (Semua Divisi) --}}
+                        <li>
+                            <a href="{{ route('absensi.pribadi') }}" class="{{ request()->routeIs('absensi.pribadi') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                                <i class="fas fa-business-time w-5 group-hover:text-orange-400"></i> Absensi Pribadi
+                            </a>
+                        </li>
+
                         <li>
                             <a href="{{ route('cuti.index') }}" class="{{ request()->routeIs('cuti.index') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
                                 <i class="fas fa-calendar-day w-5 group-hover:text-orange-400"></i> Manajemen Cuti

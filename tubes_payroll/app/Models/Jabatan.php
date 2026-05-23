@@ -30,6 +30,6 @@ class Jabatan extends Model
 
     public function ProfilPegawai()
     {
-        return $this->hasMany(ProfilPegawai::class, 'id_jabatan');
+        return $this->hasMany(ProfilPegawai::class, 'id_jabatan', 'id');
     }
 }
