@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Penggajian; 
 use App\Models\Pengguna;
 use App\Services\LogikaGaji; 
+use App\Services\ProfilPegawai; 
 use Illuminate\Http\Request;
 
 class PayrollController extends Controller

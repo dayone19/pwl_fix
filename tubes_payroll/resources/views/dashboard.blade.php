@@ -207,8 +207,7 @@
             </div>
         </div>
         @endif
-
-
+        
         {{-- WORKSHOP INFO & REMINDER BOX --}}
         <div class="bg-slate-900 rounded-[55px] p-10 text-white shadow-2xl relative overflow-hidden flex flex-col">
             <h3 class="text-xl font-black uppercase italic tracking-tighter mb-8 text-orange-500">Workshop Info</h3>
@@ -251,6 +250,8 @@
             <i class="fas fa-tools absolute -bottom-6 -right-6 text-[120px] text-white/5 -rotate-12"></i>
         </div>
     </div>
+
+    
 
     {{-- GANTI BAGIAN GRAFIK DAN SCRIPT KAMU DENGAN INI --}}
     @if($divisi == 'MANAJEMEN')

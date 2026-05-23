@@ -8,6 +8,7 @@ use App\Http\Controllers\karyawanController;
 use App\http\Controllers\payrollController;
 use App\http\Controllers\dashboardController;
 use App\Http\Controllers\CutiController;
+use App\Http\Controllers\pekerjaanController;
 
 //landingPage
 Route::get('/', function () {
@@ -15,12 +16,18 @@ Route::get('/', function () {
 });
 
 //Login
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::get('/login', [LoginController::class, 'showLoginForm'])
+->middleware([
+        'guest',
+        'prevent-back-history'
+    ])
+->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-Route::middleware(['auth'])->group(function (){
+Route::middleware(['auth', 'prevent-back-history'
+])->group(function (){
 
     //dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -49,4 +56,11 @@ Route::middleware(['auth'])->group(function (){
 
     // Proses kirim formulir pengajuan cuti
     Route::post('/cuti/ajukan', [CutiController::class, 'store'])->name('cuti.store');
+
+    //pekerjaan teknis
+    Route::get('/pekerjaan', [pekerjaanController::class, 'index'])->name('pekerjaan.index');
+    Route::post('/pekerjaan/{id}/ambil', [pekerjaanController::class, 'ambil'])->name('pekerjaan.ambil');
+    Route::post('/pekerjaan/{id}/selesai', [pekerjaanController::class, 'selesai'])->name('pekerjaan.selesai');
+    //  bagian input keluhan (admin service)
+    Route::post('/keluhan/store', [pekerjaanController::class, 'store'])->name('keluhan.store');
 });

@@ -118,6 +118,21 @@
                         </li>
                         @endif
 
+                        {{-- PEKERJAAN KHUSUS DIVISI TEKNIS --}}
+                        @if(Str::upper(Auth::user()->divisi?->nama_divisi) == 'TEKNIS')
+
+                        <li>
+                            <a href="{{ route('pekerjaan.index') }}" 
+                            class="{{ request()->routeIs('pekerjaan.*') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                                
+                                <i class="fas fa-screwdriver-wrench w-5 group-hover:text-orange-400"></i>
+                                
+                                Pekerjaan Bengkel
+                            </a>
+                        </li>
+
+                        @endif
+
                         {{-- PAYROLL & INSENTIF & CUTI: Semua Divisi --}}
                         <li>
                             <a href="{{ route('payroll.index') }}" class="{{ request()->routeIs('payroll.index') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">

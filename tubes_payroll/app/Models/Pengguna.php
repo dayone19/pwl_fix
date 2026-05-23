@@ -55,4 +55,10 @@ class Pengguna extends Authenticatable
     {
         return $this->belongsTo(Divisi::class, 'id_divisi');
     }
+
+    public function terimaKerjaan()
+    {
+        return $this->belongsTo(TerimaKerjaan::class, 'teknisi_id');
+    }
+
 }

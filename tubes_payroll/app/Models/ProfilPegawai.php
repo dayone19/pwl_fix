@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProfilPegawai extends Model
 {
     protected $table = 'profil_pegawai';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'nip',
         'nama_lengkap',
@@ -18,9 +19,11 @@ class ProfilPegawai extends Model
         'tanggal_keluar',
         'apakah_digaji',
         'dibuat_pada',
-        'jabatan',
-        'departemen',
-        'pendidikan'
+        'id_jabatan',
+        'id_divisi',
+        'pendidikan',
+        'foto',
+        'status_kerja',
     ];
 
     public function pengguna()
@@ -51,6 +54,6 @@ class ProfilPegawai extends Model
 
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'id_jabatan');
+        return $this->belongsTo(Jabatan::class, 'jabatan_id');
     }
 }
