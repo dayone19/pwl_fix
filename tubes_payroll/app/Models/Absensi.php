@@ -6,6 +6,8 @@ class Absensi extends Model
 {
     protected $table = 'absensi';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'nip',
         'tanggal',
@@ -15,7 +17,7 @@ class Absensi extends Model
         'menit_terlambat'
     ];
 
-    public function pegawai()
+    public function profilPegawai()
     {
         return $this->belongsTo(ProfilPegawai::class, 'nip', 'nip');
     }

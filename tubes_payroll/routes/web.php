@@ -36,6 +36,8 @@ Route::middleware(['auth', 'prevent-back-history'
     Route::get('/absensi/pdf', [AbsensiController::class, 'exportPdf'])->name('absensi.pdf');//untuk pdf nya
     Route::get('/absensi/pribadi', [absensiController::class, 'pribadi'])->name('absensi.pribadi');//untuk absensi peibadi
     Route::get('/absensi/pribadi/pdf', [absensiController::class, 'pribadiPdf'])->name('absensi.pribadi.pdf');//untuk expor pdf
+    Route::post('/absensi/import', [absensiController::class, 'store'])->name('absensi.store');           // ← ganti dari /store
+    Route::get('/absensi/template', [absensiController::class, 'downloadTemplate'])->name('absensi.template'); // ← tambah ini
 
     //data karyawan
     Route::resource('karyawan', KaryawanController::class);

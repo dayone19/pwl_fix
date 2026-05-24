@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Absensi;
 use App\Models\ProfilPegawai;
-use App\Models\Jabatan;
+use App\Models\AbsensiImport;
 use Illuminate\Support\Facades\Auth;
-use Barryvdh\DomPDF\Facade\Pdf; // dom pdf untuk ekspor
-use Carbon\Carbon; // untuk carbon (tgl)
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class AbsensiController extends Controller
 {
-
     public function index(Request $request)
     {
         $query = $this->applyFilter($request);
@@ -25,10 +25,57 @@ class AbsensiController extends Controller
             return $item;
         });
 
-        return view('halaman.absensi', compact('dataAbsen'));
+        $pegawai = ProfilPegawai::orderBy('nama_lengkap')->get();
+
+        return view('halaman.absensi', compact('dataAbsen', 'pegawai'));
     }
 
-  
+    public function store(Request $request)
+    {
+        abort_if(auth()->user()->id_divisi != 2, 403);
+
+        $request->validate([
+            'file_absen' => 'required|file|mimes:xlsx,xls,csv|max:2048',
+        ], [
+            'file_absen.required' => 'File absen wajib diupload.',
+            'file_absen.mimes'    => 'Format file harus XLS, XLSX, atau CSV.',
+            'file_absen.max'      => 'Ukuran file maksimal 2MB.',
+        ]);
+
+    
+$import = new \App\Models\AbsensiImport();
+\Maatwebsite\Excel\Facades\Excel::import($import, $request->file('file_absen'));
+
+        $pesan = "Berhasil import {$import->berhasil} data absen.";
+
+        if (!empty($import->gagal)) {
+            $pesanGagal = implode(' | ', $import->gagal);
+            return back()->with('success', $pesan)->with('warning', "Baris dilewati: {$pesanGagal}");
+        }
+
+        return back()->with('success', $pesan);
+    }
+
+    public function downloadTemplate()
+    {
+        $headers = [
+            'Content-Type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="template_absensi.csv"',
+        ];
+
+        $kolom = ['nip', 'nama', 'tanggal', 'jam_masuk', 'jam_keluar', 'status'];
+        $contoh = ['001', 'Budi Santoso', '24/05/2026', '08:00', '17:00', 'Hadir'];
+
+        $callback = function () use ($kolom, $contoh) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $kolom);
+            fputcsv($file, $contoh);
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
     public function exportPdf(Request $request)
     {
         $dataAbsen = $this->applyFilter($request)->get();
@@ -43,81 +90,69 @@ class AbsensiController extends Controller
         $tahunPilihan = $request->input('tahun', date('Y'));
         $periodeCarbon = Carbon::createFromDate($tahunPilihan, $bulanPilihan, 1);
 
-        $totalHariKerja = cal_days_in_month(CAL_GREGORIAN, $bulanPilihan, $tahunPilihan);
-        $totalKaryawan = $dataAbsen->pluck('nip')->unique()->count();
-
-        $totalHadir = $dataAbsen->whereIn('status', ['Hadir', 'Terlambat'])->count();
-        $totalData = $totalKaryawan * $totalHariKerja;
-        
-        $rataRata = $totalData > 0 ? ($totalHadir / $totalData) * 100 : 0;
-        
+        $totalHariKerja  = cal_days_in_month(CAL_GREGORIAN, $bulanPilihan, $tahunPilihan);
+        $totalKaryawan   = $dataAbsen->pluck('nip')->unique()->count();
+        $totalHadir      = $dataAbsen->whereIn('status', ['Hadir', 'Terlambat'])->count();
+        $totalData       = $totalKaryawan * $totalHariKerja;
+        $rataRata        = $totalData > 0 ? ($totalHadir / $totalData) * 100 : 0;
         $totalTidakHadir = $dataAbsen->whereIn('status', ['Izin', 'Sakit', 'Alpha'])->count();
 
         $pdf = Pdf::loadView('halaman.absensi_pdf', compact(
-            'dataAbsen', 'periodeCarbon', 'bulanPilihan', 'tahunPilihan', 
+            'dataAbsen', 'periodeCarbon', 'bulanPilihan', 'tahunPilihan',
             'totalKaryawan', 'totalHariKerja', 'rataRata', 'totalTidakHadir'
         ));
-        
+
         $pdf->setPaper('a4', 'landscape');
         return $pdf->download('Rekap_Absensi_' . $periodeCarbon->format('M_Y') . '.pdf');
     }
 
     public function pribadi(Request $request)
     {
-        // Ambil data Auth user (pengguna) yang login
-        $user = Auth::user(); 
+        $user   = Auth::user();
         $idUser = $user->id;
 
-        // Filter bulan & tahun
         $bulanPilihan = $request->input('bulan', date('m'));
         $tahunPilihan = $request->input('tahun', date('Y'));
 
         $dataAbsensi = Absensi::where('nip', $user->nip ?? $idUser)
-                            ->whereMonth('tanggal', $bulanPilihan)
-                            ->whereYear('tanggal', $tahunPilihan)
-                            ->orderBy('tanggal', 'desc')
-                            ->get();
+            ->whereMonth('tanggal', $bulanPilihan)
+            ->whereYear('tanggal', $tahunPilihan)
+            ->orderBy('tanggal', 'desc')
+            ->get();
 
-        $pegawai = ProfilPegawai::with('jabatan')->where('nip', $user->nip)->first();
+        $pegawai     = ProfilPegawai::with('jabatan')->where('nip', $user->nip)->first();
         $namaJabatan = $pegawai?->jabatan?->nama_jabatan ?? 'Karyawan';
-
-        // Pakai carbon biar template tgl dan thn bisa diambil dari tahun dan bulan yg dipilih
         $periodeCarbon = Carbon::createFromDate($tahunPilihan, $bulanPilihan, 1);
 
         return view('halaman.absensi_pribadi', compact(
-            'dataAbsensi',
-            'user',
-            'namaJabatan',
-            'bulanPilihan',
-            'tahunPilihan',
-            'periodeCarbon'
+            'dataAbsensi', 'user', 'namaJabatan',
+            'bulanPilihan', 'tahunPilihan', 'periodeCarbon'
         ));
     }
 
     public function pribadiPdf(Request $request)
     {
-        $user = Auth::user();
+        $user   = Auth::user();
         $idUser = $user->id;
 
         $bulanPilihan = $request->input('bulan', date('m'));
         $tahunPilihan = $request->input('tahun', date('Y'));
 
-        $dataAbsensi = Absensi::where('nip', $user->nip ?? $idUser) 
-                            ->whereMonth('tanggal', $bulanPilihan)
-                            ->whereYear('tanggal', $tahunPilihan)
-                            ->orderBy('tanggal', 'desc')
-                            ->get();
+        $dataAbsensi = Absensi::where('nip', $user->nip ?? $idUser)
+            ->whereMonth('tanggal', $bulanPilihan)
+            ->whereYear('tanggal', $tahunPilihan)
+            ->orderBy('tanggal', 'desc')
+            ->get();
 
-        $pegawai = ProfilPegawai::with('jabatan')->where('nip', $user->nip)->first();
+        $pegawai     = ProfilPegawai::with('jabatan')->where('nip', $user->nip)->first();
         $namaJabatan = $pegawai?->jabatan?->nama_jabatan ?? 'Karyawan';
-        
         $periodeCarbon = Carbon::createFromDate($tahunPilihan, $bulanPilihan, 1);
 
         $pdf = Pdf::loadView('halaman.absensi_pribadi_pdf', [
-            'dataAbsensi' => $dataAbsensi,
-            'user' => $user,
-            'namaJabatan' => $namaJabatan,
-            'periodeCarbon' => $periodeCarbon
+            'dataAbsensi'   => $dataAbsensi,
+            'user'          => $user,
+            'namaJabatan'   => $namaJabatan,
+            'periodeCarbon' => $periodeCarbon,
         ]);
 
         $namaFile = $user->name ?? ($pegawai->nama_lengkap ?? 'Karyawan');
@@ -126,23 +161,18 @@ class AbsensiController extends Controller
 
     private function applyFilter(Request $request)
     {
-        $query = Absensi::with('ProfilPegawai');
+        $query = Absensi::with('profilPegawai');
 
-        // 1. Filter Tanggal
         if ($request->filled('tanggal')) {
             $query->whereRaw('DAY(tanggal) = ?', [$request->tanggal]);
         }
-
-        // 2. Filter Bulan
         if ($request->filled('bulan')) {
             $query->whereMonth('tanggal', $request->bulan);
         }
-
-        // 3. Filter Tahun 
         if ($request->filled('tahun')) {
             $query->whereYear('tanggal', $request->tahun);
         }
-        
+
         return $query->orderBy('tanggal', 'desc');
     }
 }
