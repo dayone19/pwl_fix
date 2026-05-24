@@ -21,9 +21,15 @@ class KaryawanController extends Controller
 
     public function create()
     {
-        $list_divisi = DB::table('divisi')->get(); 
+        $list_divisi = DB::table('divisi')->get();
 
-        return view('halaman.tambah', compact('list_divisi')); 
+        // TAMBAHAN
+        $list_jabatan = DB::table('jabatan')->get();
+
+        return view('halaman.tambah', compact(
+            'list_divisi',
+            'list_jabatan'
+        ));
     }
 
     public function store(Request $request)
@@ -35,6 +41,7 @@ class KaryawanController extends Controller
             'kata_sandi'           => 'required|min:8|regex:/[A-Z]/|regex:/[0-9]/',
             'nama_lengkap'         => 'required|string',
             'id_divisi'            => 'required',
+            'id_jabatan'           => 'required',
             'nik'                  => 'required|digits:16',
             'status_kerja'         => 'required',
             'tempat_lahir'         => 'required|string',
@@ -68,8 +75,8 @@ class KaryawanController extends Controller
             // 5. Simpan Akun ke tabel 'pengguna'
             DB::table('pengguna')->insert([
                 'nip'          => $request->nip,
+                'id_divisi'    => $request->id_divisi,
                 'nama'         => $request->nama_lengkap,
-                'role'         => $roleOtomatis,
                 'email'        => $request->email,
                 'kata_sandi'   => Hash::make($request->kata_sandi ?? $request->nip),
                 'foto'         => $namaFoto,
@@ -84,7 +91,7 @@ class KaryawanController extends Controller
                 'nik'                   => $request->nik,
                 'email'                 => $request->email,
                 'nomor_telepon'         => $request->nomor_telepon ?? '-',
-                'jabatan'               => $request->jabatan,
+                'id_jabatan'            => $request->id_jabatan,
                 'id_divisi'             => $request->id_divisi,
                 'agama'                 => $request->agama, 
                 'tempat_tanggal_lahir'  => $tempatTanggalGabung, // Menggunakan hasil gabungan

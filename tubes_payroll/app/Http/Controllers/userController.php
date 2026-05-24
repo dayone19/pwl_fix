@@ -18,7 +18,7 @@ class userController extends Controller
                 'pengguna.nip', 
                 'pengguna.nama', 
                 'pengguna.email', 
-                'pengguna.role', 
+                'pengguna.id_divisi', 
                 'pengguna.foto',
                 'profil_pegawai.nama_lengkap',
                 'profil_pegawai.id as id_profil'
