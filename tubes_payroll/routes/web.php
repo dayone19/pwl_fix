@@ -9,11 +9,10 @@ use App\http\Controllers\payrollController;
 use App\http\Controllers\dashboardController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\pekerjaanController;
+use App\Http\Controllers\LandingController;
 
-//landingPage
-Route::get('/', function () {
-    return view('landing');
-});
+// Landing
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 //Login
 Route::get('/login', [LoginController::class, 'showLoginForm'])

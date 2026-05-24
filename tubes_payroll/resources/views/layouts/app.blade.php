@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -28,8 +28,8 @@
 
         #sidebar { 
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background-color: #0f172a;
-            background-image: radial-gradient(at 0% 100%, hsla(25,95%,35%,0.2) 0, transparent 50%);
+            background-color: #020617; /* bg-slate-950 */
+            background-image: radial-gradient(at 0% 100%, hsla(25,95%,35%,0.15) 0, transparent 50%);
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -81,7 +81,7 @@
                 </button>
             </div>
 
-            <nav class="flex-1 space-y-8 overflow-y-auto no-scrollbar nav-mask">
+            <nav class="flex-1 space-y-8 overflow-y-auto no-scrollbar nav-mask pb-12">
                 {{-- SECTION: MONITORING --}}
                 <div>
                     <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
@@ -135,7 +135,6 @@
                             </a>
                         </li>
                         
-                        {{-- MENU BARU: REKAP ABSENSI PRIBADI (Semua Divisi) --}}
                         <li>
                             <a href="{{ route('absensi.pribadi') }}" class="{{ request()->routeIs('absensi.pribadi') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
                                 <i class="fas fa-business-time w-5 group-hover:text-orange-400"></i> Absensi Pribadi
@@ -184,7 +183,7 @@
                             <div class="w-10 h-10 rounded-2xl overflow-hidden border border-orange-500/30">
                                 <img src="{{ asset('img/profil/' . (Auth::user()->foto ?? 'default.jpg')) }}" class="w-full h-full object-cover">
                             </div>
-                            <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-[#0f172a] rounded-full"></div>
+                            <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-[#020617] rounded-full"></div>
                         </div>
                         <div class="overflow-hidden">
                             <p class="text-[10px] font-black text-white truncate uppercase italic leading-none mb-1">
@@ -222,21 +221,21 @@
             </div>
 
             <div class="hidden lg:flex items-center gap-4 bg-white p-4 rounded-[30px] border border-slate-100 shadow-sm">
-            <div class="text-right">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">Last Sync</p>
-                <p class="text-xs font-bold text-slate-900 uppercase italic">{{ date('D, d M Y') }}</p>
-            </div>
-            <div class="w-px h-8 bg-slate-100"></div>
-            <div class="flex items-center gap-3">
-                 <div class="text-right">
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">Status</p>
-                    <p class="text-[10px] font-black text-green-500 uppercase">Online</p>
+                <div class="text-right">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">Last Sync</p>
+                    <p class="text-xs font-bold text-slate-900 uppercase italic">{{ date('D, d M Y') }}</p>
                 </div>
-                <div class="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-orange-600">
-                    <i class="fas fa-bolt"></i>
+                <div class="w-px h-8 bg-slate-100"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">Status</p>
+                        <p class="text-[10px] font-black text-green-500 uppercase">Online</p>
+                    </div>
+                    <div class="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-orange-600">
+                        <i class="fas fa-bolt"></i>
+                    </div>
                 </div>
             </div>
-        </div>
         </header>
 
         <div class="relative min-h-[80vh]">
