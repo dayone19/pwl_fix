@@ -8,14 +8,15 @@ class Absensi extends Model
 
     public $timestamps = false;
 
-    protected $fillable = [
-        'nip',
-        'tanggal',
-        'jam_masuk',
-        'jam_keluar',
-        'status_kehadiran',
-        'menit_terlambat'
-    ];
+   protected $fillable = [
+    'nip',
+    'tanggal',
+    'jam_masuk',
+    'jam_keluar',
+    'status_kehadiran',
+    'menit_terlambat',
+    'keterangan'
+];
 
     public function profilPegawai()
     {

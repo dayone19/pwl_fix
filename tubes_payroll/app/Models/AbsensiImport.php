@@ -24,62 +24,79 @@ class AbsensiImport implements ToModel, WithHeadingRow
             return null;
         }
 
-        // 1. Konversi Tanggal
+        // 1. Konversi tanggal
         try {
             if (is_numeric($tanggal)) {
-                $tanggalParsed = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tanggal))->format('Y-m-d');
+                $tanggalParsed = Carbon::instance(
+                    \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tanggal)
+                )->format('Y-m-d');
             } else {
-                $tanggalParsed = Carbon::createFromFormat('d/m/Y', $tanggal)->format('Y-m-d');
+                $tanggalParsed = Carbon::createFromFormat('d/m/Y', $tanggal)
+                    ->format('Y-m-d');
             }
         } catch (\Exception $e) {
             $tanggalParsed = Carbon::now()->format('Y-m-d');
         }
 
-        // 2. Cek Duplikasi
-        $cekDuplikasi = Absensi::where('nip', $nip)->where('tanggal', $tanggalParsed)->first();
+        // 2. Cek duplikasi
+        $cekDuplikasi = Absensi::where('nip', $nip)
+            ->where('tanggal', $tanggalParsed)
+            ->first();
+
         if ($cekDuplikasi) {
             $this->gagal[] = "NIP {$nip}: sudah ada absen tanggal {$tanggalParsed}";
             return null;
         }
 
-        // 3. Bersihkan jam_masuk & jam_keluar untuk tipe data TIME
-        if ($masuk == '-' || $masuk == '?' || trim($masuk) == '') {
+        // 3. Bersihkan jam masuk & keluar
+        if ($masuk == '-' || $masuk == '?' || trim((string)$masuk) == '') {
             $masuk = null;
         }
-        if ($keluar == '-' || $keluar == '?' || trim($keluar) == '') {
+
+        if ($keluar == '-' || $keluar == '?' || trim((string)$keluar) == '') {
             $keluar = null;
         }
 
-        // 4. Hitung Keterlambatan
+        // 4. Bersihkan status
+        $statusClean = ucfirst(strtolower(trim($status)));
+
+        if (!in_array($statusClean, [
+            'Hadir',
+            'Izin',
+            'Sakit',
+            'Alpha'
+        ])) {
+            $statusClean = 'Hadir';
+        }
+
+        // 5. Hitung keterlambatan otomatis
         $menitTerlambat = 0;
-        if ($masuk && strtolower($status) == 'hadir') {
+
+        if ($masuk && $statusClean == 'Hadir') {
             try {
                 $jamMasukCarbon = Carbon::parse($masuk);
                 $jamBatas = Carbon::parse('08:00');
-                
+
                 if ($jamMasukCarbon->gt($jamBatas)) {
-                    $menitTerlambat = $jamMasukCarbon->diffInMinutes($jamBatas);
+                    $menitTerlambat = $jamBatas->diffInMinutes($jamMasukCarbon);
+
+                    // otomatis ubah status jadi terlambat
+                    $statusClean = 'Terlambat';
                 }
             } catch (\Exception $e) {
                 $menitTerlambat = 0;
             }
         }
 
-        // 5. Validasi String ENUM agar Sesuai dengan Database ('Hadir', 'Izin', 'Sakit', 'Alpha')
-        $statusClean = ucfirst(strtolower(trim($status))); 
-        if (!in_array($statusClean, ['Hadir', 'Izin', 'Sakit', 'Alpha'])) {
-            $statusClean = 'Hadir';
-        }
-
         $this->berhasil++;
 
         return new Absensi([
-            'nip'              => (string)$nip,
-            'tanggal'          => $tanggalParsed,
-            'jam_masuk'        => $masuk,
-            'jam_keluar'       => $keluar,
-            'status_kehadiran' => $statusClean, 
-            'menit_terlambat'  => (int)$menitTerlambat,
-        ]);
+            'nip'                 => (string)$nip,
+            'tanggal'             => $tanggalParsed,
+            'jam_masuk'           => $masuk,
+            'jam_keluar'          => $keluar,
+            'status_kehadiran'    => $statusClean,
+            'menit_terlambat'     => (int)$menitTerlambat,
+]);
     }
 }

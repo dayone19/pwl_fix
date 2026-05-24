@@ -102,48 +102,75 @@
                 </tr>
             </thead>
             <tbody class="text-xs font-bold text-slate-700 divide-y divide-slate-100/70">
-                @forelse($dataAbsensi as $index => $absensi)
-                    @php
-                        $statusUpper = strtoupper($absensi->status);
-                        $badgeClass = 'bg-slate-200 text-slate-400';
-                        $statusInisial = '-';
+               @forelse($dataAbsensi as $index => $absensi)
 
-                        if (in_array($statusUpper, ['H', 'HADIR'])) {
-                            $badgeClass = 'bg-green-500 text-white'; $statusInisial = 'H';
-                        } elseif (in_array($statusUpper, ['TL', 'TERLAMBAT'])) {
-                            $badgeClass = 'bg-orange-500 text-white'; $statusInisial = 'TL';
-                        } elseif (in_array($statusUpper, ['I', 'IZIN'])) {
-                            $badgeClass = 'bg-blue-500 text-white'; $statusInisial = 'I';
-                        } elseif (in_array($statusUpper, ['S', 'SAKIT'])) {
-                            $badgeClass = 'bg-purple-500 text-white'; $statusInisial = 'S';
-                        } elseif (in_array($statusUpper, ['A', 'ALPHA', 'ALPA'])) {
-                            $badgeClass = 'bg-red-500 text-white'; $statusInisial = 'A';
-                        }
-                    @endphp
-                    <tr class="hover:bg-slate-50/40 transition-colors">
-                        <td class="py-3.5 px-4 text-center text-slate-400 font-normal">{{ $index + 1 }}</td>
-                        <td class="py-3.5 px-4 text-slate-600">
-                            {{ \Carbon\Carbon::parse($absensi->tanggal)->format('d/m/Y') }}
-                        </td>
-                        <td class="py-3.5 px-4 text-slate-800">
-                            {{ \Carbon\Carbon::parse($absensi->tanggal)->translatedFormat('l') }}
-                        </td>
-                        <td class="py-3.5 px-4 text-slate-900 font-mono">
-                            {{ $absensi->jam_datang ? \Carbon\Carbon::parse($absensi->jam_datang)->format('H:i') : '-' }}
-                        </td>
-                        <td class="py-3.5 px-4 text-slate-900 font-mono">
-                            {{ $absensi->jam_keluar ? \Carbon\Carbon::parse($absensi->jam_keluar)->format('H:i') : '-' }}
-                        </td>
-                        <td class="py-3.5 px-4 text-center">
-                            <span class="w-6 h-6 rounded-md inline-flex items-center justify-center text-[10px] font-black {{ $badgeClass }}">
-                                {{ $statusInisial }}
-                            </span>
-                        </td>
-                        <td class="py-3.5 px-4 text-slate-500">
-                            {{ $absensi->keterangan ?? 'Hadir' }}
-                        </td>
-                    </tr>
-                @empty
+    @php
+        $statusUpper = strtoupper($absensi->status_kehadiran);
+
+        $badgeClass = 'bg-slate-200 text-slate-400';
+        $statusInisial = '-';
+
+        if ($statusUpper == 'HADIR') {
+            $badgeClass = 'bg-green-500 text-white';
+            $statusInisial = 'H';
+
+        } elseif ($statusUpper == 'TERLAMBAT') {
+            $badgeClass = 'bg-orange-500 text-white';
+            $statusInisial = 'TL';
+
+        } elseif ($statusUpper == 'IZIN') {
+            $badgeClass = 'bg-blue-500 text-white';
+            $statusInisial = 'I';
+
+        } elseif ($statusUpper == 'SAKIT') {
+            $badgeClass = 'bg-purple-500 text-white';
+            $statusInisial = 'S';
+
+        } elseif ($statusUpper == 'ALPHA') {
+            $badgeClass = 'bg-red-500 text-white';
+            $statusInisial = 'A';
+        }
+    @endphp
+
+    <tr class="hover:bg-slate-50/40 transition-colors">
+
+        <td class="py-3.5 px-4 text-center text-slate-400 font-normal">
+            {{ $index + 1 }}
+        </td>
+
+        <td class="py-3.5 px-4 text-slate-600">
+            {{ \Carbon\Carbon::parse($absensi->tanggal)->format('d/m/Y') }}
+        </td>
+
+        <td class="py-3.5 px-4 text-slate-800">
+            {{ \Carbon\Carbon::parse($absensi->tanggal)->translatedFormat('l') }}
+        </td>
+
+        <td class="py-3.5 px-4 text-slate-900 font-mono">
+            {{ $absensi->jam_masuk ? \Carbon\Carbon::parse($absensi->jam_masuk)->format('H:i') : '-' }}
+        </td>
+
+        <td class="py-3.5 px-4 text-slate-900 font-mono">
+            {{ $absensi->jam_keluar ? \Carbon\Carbon::parse($absensi->jam_keluar)->format('H:i') : '-' }}
+        </td>
+
+        <td class="py-3.5 px-4 text-center">
+            <span class="w-6 h-6 rounded-md inline-flex items-center justify-center text-[10px] font-black {{ $badgeClass }}">
+                {{ $statusInisial }}
+            </span>
+        </td>
+
+        <td class="py-3.5 px-4 text-slate-500">
+            @if($absensi->status_kehadiran == 'Terlambat')
+    Terlambat {{ $absensi->menit_terlambat }} menit
+@else
+    {{ $absensi->status_kehadiran }}
+@endif
+        </td>
+
+    </tr>
+
+@empty
                     <tr>
                         <td colspan="7" class="py-12 px-4 text-center text-slate-400 uppercase tracking-widest font-black text-[10px]">
                             Belum ada riwayat absensi di bulan ini

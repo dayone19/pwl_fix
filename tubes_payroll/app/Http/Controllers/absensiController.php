@@ -42,15 +42,22 @@ class AbsensiController extends Controller
             'file_absen.max'      => 'Ukuran file maksimal 2MB.',
         ]);
 
-    
-$import = new \App\Models\AbsensiImport();
-\Maatwebsite\Excel\Facades\Excel::import($import, $request->file('file_absen'));
+        $import = new \App\Models\AbsensiImport();
+
+        \Maatwebsite\Excel\Facades\Excel::import(
+            $import,
+            $request->file('file_absen')
+        );
 
         $pesan = "Berhasil import {$import->berhasil} data absen.";
 
         if (!empty($import->gagal)) {
+
             $pesanGagal = implode(' | ', $import->gagal);
-            return back()->with('success', $pesan)->with('warning', "Baris dilewati: {$pesanGagal}");
+
+            return back()
+                ->with('success', $pesan)
+                ->with('warning', "Baris dilewati: {$pesanGagal}");
         }
 
         return back()->with('success', $pesan);
@@ -63,13 +70,36 @@ $import = new \App\Models\AbsensiImport();
             'Content-Disposition' => 'attachment; filename="template_absensi.csv"',
         ];
 
-        $kolom = ['nip', 'nama', 'tanggal', 'jam_masuk', 'jam_keluar', 'status'];
-        $contoh = ['001', 'Budi Santoso', '24/05/2026', '08:00', '17:00', 'Hadir'];
+        $callback = function () {
 
-        $callback = function () use ($kolom, $contoh) {
             $file = fopen('php://output', 'w');
-            fputcsv($file, $kolom);
-            fputcsv($file, $contoh);
+
+            // Header kolom
+            fputcsv($file, [
+                'nip',
+                'nama',
+                'tanggal',
+                'jam_masuk',
+                'jam_keluar',
+                'status'
+            ]);
+
+            // Ambil semua pegawai
+            $pegawai = ProfilPegawai::orderBy('nama_lengkap')->get();
+
+            // Isi otomatis
+            foreach ($pegawai as $p) {
+
+                fputcsv($file, [
+                    $p->nip,
+                    $p->nama_lengkap,
+                    now()->format('d/m/Y'),
+                    '',
+                    '',
+                    ''
+                ]);
+            }
+
             fclose($file);
         };
 
@@ -78,7 +108,17 @@ $import = new \App\Models\AbsensiImport();
 
     public function exportPdf(Request $request)
     {
-        $dataAbsen = $this->applyFilter($request)->get();
+        $query = Absensi::with('profilPegawai');
+
+if ($request->filled('bulan')) {
+    $query->whereMonth('tanggal', $request->bulan);
+}
+
+if ($request->filled('tahun')) {
+    $query->whereYear('tanggal', $request->tahun);
+}
+
+$dataAbsen = $query->orderBy('tanggal')->get();
 
         $dataAbsen->transform(function ($item) {
             $item->nama_pegawai = $item->profilPegawai->nama_lengkap ?? 'Tanpa Nama';
@@ -88,27 +128,78 @@ $import = new \App\Models\AbsensiImport();
 
         $bulanPilihan = $request->input('bulan', date('m'));
         $tahunPilihan = $request->input('tahun', date('Y'));
-        $periodeCarbon = Carbon::createFromDate($tahunPilihan, $bulanPilihan, 1);
 
-        $totalHariKerja  = cal_days_in_month(CAL_GREGORIAN, $bulanPilihan, $tahunPilihan);
-        $totalKaryawan   = $dataAbsen->pluck('nip')->unique()->count();
-        $totalHadir      = $dataAbsen->whereIn('status', ['Hadir', 'Terlambat'])->count();
-        $totalData       = $totalKaryawan * $totalHariKerja;
-        $rataRata        = $totalData > 0 ? ($totalHadir / $totalData) * 100 : 0;
-        $totalTidakHadir = $dataAbsen->whereIn('status', ['Izin', 'Sakit', 'Alpha'])->count();
+        $periodeCarbon = Carbon::createFromDate(
+            $tahunPilihan,
+            $bulanPilihan,
+            1
+        );
 
-        $pdf = Pdf::loadView('halaman.absensi_pdf', compact(
-            'dataAbsen', 'periodeCarbon', 'bulanPilihan', 'tahunPilihan',
-            'totalKaryawan', 'totalHariKerja', 'rataRata', 'totalTidakHadir'
-        ));
+        $totalHariKerja = cal_days_in_month(
+            CAL_GREGORIAN,
+            $bulanPilihan,
+            $tahunPilihan
+        );
+
+        $totalKaryawan = $dataAbsen->pluck('nip')->unique()->count();
+
+        $totalHadir = $dataAbsen->filter(function ($item) {
+    $status = strtoupper(trim($item->status_kehadiran));
+
+    return in_array($status, [
+        'HADIR',
+        'H',
+        'TERLAMBAT',
+        'TL'
+    ]);
+})->count();
+
+        $totalData = $totalKaryawan * $totalHariKerja;
+
+        $rataRata = $totalData > 0
+            ? ($totalHadir / $totalData) * 100
+            : 0;
+
+        $totalTidakHadir = $dataAbsen->filter(function ($item) {
+    $status = strtoupper(trim($item->status_kehadiran));
+
+    return in_array($status, [
+        'IZIN',
+        'I',
+        'SAKIT',
+        'S',
+        'ALPHA',
+        'ALPA',
+        'A'
+    ]);
+})->count();
+
+        $pdf = Pdf::loadView(
+            'halaman.absensi_pdf',
+            compact(
+                'dataAbsen',
+                'periodeCarbon',
+                'bulanPilihan',
+                'tahunPilihan',
+                'totalKaryawan',
+                'totalHariKerja',
+                'rataRata',
+                'totalTidakHadir'
+            )
+        );
 
         $pdf->setPaper('a4', 'landscape');
-        return $pdf->download('Rekap_Absensi_' . $periodeCarbon->format('M_Y') . '.pdf');
+
+        return $pdf->download(
+            'Rekap_Absensi_' .
+            $periodeCarbon->format('M_Y') .
+            '.pdf'
+        );
     }
 
     public function pribadi(Request $request)
     {
-        $user   = Auth::user();
+        $user = Auth::user();
         $idUser = $user->id;
 
         $bulanPilihan = $request->input('bulan', date('m'));
@@ -120,19 +211,31 @@ $import = new \App\Models\AbsensiImport();
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        $pegawai     = ProfilPegawai::with('jabatan')->where('nip', $user->nip)->first();
+        $pegawai = ProfilPegawai::with('jabatan')
+            ->where('nip', $user->nip)
+            ->first();
+
         $namaJabatan = $pegawai?->jabatan?->nama_jabatan ?? 'Karyawan';
-        $periodeCarbon = Carbon::createFromDate($tahunPilihan, $bulanPilihan, 1);
+
+        $periodeCarbon = Carbon::createFromDate(
+            $tahunPilihan,
+            $bulanPilihan,
+            1
+        );
 
         return view('halaman.absensi_pribadi', compact(
-            'dataAbsensi', 'user', 'namaJabatan',
-            'bulanPilihan', 'tahunPilihan', 'periodeCarbon'
+            'dataAbsensi',
+            'user',
+            'namaJabatan',
+            'bulanPilihan',
+            'tahunPilihan',
+            'periodeCarbon'
         ));
     }
 
     public function pribadiPdf(Request $request)
     {
-        $user   = Auth::user();
+        $user = Auth::user();
         $idUser = $user->id;
 
         $bulanPilihan = $request->input('bulan', date('m'));
@@ -144,9 +247,17 @@ $import = new \App\Models\AbsensiImport();
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        $pegawai     = ProfilPegawai::with('jabatan')->where('nip', $user->nip)->first();
+        $pegawai = ProfilPegawai::with('jabatan')
+            ->where('nip', $user->nip)
+            ->first();
+
         $namaJabatan = $pegawai?->jabatan?->nama_jabatan ?? 'Karyawan';
-        $periodeCarbon = Carbon::createFromDate($tahunPilihan, $bulanPilihan, 1);
+
+        $periodeCarbon = Carbon::createFromDate(
+            $tahunPilihan,
+            $bulanPilihan,
+            1
+        );
 
         $pdf = Pdf::loadView('halaman.absensi_pribadi_pdf', [
             'dataAbsensi'   => $dataAbsensi,
@@ -155,8 +266,16 @@ $import = new \App\Models\AbsensiImport();
             'periodeCarbon' => $periodeCarbon,
         ]);
 
-        $namaFile = $user->name ?? ($pegawai->nama_lengkap ?? 'Karyawan');
-        return $pdf->download('Rekap_Absensi_' . $periodeCarbon->format('M_Y') . '_' . str_replace(' ', '_', $namaFile) . '.pdf');
+        $namaFile = $user->name
+            ?? ($pegawai->nama_lengkap ?? 'Karyawan');
+
+        return $pdf->download(
+            'Rekap_Absensi_' .
+            $periodeCarbon->format('M_Y') .
+            '_' .
+            str_replace(' ', '_', $namaFile) .
+            '.pdf'
+        );
     }
 
     private function applyFilter(Request $request)
@@ -164,11 +283,16 @@ $import = new \App\Models\AbsensiImport();
         $query = Absensi::with('profilPegawai');
 
         if ($request->filled('tanggal')) {
-            $query->whereRaw('DAY(tanggal) = ?', [$request->tanggal]);
+            $query->whereRaw(
+                'DAY(tanggal) = ?',
+                [$request->tanggal]
+            );
         }
+
         if ($request->filled('bulan')) {
             $query->whereMonth('tanggal', $request->bulan);
         }
+
         if ($request->filled('tahun')) {
             $query->whereYear('tanggal', $request->tahun);
         }
