@@ -260,7 +260,7 @@
                 @php 
                     $first = $records->first(); 
                     $inisial = strtoupper(substr($first->nama_pegawai, 0, 2));
-                    $hadirCount = $records->whereIn('status', ['Hadir', 'Terlambat'])->count();
+                    $hadirCount = $records->whereIn('status_kehadiran', ['Hadir', 'Terlambat'])->count();
                 @endphp
                 <tr>
                     <td class="td-no">{{ $loop->iteration }}</td>
@@ -280,7 +280,7 @@
 
                             if ($absen) {
                                 $map = ['Hadir'=>'H', 'Terlambat'=>'TL', 'Izin'=>'I', 'Sakit'=>'S', 'Alpha'=>'A'];
-                                $char = $map[$absen->status] ?? '-';
+$char = $map[$absen->status_kehadiran] ?? '-';
                                 $class = 'dot-' . $char;
                             }
                             $isWeekend = \Carbon\Carbon::parse($targetDate)->isWeekend();

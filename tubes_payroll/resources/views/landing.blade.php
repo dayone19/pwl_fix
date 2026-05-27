@@ -54,7 +54,7 @@
             </div>
             
             <div class="hidden md:flex gap-8 text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-                <a href="#roles" class="hover:text-slate-900 transition-colors duration-200">Struktur Departemen</a>
+                <a href="#roles" class="hover:text-slate-900 transition-colors duration-200">Struktur Divisi</a>
             </div>
 
             <div>
@@ -159,7 +159,7 @@
             <div class="flex flex-col md:flex-row justify-between items-baseline gap-4 border-b border-slate-100 pb-8">
                 <div class="space-y-1">
                     <p class="text-[10px] text-orange-600 font-bold uppercase tracking-widest">Aksesibilitas Multi-Role</p>
-                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight uppercase">Struktur Kredensial</h2>
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight uppercase">Struktur Divisi</h2>
                 </div>
                 <div class="text-slate-400 font-mono text-[10px] tracking-widest uppercase"></div>
             </div>

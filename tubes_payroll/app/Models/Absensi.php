@@ -6,16 +6,19 @@ class Absensi extends Model
 {
     protected $table = 'absensi';
 
-    protected $fillable = [
-        'nip',
-        'tanggal',
-        'jam_masuk',
-        'jam_keluar',
-        'status_kehadiran',
-        'menit_terlambat'
-    ];
+    public $timestamps = false;
 
-    public function pegawai()
+   protected $fillable = [
+    'nip',
+    'tanggal',
+    'jam_masuk',
+    'jam_keluar',
+    'status_kehadiran',
+    'menit_terlambat',
+    'keterangan'
+];
+
+    public function profilPegawai()
     {
         return $this->belongsTo(ProfilPegawai::class, 'nip', 'nip');
     }

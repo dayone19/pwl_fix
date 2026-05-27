@@ -209,7 +209,7 @@
         <tbody>
             @forelse($dataAbsensi as $index => $absensi)
                 @php
-                    $statusUpper = strtoupper($absensi->status);
+                    $statusUpper = strtoupper($absensi->status_kehadiran);
                     $badgeClass = 'bg-libur'; $statusInisial = '-';
                     if (in_array($statusUpper, ['H', 'HADIR'])) { $badgeClass = 'bg-hadir'; $statusInisial = 'H'; }
                     elseif (in_array($statusUpper, ['TL', 'TERLAMBAT'])) { $badgeClass = 'bg-terlambat'; $statusInisial = 'TL'; }
@@ -228,7 +228,13 @@
                             <span class="badge-text">{{ $statusInisial }}</span>
                         </span>
                     </td>
-                    <td style="color: #64748b; font-weight: normal;">{{ $absensi->keterangan ?? 'Hadir' }}</td>
+                    <td style="color: #64748b; font-weight: normal;">
+                        @if($absensi->status_kehadiran == 'Terlambat')
+    Terlambat {{ $absensi->menit_terlambat }} menit
+@else
+    {{ $absensi->status_kehadiran }}
+@endif
+                    </td>
                 </tr>
             @empty
                 <tr>
