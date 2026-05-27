@@ -2,6 +2,108 @@
 
 @section('title', 'Profil Detail Pegawai | PayTato')
 
+@push('loading')
+
+<div class="max-w-5xl mx-auto animate-pulse">
+
+    {{-- TOP --}}
+    <div class="flex items-center gap-4 mb-8">
+
+        <div class="w-10 h-10 skeleton rounded-xl"></div>
+
+        <div class="h-8 w-72 skeleton rounded-2xl"></div>
+
+    </div>
+
+    {{-- CARD --}}
+    <div class="bg-slate-900 rounded-[50px] overflow-hidden">
+
+        {{-- COVER --}}
+        <div class="h-32 skeleton"></div>
+
+        <div class="px-10 pb-12">
+
+            {{-- PROFILE --}}
+            <div class="flex flex-col md:flex-row items-end gap-6 -mt-16 mb-10 relative z-10">
+
+                <div class="w-40 h-48 skeleton rounded-[35px] border-[6px] border-slate-800"></div>
+
+                <div class="flex-1 space-y-4">
+
+                    <div class="h-10 w-72 skeleton rounded-2xl"></div>
+
+                    <div class="flex gap-3 flex-wrap">
+
+                        <div class="h-8 w-32 skeleton rounded-xl"></div>
+
+                        <div class="h-8 w-28 skeleton rounded-xl"></div>
+
+                        <div class="h-8 w-24 skeleton rounded-xl"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- CONTENT --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+
+                {{-- LEFT --}}
+                <div class="space-y-6">
+
+                    <div class="h-5 w-40 skeleton rounded-xl mb-6"></div>
+
+                    @for($i = 0; $i < 5; $i++)
+
+                    <div class="space-y-2">
+
+                        <div class="h-3 w-32 skeleton rounded-lg"></div>
+
+                        <div class="h-5 w-56 skeleton rounded-lg"></div>
+
+                    </div>
+
+                    @endfor
+
+                </div>
+
+                {{-- RIGHT --}}
+                <div class="space-y-6">
+
+                    <div class="h-5 w-40 skeleton rounded-xl mb-6"></div>
+
+                    @for($i = 0; $i < 3; $i++)
+
+                    <div class="space-y-2">
+
+                        <div class="h-3 w-32 skeleton rounded-lg"></div>
+
+                        <div class="h-5 w-56 skeleton rounded-lg"></div>
+
+                    </div>
+
+                    @endfor
+
+                    <div class="flex gap-3 pt-6">
+
+                        <div class="flex-1 h-14 skeleton rounded-2xl"></div>
+
+                        <div class="w-14 h-14 skeleton rounded-2xl"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@endpush
 @section('content')
 <div class="max-w-5xl mx-auto">
     <div class="flex items-center gap-4 mb-8">
@@ -126,4 +228,5 @@
         </div>
     </div>
 </div>
+
 @endsection

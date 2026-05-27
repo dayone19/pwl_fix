@@ -2,6 +2,56 @@
 
 @section('title', 'Data Kru | PayTato')
 
+
+@push('loading')
+
+<div class="space-y-6 animate-pulse">
+
+    {{-- Header --}}
+    <div class="flex items-center gap-4">
+        <div class="w-14 h-14 skeleton rounded-3xl"></div>
+
+        <div class="space-y-2">
+            <div class="h-8 w-64 skeleton rounded-xl"></div>
+            <div class="h-3 w-40 skeleton rounded-xl"></div>
+        </div>
+    </div>
+
+    {{-- Table Skeleton --}}
+    <div class="bg-white rounded-[50px] border border-slate-100 p-6">
+
+        {{-- Head --}}
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="h-12 skeleton rounded-2xl"></div>
+            <div class="h-12 skeleton rounded-2xl"></div>
+            <div class="h-12 skeleton rounded-2xl"></div>
+        </div>
+
+        {{-- Rows --}}
+        @for($i = 0; $i < 6; $i++)
+        <div class="grid grid-cols-3 gap-4 mb-4">
+
+            <div class="h-20 skeleton rounded-[30px]"></div>
+
+            <div class="h-20 skeleton rounded-[30px]"></div>
+
+            <div class="h-20 skeleton rounded-[30px]"></div>
+
+        </div>
+        @endfor
+
+    </div>
+
+    {{-- Pagination --}}
+    <div class="flex justify-center gap-3">
+        <div class="w-10 h-10 skeleton rounded-xl"></div>
+        <div class="w-10 h-10 skeleton rounded-xl"></div>
+        <div class="w-10 h-10 skeleton rounded-xl"></div>
+    </div>
+
+</div>
+
+@endpush
 @section('content')
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
         <div>
@@ -131,4 +181,5 @@
             <span class="text-slate-300 text-[10px] font-black uppercase italic cursor-not-allowed">Next</span>
         @endif
     </div>
+
 @endsection

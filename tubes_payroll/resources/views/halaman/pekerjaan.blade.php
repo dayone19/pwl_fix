@@ -2,6 +2,109 @@
 
     @section('title', 'Pekerjaan Bengkel')
 
+ @push('loading')
+
+<div class="space-y-8 animate-pulse">
+
+    {{-- HEADER --}}
+    <div class="space-y-3">
+        <div class="h-10 w-72 skeleton rounded-2xl"></div>
+        <div class="h-4 w-56 skeleton rounded-xl"></div>
+    </div>
+
+    {{-- ADMIN SERVICE FORM --}}
+    <div class="bg-white rounded-[45px] p-8 border border-slate-100 space-y-6">
+
+        <div class="h-8 w-64 skeleton rounded-2xl"></div>
+
+        <div class="space-y-3">
+            <div class="h-4 w-32 skeleton rounded-lg"></div>
+            <div class="h-12 skeleton rounded-xl"></div>
+        </div>
+
+        <div class="space-y-3">
+            <div class="h-4 w-32 skeleton rounded-lg"></div>
+            <div class="h-12 skeleton rounded-xl"></div>
+        </div>
+
+        <div class="space-y-3">
+            <div class="h-4 w-32 skeleton rounded-lg"></div>
+            <div class="h-12 skeleton rounded-xl"></div>
+        </div>
+
+        <div class="space-y-3">
+            <div class="h-4 w-40 skeleton rounded-lg"></div>
+            <div class="h-32 skeleton rounded-2xl"></div>
+        </div>
+
+        <div class="h-12 w-48 skeleton rounded-xl"></div>
+    </div>
+
+    {{-- STATISTIK --}}
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+
+        @for($i = 0; $i < 5; $i++)
+        <div class="bg-white rounded-[30px] p-5 border border-slate-100 space-y-4">
+            <div class="h-3 w-20 skeleton rounded-lg"></div>
+            <div class="h-10 w-16 skeleton rounded-xl"></div>
+        </div>
+        @endfor
+
+    </div>
+
+    {{-- LIST PEKERJAAN --}}
+    <div class="bg-white rounded-[40px] p-6 border border-slate-100 space-y-6">
+
+        <div class="flex justify-between items-center">
+            <div class="space-y-3">
+                <div class="h-7 w-56 skeleton rounded-xl"></div>
+                <div class="h-3 w-40 skeleton rounded-lg"></div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+
+            @for($i = 0; $i < 4; $i++)
+            <div class="border border-slate-200 rounded-[28px] p-5">
+
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+
+                    <div class="flex-1 space-y-4">
+
+                        <div class="flex gap-3">
+                            <div class="h-6 w-40 skeleton rounded-xl"></div>
+                            <div class="h-6 w-24 skeleton rounded-xl"></div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <div class="h-4 w-28 skeleton rounded-lg"></div>
+                            <div class="h-4 w-24 skeleton rounded-lg"></div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="h-4 w-full skeleton rounded-lg"></div>
+                            <div class="h-4 w-5/6 skeleton rounded-lg"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="flex flex-col gap-3 min-w-[140px]">
+                        <div class="h-10 skeleton rounded-2xl"></div>
+                        <div class="h-12 skeleton rounded-2xl"></div>
+                    </div>
+
+                </div>
+
+            </div>
+            @endfor
+
+        </div>
+
+    </div>
+
+</div>
+
+@endpush
     @section('content')
 
     <!-- @php

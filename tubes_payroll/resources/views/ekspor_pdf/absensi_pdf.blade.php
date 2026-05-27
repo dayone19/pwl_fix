@@ -177,9 +177,7 @@
         .td-percent { font-weight: 900; color: #166534; background-color: #f0fdf4; }
 
         .footer-container {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+           margin-top: 20px;
         }
         .footer-note {
             background-color: #fff7ed;

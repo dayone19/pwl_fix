@@ -110,15 +110,15 @@ class AbsensiController extends Controller
     {
         $query = Absensi::with('profilPegawai');
 
-if ($request->filled('bulan')) {
-    $query->whereMonth('tanggal', $request->bulan);
-}
+        if ($request->filled('bulan')) {
+            $query->whereMonth('tanggal', $request->bulan);
+        }
 
-if ($request->filled('tahun')) {
-    $query->whereYear('tanggal', $request->tahun);
-}
+        if ($request->filled('tahun')) {
+            $query->whereYear('tanggal', $request->tahun);
+        }
 
-$dataAbsen = $query->orderBy('tanggal')->get();
+        $dataAbsen = $query->orderBy('tanggal')->get();
 
         $dataAbsen->transform(function ($item) {
             $item->nama_pegawai = $item->profilPegawai->nama_lengkap ?? 'Tanpa Nama';
@@ -144,15 +144,15 @@ $dataAbsen = $query->orderBy('tanggal')->get();
         $totalKaryawan = $dataAbsen->pluck('nip')->unique()->count();
 
         $totalHadir = $dataAbsen->filter(function ($item) {
-    $status = strtoupper(trim($item->status_kehadiran));
+        $status = strtoupper(trim($item->status_kehadiran));
 
-    return in_array($status, [
-        'HADIR',
-        'H',
-        'TERLAMBAT',
-        'TL'
-    ]);
-})->count();
+            return in_array($status, [
+                'HADIR',
+                'H',
+                'TERLAMBAT',
+                'TL'
+            ]);
+        })->count();
 
         $totalData = $totalKaryawan * $totalHariKerja;
 
@@ -161,21 +161,21 @@ $dataAbsen = $query->orderBy('tanggal')->get();
             : 0;
 
         $totalTidakHadir = $dataAbsen->filter(function ($item) {
-    $status = strtoupper(trim($item->status_kehadiran));
+        $status = strtoupper(trim($item->status_kehadiran));
 
-    return in_array($status, [
-        'IZIN',
-        'I',
-        'SAKIT',
-        'S',
-        'ALPHA',
-        'ALPA',
-        'A'
-    ]);
-})->count();
+        return in_array($status, [
+            'IZIN',
+            'I',
+            'SAKIT',
+            'S',
+            'ALPHA',
+            'ALPA',
+            'A'
+        ]);
+    })->count();
 
         $pdf = Pdf::loadView(
-            'halaman.absensi_pdf',
+            'ekspor_pdf.absensi_pdf',
             compact(
                 'dataAbsen',
                 'periodeCarbon',
@@ -259,7 +259,7 @@ $dataAbsen = $query->orderBy('tanggal')->get();
             1
         );
 
-        $pdf = Pdf::loadView('halaman.absensi_pribadi_pdf', [
+        $pdf = Pdf::loadView('ekspor_pdf.absensi_pribadi_pdf', [
             'dataAbsensi'   => $dataAbsensi,
             'user'          => $user,
             'namaJabatan'   => $namaJabatan,

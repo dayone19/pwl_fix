@@ -2,6 +2,92 @@
 
 @section('title', 'Rincian Payroll | PayTato')
 
+@push('loading')
+
+<div class="space-y-8 animate-pulse">
+
+    {{-- Header --}}
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+
+        <div class="flex items-center gap-4">
+
+            <div class="w-14 h-14 skeleton rounded-3xl"></div>
+
+            <div class="space-y-2">
+                <div class="h-8 w-64 skeleton rounded-2xl"></div>
+                <div class="h-3 w-44 skeleton rounded-xl"></div>
+            </div>
+
+        </div>
+
+        <div class="h-14 w-52 skeleton rounded-2xl"></div>
+
+    </div>
+
+    {{-- Card Payroll --}}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        @for($i = 0; $i < 4; $i++)
+
+        <div class="bg-white rounded-[40px] border border-slate-100 overflow-hidden">
+
+            {{-- Top --}}
+            <div class="p-8 flex justify-between items-start border-b border-slate-100">
+
+                <div class="flex items-center gap-5">
+
+                    <div class="w-16 h-16 skeleton rounded-[24px]"></div>
+
+                    <div class="space-y-3">
+                        <div class="h-6 w-40 skeleton rounded-xl"></div>
+
+                        <div class="flex gap-2">
+                            <div class="h-5 w-24 skeleton rounded-full"></div>
+                            <div class="h-5 w-20 skeleton rounded-full"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="space-y-2 text-right">
+                    <div class="h-3 w-16 skeleton rounded"></div>
+                    <div class="h-5 w-24 skeleton rounded-xl"></div>
+                </div>
+
+            </div>
+
+            {{-- Middle --}}
+            <div class="p-8 grid grid-cols-3 gap-4">
+
+                <div class="h-24 skeleton rounded-3xl"></div>
+
+                <div class="h-24 skeleton rounded-3xl"></div>
+
+                <div class="h-24 skeleton rounded-3xl"></div>
+
+            </div>
+
+            {{-- Bottom --}}
+            <div class="px-8 py-6 bg-slate-100 flex justify-between items-center">
+
+                <div class="space-y-3">
+                    <div class="h-3 w-36 skeleton rounded"></div>
+                    <div class="h-8 w-52 skeleton rounded-2xl"></div>
+                </div>
+
+                <div class="w-12 h-12 skeleton rounded-2xl"></div>
+
+            </div>
+
+        </div>
+
+        @endfor
+
+    </div>
+
+</div>
+
+@endpush
 @section('content')
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
         <div>
@@ -90,4 +176,5 @@
         </div>
         @endforelse
     </div>
+
 @endsection

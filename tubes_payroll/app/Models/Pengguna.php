@@ -13,7 +13,10 @@ class Pengguna extends Authenticatable
         'email',
         'kata_sandi',
         'foto',
-        'apakah_aktif'
+        'apakah_aktif',
+        'login_attempts',
+        'lockout_time',
+        'update_at'
     ];
 
     public function getAuthPassword()

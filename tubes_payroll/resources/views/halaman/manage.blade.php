@@ -2,6 +2,85 @@
 
 @section('title', 'PayTato | Kelola Gaji Akuntan')
 
+@push('loading')
+
+<div class="space-y-8 animate-pulse">
+
+    {{-- Header --}}
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+
+        <div class="space-y-3">
+            <div class="h-8 w-72 skeleton rounded-2xl"></div>
+            <div class="h-3 w-52 skeleton rounded-xl"></div>
+        </div>
+
+        <div class="flex gap-3">
+            <div class="h-12 w-40 skeleton rounded-2xl"></div>
+            <div class="h-12 w-44 skeleton rounded-2xl"></div>
+        </div>
+
+    </div>
+
+    {{-- Statistik --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        @for($i = 0; $i < 3; $i++)
+        <div class="bg-white p-6 rounded-[32px] border border-slate-200">
+
+            <div class="h-3 w-32 skeleton rounded mb-4"></div>
+
+            <div class="h-8 w-40 skeleton rounded-xl"></div>
+
+        </div>
+        @endfor
+
+    </div>
+
+    {{-- Table --}}
+    <div class="bg-white rounded-[32px] border border-slate-200 overflow-hidden">
+
+        {{-- Table Header --}}
+        <div class="p-6 border-b border-slate-100">
+            <div class="h-4 w-56 skeleton rounded-xl"></div>
+        </div>
+
+        <div class="p-6 space-y-4">
+
+            {{-- Head --}}
+            <div class="grid grid-cols-6 gap-4 mb-2">
+
+                <div class="h-10 skeleton rounded-xl"></div>
+                <div class="h-10 skeleton rounded-xl"></div>
+                <div class="h-10 skeleton rounded-xl"></div>
+                <div class="h-10 skeleton rounded-xl"></div>
+                <div class="h-10 skeleton rounded-xl"></div>
+                <div class="h-10 skeleton rounded-xl"></div>
+
+            </div>
+
+            {{-- Rows --}}
+            @for($i = 0; $i < 6; $i++)
+
+            <div class="grid grid-cols-6 gap-4">
+
+                <div class="h-16 skeleton rounded-2xl"></div>
+                <div class="h-16 skeleton rounded-2xl"></div>
+                <div class="h-16 skeleton rounded-2xl"></div>
+                <div class="h-16 skeleton rounded-2xl"></div>
+                <div class="h-16 skeleton rounded-2xl"></div>
+                <div class="h-16 skeleton rounded-2xl"></div>
+
+            </div>
+
+            @endfor
+
+        </div>
+
+    </div>
+
+</div>
+
+@endpush
 @section('content')
 <div class="space-y-8">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -112,4 +191,5 @@
         </div>
     </div>
 </div>
+
 @endsection
