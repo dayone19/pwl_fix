@@ -1,5 +1,29 @@
 @extends('layouts.app')
 
+@push('loading')
+
+<div class="space-y-8 animate-pulse">
+
+    <div class="flex justify-between items-center">
+        <div class="space-y-3">
+            <div class="h-10 w-64 skeleton rounded-2xl"></div>
+            <div class="h-4 w-40 skeleton rounded-xl"></div>
+        </div>
+
+        <div class="h-14 w-36 skeleton rounded-2xl"></div>
+    </div>
+
+    <div class="bg-white rounded-[40px] p-8 space-y-4">
+        <div class="h-16 skeleton rounded-2xl"></div>
+        <div class="h-16 skeleton rounded-2xl"></div>
+        <div class="h-16 skeleton rounded-2xl"></div>
+        <div class="h-16 skeleton rounded-2xl"></div>
+    </div>
+
+</div>
+
+@endpush
+
 @section('content')
     <div class="flex items-center gap-4 mb-10">
         <div class="w-14 h-14 bg-slate-900 rounded-3xl flex items-center justify-center text-orange-500 shadow-2xl rotate-3">
@@ -59,4 +83,5 @@
         </div>
         @endforelse
     </div>
+
 @endsection

@@ -58,9 +58,64 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
+
+        /* global skeleton loading */
+        #global-loader{
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+
+            background: #f1f5f9;
+
+            overflow-y: auto;
+
+            transition: all .4s ease;
+        }
+
+        .loader-hidden{
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .skeleton{
+            background: linear-gradient(
+                90deg,
+                #e2e8f0 25%,
+                #f8fafc 50%,
+                #e2e8f0 75%
+            );
+
+            background-size: 300% 100%;
+            animation: shimmer 1s infinite linear;
+        }
+
+        @keyframes shimmer{
+            0%{
+                background-position: 100% 0;
+            }
+
+            100%{
+                background-position: -100% 0;
+            }
+        }
+
+        #main-content{
+            transform: translateY(10px);
+        }
+
+        #main-content:not(.opacity-0){
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body class="flex min-h-screen overflow-x-hidden">
+
+        @include('components.loading')
+
+        <div id="page-skeleton">
+            @stack('skeleton')
+        </div>
 
     <aside id="sidebar" class="w-72 text-slate-400 p-8 flex flex-col fixed h-full z-50 shadow-2xl overflow-hidden">
         <i class="fas fa-cog gear-rotate absolute -right-12 -top-12 text-[220px] text-white pointer-events-none"></i>
@@ -208,7 +263,7 @@
         </div>
     </aside>
 
-    <main id="main-content" class="ml-72 flex-1 p-6 md:p-10">
+    <main id="main-content" class="ml-72 flex-1 p-6 md:p-10 opacity-0 transition-all duration-500">
         <header class="flex items-center justify-between mb-10">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="p-4 bg-white border border-slate-200 rounded-[20px] shadow-sm hover:shadow-md transition-all text-slate-600 focus:outline-none flex items-center gap-3 group">
@@ -269,5 +324,32 @@
             }
         });
     </script>
+
+    <!-- script untuk skeleton loading -->
+    <script>
+        window.addEventListener('load', () => {
+            const globalLoader = document.getElementById('global-loader');
+            const pageSkeleton = document.getElementById('page-skeleton');
+            const main = document.getElementById('main-content');
+
+            // 1. Sembunyikan loader pakai class CSS bawaanmu agar hilang sempurna
+            if (globalLoader) {
+                globalLoader.classList.add('loader-hidden');
+                setTimeout(() => globalLoader.remove(), 400);
+            }
+
+            if (pageSkeleton) {
+                pageSkeleton.classList.add('loader-hidden');
+                setTimeout(() => pageSkeleton.remove(), 400);
+            }
+
+            // 2. Paksa konten utama memunculkan opacity-100 agar data asli terlihat
+            if (main) {
+                main.classList.remove('opacity-0');
+                main.classList.add('opacity-100'); 
+            }
+        });
+    </script>
+
 </body>
 </html>

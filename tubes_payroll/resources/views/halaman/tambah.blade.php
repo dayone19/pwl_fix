@@ -2,6 +2,29 @@
 
 @section('title', 'Tambah Pegawai Baru | PayTato')
 
+@push('loading')
+<div id="loading-screen"
+     class="fixed inset-0 bg-white z-[9999] flex items-center justify-center">
+
+    <div class="flex flex-col items-center gap-4">
+
+        <div class="w-16 h-16 border-[6px] border-orange-100 border-t-orange-600 rounded-full animate-spin"></div>
+
+        <div class="text-center">
+            <h2 class="text-sm font-black uppercase tracking-widest text-slate-900 italic">
+                Loading PayTato
+            </h2>
+
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mt-1">
+                Mohon Tunggu Sebentar...
+            </p>
+        </div>
+
+    </div>
+
+</div>
+@endpush
+
 @section('content')
 
 <div class="max-w-4xl mx-auto">

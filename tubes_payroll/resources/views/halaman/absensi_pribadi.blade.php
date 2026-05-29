@@ -2,6 +2,38 @@
 
 @section('title', 'PayTato | Rekap Absensi Pribadi')
 
+@push('loading')
+
+<div class="space-y-6 animate-pulse">
+
+    <div class="h-10 w-72 skeleton rounded-2xl"></div>
+
+    <div class="h-32 skeleton rounded-[35px]"></div>
+
+    <div class="bg-slate-900 rounded-[35px] p-6 space-y-4">
+
+        @for($i = 0; $i < 8; $i++)
+
+        <div class="grid grid-cols-7 gap-4">
+
+            <div class="h-10 skeleton rounded-xl"></div>
+            <div class="h-10 skeleton rounded-xl"></div>
+            <div class="h-10 skeleton rounded-xl"></div>
+            <div class="h-10 skeleton rounded-xl"></div>
+            <div class="h-10 skeleton rounded-xl"></div>
+            <div class="h-10 skeleton rounded-xl"></div>
+            <div class="h-10 skeleton rounded-xl"></div>
+
+        </div>
+
+        @endfor
+
+    </div>
+
+</div>
+
+@endpush
+
 @section('content')
 <div class="max-w-6xl mx-auto bg-white p-8 md:p-12 rounded-[30px] border border-slate-100 shadow-sm relative overflow-hidden">
     

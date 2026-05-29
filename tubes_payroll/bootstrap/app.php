@@ -17,9 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
 
-            'prevent-back-history' =>
-                \App\Http\Middleware\PreventBackHistory::class,
-
+            'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class, //m1
+            'check.lockout'        => \App\Http\Middleware\CheckLoginLockout::class,  //m2
         ]);
 
     })

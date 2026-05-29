@@ -2,6 +2,44 @@
 
 @section('title', 'Absensi & Lembur | PayTato')
 
+@push('loading')
+
+<div class="space-y-6 animate-pulse">
+
+    <div class="flex justify-between items-center">
+
+        <div class="space-y-3">
+            <div class="h-10 w-72 skeleton rounded-2xl"></div>
+            <div class="h-5 w-40 skeleton rounded-xl"></div>
+        </div>
+
+        <div class="h-12 w-40 skeleton rounded-2xl"></div>
+
+    </div>
+
+    <div class="h-32 skeleton rounded-[35px]"></div>
+
+    <div class="bg-slate-900 rounded-[35px] p-6 space-y-4">
+
+        @for($i = 0; $i < 8; $i++)
+
+        <div class="grid grid-cols-5 gap-4">
+
+            <div class="h-14 skeleton rounded-2xl"></div>
+            <div class="h-14 skeleton rounded-2xl"></div>
+            <div class="h-14 skeleton rounded-2xl"></div>
+            <div class="h-14 skeleton rounded-2xl"></div>
+            <div class="h-14 skeleton rounded-2xl"></div>
+
+        </div>
+
+        @endfor
+
+    </div>
+
+</div>
+
+@endpush
 @section('content')
     {{-- HEADER --}}
     <div class="flex flex-col md:flex-row md:items-start justify-between mb-10 gap-6">

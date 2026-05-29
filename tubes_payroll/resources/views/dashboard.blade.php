@@ -2,6 +2,39 @@
 
 @section('title', 'Dashboard | Workshop Overview')
 
+@push('loading')
+<script>
+    window.onload = function () {
+
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+
+        const progressBar = document.getElementById('progressBar');
+
+        const nextStepBtn = document.getElementById('nextStepBtn');
+        const backStepBtn = document.getElementById('backStepBtn');
+
+        nextStepBtn.addEventListener('click', function () {
+
+            step1.classList.add('hidden');
+
+            step2.classList.remove('hidden');
+
+            progressBar.style.width = '100%';
+        });
+
+        backStepBtn.addEventListener('click', function () {
+
+            step2.classList.add('hidden');
+
+            step1.classList.remove('hidden');
+
+            progressBar.style.width = '50%';
+        });
+
+    };
+</script>
+@endpush
 @section('content')
     <style>
         .mesh-bg-workshop {
@@ -315,4 +348,5 @@
         });
     </script>
 @endif
+
 @endsection

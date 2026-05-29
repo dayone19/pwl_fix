@@ -3,23 +3,39 @@
 @section('title', 'User Management | PayTato')
 
 @section('content')
+    {{-- CSS Pemaksa Matikan Loader Khusus Halaman Ini --}}
+    <style>
+        #global-loader, #page-skeleton, .loading-skeleton {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+        #main-content, main, .content-body {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+    </style>
+
     {{-- NOTIFIKASI SWEETALERT --}}
     @if(session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'BERHASIL!',
-                    text: "{{ session('success') }}",
-                    timer: 3000,
-                    showConfirmButton: false,
-                    background: '#ffffff',
-                    iconColor: '#ea580c',
-                    customClass: {
-                        title: 'font-black text-slate-900 uppercase italic tracking-tighter',
-                        popup: 'rounded-[30px] border-none shadow-2xl'
-                    }
-                });
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'BERHASIL!',
+                        text: "{{ session('success') }}",
+                        timer: 3000,
+                        showConfirmButton: false,
+                        background: '#ffffff',
+                        iconColor: '#ea580c',
+                        customClass: {
+                            title: 'font-black text-slate-900 uppercase italic tracking-tighter',
+                            popup: 'rounded-[30px] border-none shadow-2xl'
+                        }
+                    });
+                }
             });
         </script>
     @endif
@@ -27,16 +43,18 @@
     @if(session('error'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'WADUH!',
-                    text: "{{ session('error') }}",
-                    confirmButtonColor: '#ea580c',
-                    customClass: {
-                        title: 'font-black text-slate-900 uppercase italic tracking-tighter',
-                        popup: 'rounded-[30px]'
-                    }
-                });
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'WADUH!',
+                        text: "{{ session('error') }}",
+                        confirmButtonColor: '#ea580c',
+                        customClass: {
+                            title: 'font-black text-slate-900 uppercase italic tracking-tighter',
+                            popup: 'rounded-[30px]'
+                        }
+                    });
+                }
             });
         </script>
     @endif
@@ -110,9 +128,8 @@
                     {{-- Controls --}}
                     <td class="px-8 py-6 bg-slate-50 rounded-r-[35px] border-y border-r border-slate-100 text-right group-hover:bg-white group-hover:border-orange-200 transition-colors">
                         <div class="flex justify-end gap-3">
-                            <a href="{{ route('karyawan.show', $user->nip) }}" class="w-9 h-9 flex items-center justify-center ...">
+                            <a href="{{ route('karyawan.show', $user->nip) }}" class="w-9 h-9 flex items-center justify-center bg-white text-slate-400 rounded-xl border border-slate-200 hover:text-orange-600 hover:shadow-md transition-all">
                                 <i class="fas fa-eye text-xs"></i>
-                            </a>
                             </a>
                             <button class="w-9 h-9 flex items-center justify-center bg-white text-slate-400 rounded-xl border border-slate-200 hover:text-red-600 hover:shadow-md transition-all">
                                 <i class="fas fa-trash text-xs"></i>

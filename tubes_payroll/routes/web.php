@@ -18,10 +18,13 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/login', [LoginController::class, 'showLoginForm'])
 ->middleware([
         'guest',
-        'prevent-back-history'
+        'prevent-back-history',
     ])
 ->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login'])//cek brp x gagal login
+    ->middleware([
+        'check.lockout'
+    ]);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
