@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\absensiController;
 use App\Http\Controllers\karyawanController;
 use App\http\Controllers\payrollController;
@@ -10,6 +11,7 @@ use App\http\Controllers\dashboardController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\pekerjaanController;
 use App\Http\Controllers\LandingController;
+
 
 // Landing
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -26,6 +28,11 @@ Route::post('/login', [LoginController::class, 'login'])//cek brp x gagal login
         'check.lockout'
     ]);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+//forgot password
+Route::get('/forgot-password', [ForgotPasswordController::class, 'index'])
+->name('password.forgot');
+Route::post('/forgotPassword/submit', [ForgotPasswordController::class, 'submit'])->name('password.forgot.submit');
 
 
 Route::middleware(['auth', 'prevent-back-history'

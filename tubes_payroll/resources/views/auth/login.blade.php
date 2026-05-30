@@ -129,7 +129,9 @@
                     <div>
                         <div class="flex justify-between items-center ml-1">
                             <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Pass-Key</label>
-                            <a href="javascript:void(0)"onclick="openResetModal()"class="text-[10px] font-black uppercase tracking-widest text-orange-500 hover:text-orange-600 transition italic">Forgot Password?</a>
+                            <a href="{{ route('password.forgot') }}"class="text-[10px] font-black uppercase tracking-widest text-orange-500 hover:text-orange-600 transition italic">
+                                Forgot Password?
+                            </a>
                         </div>
                         <div class="relative mt-2">
                             <input type="password" name="kata_sandi" id="passwordInput" required
@@ -166,118 +168,6 @@
             </form>
         </div>
     </div>
-
-    <!-- RESET ACCESS MODAL -->
-<div id="resetModal"
-     class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-
-    <div class="w-full max-w-lg bg-white rounded-[35px] p-8 relative shadow-2xl border border-slate-100">
-
-        <!-- CLOSE -->
-        <button onclick="closeResetModal()"
-                class="absolute top-5 right-5 text-slate-400 hover:text-orange-500 transition">
-
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke-width="1.5"
-                 stroke="currentColor"
-                 class="w-6 h-6">
-
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-
-        <!-- HEADER -->
-        <div class="mb-8">
-
-            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 italic mb-3">
-                Account Recovery
-            </p>
-
-            <h3 class="text-3xl font-black uppercase italic tracking-tighter text-slate-900">
-                Reset Access Request
-            </h3>
-
-            <p class="text-sm text-slate-400 mt-3 leading-relaxed">
-                Permintaan reset password akan diverifikasi
-                terlebih dahulu oleh HR / Administrator payroll.
-            </p>
-        </div>
-
-        <!-- FORM -->
-        <form class="space-y-5">
-
-            <!-- NIP -->
-            <div>
-                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1 italic">
-                    NIP / Employee ID
-                </label>
-
-                <input type="text"
-                       placeholder="Contoh: 220001"
-                       class="w-full mt-2 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none font-semibold">
-            </div>
-
-            <!-- EMAIL -->
-            <div>
-                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1 italic">
-                    Corporate Email
-                </label>
-
-                <input type="email"
-                       placeholder="nama@paytato.id"
-                       class="w-full mt-2 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none font-semibold">
-            </div>
-
-            <!-- REASON -->
-            <div>
-                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1 italic">
-                    Recovery Reason
-                </label>
-
-                <textarea rows="4"
-                          placeholder="Jelaskan alasan reset password..."
-                          class="w-full mt-2 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none font-semibold resize-none"></textarea>
-            </div>
-
-            <!-- INFO -->
-            <div class="bg-orange-50 border border-orange-100 rounded-2xl p-4">
-
-                <div class="flex gap-3 items-start">
-
-                    <div class="bg-orange-500 text-white p-2 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke-width="1.5"
-                             stroke="currentColor"
-                             class="w-4 h-4">
-
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  d="M12 9v2.25m0 3.75h.008v.008H12V15zm0-12a9 9 0 100 18 9 9 0 000-18z" />
-                        </svg>
-                    </div>
-
-                    <p class="text-[11px] text-orange-700 leading-relaxed">
-                        Request akan dikirim ke HR/Admin untuk proses
-                        verifikasi identitas sebelum akses dipulihkan.
-                    </p>
-                </div>
-            </div>
-
-            <!-- BUTTON -->
-            <button type="submit"
-                    class="w-full bg-slate-900 hover:bg-orange-600 transition text-white py-5 rounded-[24px] font-black uppercase tracking-[0.3em] text-[10px] italic active:scale-[0.98]">
-
-                Send Recovery Request →
-            </button>
-        </form>
-    </div>
-</div>
 
     <script>
         function togglePassword() {
