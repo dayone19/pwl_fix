@@ -225,10 +225,13 @@
                             class="{{ (request()->routeIs('users.*') || request()->routeIs('karyawan.create')) ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
                                 <i class="fas fa-key w-5 group-hover:text-orange-400"></i> Akses Kontrol
                             </a>
-                            <a href="" 
-                            class="{{ request()->routeIs('access-requests.*') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
-                            <i class="fas fa-user-shield w-5 group-hover:text-orange-400"></i> Permintaan Akses
-                            </a>
+                            <a href="{{ route('access-requests.index') }}"class="{{ request()->routeIs('access-requests.*') ? 'sidebar-item-active' : '' }}flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group"><i class="fas fa-user-shield w-5 group-hover:text-orange-400"></i>Permintaan Akses
+                            {{-- Badge jumlah pending --}}
+                            @php $pendingCount = \App\Models\AccessRequest::where('status','pending')->count(); @endphp
+                            @if($pendingCount > 0)
+                            <span class="ml-auto bg-orange-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full min-w-[20px] text-center">{{ $pendingCount }}</span>
+                            @endif
+                        </a>
                         </li>
                     </ul>
                 </div>

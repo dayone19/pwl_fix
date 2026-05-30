@@ -52,9 +52,7 @@ class AbsensiController extends Controller
         $pesan = "Berhasil import {$import->berhasil} data absen.";
 
         if (!empty($import->gagal)) {
-
             $pesanGagal = implode(' | ', $import->gagal);
-
             return back()
                 ->with('success', $pesan)
                 ->with('warning', "Baris dilewati: {$pesanGagal}");
@@ -63,40 +61,33 @@ class AbsensiController extends Controller
         return back()->with('success', $pesan);
     }
 
-    public function downloadTemplate()
+    public function downloadTemplate(Request $request)
     {
+        $tanggal = $request->input('tanggal', now('Asia/Jakarta')->format('d'));
+        $bulan   = $request->input('bulan', now('Asia/Jakarta')->format('m'));
+        $tahun   = $request->input('tahun', now('Asia/Jakarta')->format('Y'));
+
+        $hari = sprintf('%02d/%02d/%04d', $tanggal, $bulan, $tahun);
+
         $headers = [
             'Content-Type'        => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="template_absensi.csv"',
+            'Content-Disposition' => 'attachment; filename="template_absensi_' . sprintf('%02d-%02d-%04d', $tanggal, $bulan, $tahun) . '.csv"',
         ];
 
-        $callback = function () {
-
-            $file = fopen('php://output', 'w');
-
-            // Header kolom
-            fputcsv($file, [
-                'nip',
-                'nama',
-                'tanggal',
-                'jam_masuk',
-                'jam_keluar',
-                'status'
-            ]);
-
-            // Ambil semua pegawai
+        $callback = function () use ($hari) {
+            $file    = fopen('php://output', 'w');
             $pegawai = ProfilPegawai::orderBy('nama_lengkap')->get();
 
-            // Isi otomatis
-            foreach ($pegawai as $p) {
+            fputcsv($file, ['nip', 'nama', 'tanggal', 'jam_masuk', 'jam_keluar', 'status']);
 
+            foreach ($pegawai as $p) {
                 fputcsv($file, [
                     $p->nip,
                     $p->nama_lengkap,
-                    now()->format('d/m/Y'),
-                    '',
-                    '',
-                    ''
+                    $hari,
+                    '08:00',
+                    '17:00',
+                    'Hadir',
                 ]);
             }
 
@@ -129,77 +120,38 @@ class AbsensiController extends Controller
         $bulanPilihan = $request->input('bulan', date('m'));
         $tahunPilihan = $request->input('tahun', date('Y'));
 
-        $periodeCarbon = Carbon::createFromDate(
-            $tahunPilihan,
-            $bulanPilihan,
-            1
-        );
+        $periodeCarbon = Carbon::createFromDate($tahunPilihan, $bulanPilihan, 1);
 
-        $totalHariKerja = cal_days_in_month(
-            CAL_GREGORIAN,
-            $bulanPilihan,
-            $tahunPilihan
-        );
+        $totalHariKerja = cal_days_in_month(CAL_GREGORIAN, $bulanPilihan, $tahunPilihan);
 
         $totalKaryawan = $dataAbsen->pluck('nip')->unique()->count();
 
         $totalHadir = $dataAbsen->filter(function ($item) {
-        $status = strtoupper(trim($item->status_kehadiran));
-
-            return in_array($status, [
-                'HADIR',
-                'H',
-                'TERLAMBAT',
-                'TL'
-            ]);
+            $status = strtoupper(trim($item->status_kehadiran));
+            return in_array($status, ['HADIR', 'H', 'TERLAMBAT', 'TL']);
         })->count();
 
         $totalData = $totalKaryawan * $totalHariKerja;
-
-        $rataRata = $totalData > 0
-            ? ($totalHadir / $totalData) * 100
-            : 0;
+        $rataRata  = $totalData > 0 ? ($totalHadir / $totalData) * 100 : 0;
 
         $totalTidakHadir = $dataAbsen->filter(function ($item) {
-        $status = strtoupper(trim($item->status_kehadiran));
+            $status = strtoupper(trim($item->status_kehadiran));
+            return in_array($status, ['IZIN', 'I', 'SAKIT', 'S', 'ALPHA', 'ALPA', 'A']);
+        })->count();
 
-        return in_array($status, [
-            'IZIN',
-            'I',
-            'SAKIT',
-            'S',
-            'ALPHA',
-            'ALPA',
-            'A'
-        ]);
-    })->count();
-
-        $pdf = Pdf::loadView(
-            'ekspor_pdf.absensi_pdf',
-            compact(
-                'dataAbsen',
-                'periodeCarbon',
-                'bulanPilihan',
-                'tahunPilihan',
-                'totalKaryawan',
-                'totalHariKerja',
-                'rataRata',
-                'totalTidakHadir'
-            )
-        );
+        $pdf = Pdf::loadView('ekspor_pdf.absensi_pdf', compact(
+            'dataAbsen', 'periodeCarbon', 'bulanPilihan', 'tahunPilihan',
+            'totalKaryawan', 'totalHariKerja', 'rataRata', 'totalTidakHadir'
+        ));
 
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->download(
-            'Rekap_Absensi_' .
-            $periodeCarbon->format('M_Y') .
-            '.pdf'
-        );
+        return $pdf->download('Rekap_Absensi_' . $periodeCarbon->format('M_Y') . '.pdf');
     }
 
     public function pribadi(Request $request)
     {
-        $user = Auth::user();
+        $user   = Auth::user();
         $idUser = $user->id;
 
         $bulanPilihan = $request->input('bulan', date('m'));
@@ -211,31 +163,20 @@ class AbsensiController extends Controller
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        $pegawai = ProfilPegawai::with('jabatan')
-            ->where('nip', $user->nip)
-            ->first();
-
+        $pegawai     = ProfilPegawai::with('jabatan')->where('nip', $user->nip)->first();
         $namaJabatan = $pegawai?->jabatan?->nama_jabatan ?? 'Karyawan';
 
-        $periodeCarbon = Carbon::createFromDate(
-            $tahunPilihan,
-            $bulanPilihan,
-            1
-        );
+        $periodeCarbon = Carbon::createFromDate($tahunPilihan, $bulanPilihan, 1);
 
         return view('halaman.absensi_pribadi', compact(
-            'dataAbsensi',
-            'user',
-            'namaJabatan',
-            'bulanPilihan',
-            'tahunPilihan',
-            'periodeCarbon'
+            'dataAbsensi', 'user', 'namaJabatan',
+            'bulanPilihan', 'tahunPilihan', 'periodeCarbon'
         ));
     }
 
     public function pribadiPdf(Request $request)
     {
-        $user = Auth::user();
+        $user   = Auth::user();
         $idUser = $user->id;
 
         $bulanPilihan = $request->input('bulan', date('m'));
@@ -247,17 +188,10 @@ class AbsensiController extends Controller
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        $pegawai = ProfilPegawai::with('jabatan')
-            ->where('nip', $user->nip)
-            ->first();
-
+        $pegawai     = ProfilPegawai::with('jabatan')->where('nip', $user->nip)->first();
         $namaJabatan = $pegawai?->jabatan?->nama_jabatan ?? 'Karyawan';
 
-        $periodeCarbon = Carbon::createFromDate(
-            $tahunPilihan,
-            $bulanPilihan,
-            1
-        );
+        $periodeCarbon = Carbon::createFromDate($tahunPilihan, $bulanPilihan, 1);
 
         $pdf = Pdf::loadView('ekspor_pdf.absensi_pribadi_pdf', [
             'dataAbsensi'   => $dataAbsensi,
@@ -266,36 +200,64 @@ class AbsensiController extends Controller
             'periodeCarbon' => $periodeCarbon,
         ]);
 
-        $namaFile = $user->name
-            ?? ($pegawai->nama_lengkap ?? 'Karyawan');
+        $namaFile = $user->name ?? ($pegawai->nama_lengkap ?? 'Karyawan');
 
         return $pdf->download(
-            'Rekap_Absensi_' .
-            $periodeCarbon->format('M_Y') .
-            '_' .
-            str_replace(' ', '_', $namaFile) .
-            '.pdf'
+            'Rekap_Absensi_' . $periodeCarbon->format('M_Y') . '_' . str_replace(' ', '_', $namaFile) . '.pdf'
         );
     }
 
+    public function update(Request $request, $id)
+    {
+        abort_if(auth()->user()->id_divisi != 2, 403);
+
+        $request->validate([
+            'jam_masuk'        => 'nullable|date_format:H:i',
+            'jam_keluar'       => 'nullable|date_format:H:i',
+            'status_kehadiran' => 'required|in:Hadir,Terlambat,Izin,Sakit,Alpha',
+        ]);
+
+        $absensi = Absensi::findOrFail($id);
+
+        $menitTerlambat = 0;
+        $status         = $request->status_kehadiran;
+        $jamMasukInput  = $request->jam_masuk ? substr($request->jam_masuk, 0, 5) : null;
+
+        if ($jamMasukInput && in_array($status, ['Hadir', 'Terlambat'])) {
+            [$jam, $menit] = explode(':', $jamMasukInput);
+            $totalMenitMasuk = ((int)$jam * 60) + (int)$menit;
+            $totalMenitBatas = 8 * 60;
+
+            if ($totalMenitMasuk > $totalMenitBatas) {
+                $menitTerlambat = $totalMenitMasuk - $totalMenitBatas;
+                $status         = 'Terlambat';
+            }
+        }
+
+        $absensi->update([
+            'jam_masuk'        => $jamMasukInput,
+            'jam_keluar'       => $request->jam_keluar ? substr($request->jam_keluar, 0, 5) : null,
+            'status_kehadiran' => $status,
+            'menit_terlambat'  => $menitTerlambat,
+        ]);
+
+        return back()->with('success', 'Data absensi berhasil diperbarui.');
+    }
+
+    // ↓↓↓ HANYA BAGIAN INI YANG DIUBAH ↓↓↓
     private function applyFilter(Request $request)
     {
         $query = Absensi::with('profilPegawai');
 
         if ($request->filled('tanggal')) {
-            $query->whereRaw(
-                'DAY(tanggal) = ?',
-                [$request->tanggal]
-            );
+            $query->whereRaw('DAY(tanggal) = ?', [$request->tanggal]);
         }
 
-        if ($request->filled('bulan')) {
-            $query->whereMonth('tanggal', $request->bulan);
-        }
+        // Default bulan & tahun sekarang kalau tidak ada filter
+        $bulan = $request->filled('bulan') ? $request->bulan : date('m');
+        $tahun = $request->filled('tahun') ? $request->tahun : date('Y');
 
-        if ($request->filled('tahun')) {
-            $query->whereYear('tanggal', $request->tahun);
-        }
+        $query->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
 
         return $query->orderBy('tanggal', 'desc');
     }

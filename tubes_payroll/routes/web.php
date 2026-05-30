@@ -6,8 +6,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\absensiController;
 use App\Http\Controllers\karyawanController;
-use App\http\Controllers\payrollController;
-use App\http\Controllers\dashboardController;
+use App\Http\Controllers\payrollController;
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\pekerjaanController;
 use App\Http\Controllers\LandingController;
@@ -16,64 +16,67 @@ use App\Http\Controllers\LandingController;
 // Landing
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
-//Login
+// Login
 Route::get('/login', [LoginController::class, 'showLoginForm'])
-->middleware([
-        'guest',
-        'prevent-back-history',
-    ])
-->name('login');
-Route::post('/login', [LoginController::class, 'login'])//cek brp x gagal login
-    ->middleware([
-        'check.lockout'
-    ]);
+    ->middleware(['guest', 'prevent-back-history'])
+    ->name('login');
+Route::post('/login', [LoginController::class, 'login'])
+    ->middleware(['check.lockout']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-//forgot password
+// Forgot Password (publik)
 Route::get('/forgot-password', [ForgotPasswordController::class, 'index'])
-->name('password.forgot');
-Route::post('/forgotPassword/submit', [ForgotPasswordController::class, 'submit'])->name('password.forgot.submit');
+    ->name('password.forgot');
+Route::post('/forgotPassword/submit', [ForgotPasswordController::class, 'submit'])
+    ->name('password.forgot.submit');
+
+// Reset Password via token (link dikirim HR ke karyawan)
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetForm'])
+    ->name('password.reset.form');
+Route::post('/reset-password/{token}', [ForgotPasswordController::class, 'resetPassword'])
+    ->name('password.reset.submit');
 
 
-Route::middleware(['auth', 'prevent-back-history'
-])->group(function (){
+// ── AUTH GROUP ────────────────────────────────────────────────────────────────
+Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 
-    //dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // Dashboard
+    Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard');
 
-    //absensi
-    Route::get('/absensi', [absensiController::class, 'index'])->name('absensi.index');
-    Route::get('/absensi/pdf', [AbsensiController::class, 'exportPdf'])->name('absensi.pdf');//untuk pdf nya
-    Route::get('/absensi/pribadi', [absensiController::class, 'pribadi'])->name('absensi.pribadi');//untuk absensi peibadi
-    Route::get('/absensi/pribadi/pdf', [absensiController::class, 'pribadiPdf'])->name('absensi.pribadi.pdf');//untuk expor pdf
-    Route::post('/absensi/import', [absensiController::class, 'store'])->name('absensi.store');           // ← ganti dari /store
-    Route::get('/absensi/template', [absensiController::class, 'downloadTemplate'])->name('absensi.template'); // ← tambah ini
+    // Absensi
+    Route::get('/absensi',              [absensiController::class, 'index'])->name('absensi.index');
+    Route::get('/absensi/pdf',          [absensiController::class, 'exportPdf'])->name('absensi.pdf');
+    Route::get('/absensi/pribadi',      [absensiController::class, 'pribadi'])->name('absensi.pribadi');
+    Route::get('/absensi/pribadi/pdf',  [absensiController::class, 'pribadiPdf'])->name('absensi.pribadi.pdf');
+    Route::post('/absensi/import',      [absensiController::class, 'store'])->name('absensi.store');
+    Route::get('/absensi/template',     [absensiController::class, 'downloadTemplate'])->name('absensi.template');
+    Route::post('/absensi/{id}',         [absensiController::class, 'update'])->name('absensi.update');
 
-    //data karyawan
-    Route::resource('karyawan', KaryawanController::class);
+    // Data Karyawan
+    Route::resource('karyawan', karyawanController::class);
 
-    //kelola akses(1)
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    // Kelola Akses / Users
+    Route::get('/users',          [UserController::class, 'index'])->name('users.index');
+    Route::put('/users/{id}',     [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}',  [UserController::class, 'destroy'])->name('users.destroy');
 
-    //kelola akses(2)
-    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    // Penggajian / Payroll
+    Route::get('/hitung-payroll', [payrollController::class, 'dataPayroll'])->name('payroll.index');
+    Route::get('/payroll/manage', [payrollController::class, 'manage'])->name('payroll.manage');
 
-    //kelola akses(3)
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    // Cuti
+    Route::get('/cuti',           [CutiController::class, 'index'])->name('cuti.index');
+    Route::post('/cuti/ajukan',   [CutiController::class, 'store'])->name('cuti.store');
 
-    //penggajian
-    Route::get('/hitung-payroll', [PayrollController::class, 'dataPayroll'])->name('payroll.index');
-    Route::get('/payroll/manage', [PayrollController::class, 'manage'])->name('payroll.manage');
-    
-    //pengajuan cuti
-    Route::get('/cuti', [CutiController::class, 'index'])->name('cuti.index');
+    // Pekerjaan Teknis
+    Route::get('/pekerjaan',                    [pekerjaanController::class, 'index'])->name('pekerjaan.index');
+    Route::post('/pekerjaan/{id}/ambil',        [pekerjaanController::class, 'ambil'])->name('pekerjaan.ambil');
+    Route::post('/pekerjaan/{id}/selesai',      [pekerjaanController::class, 'selesai'])->name('pekerjaan.selesai');
+    Route::post('/keluhan/store',               [pekerjaanController::class, 'store'])->name('keluhan.store');
 
-    // Proses kirim formulir pengajuan cuti
-    Route::post('/cuti/ajukan', [CutiController::class, 'store'])->name('cuti.store');
+    // Permintaan Akses (HRD & Manajemen)
+    Route::get('/access-requests',               [ForgotPasswordController::class, 'requestList'])->name('access-requests.index');
+    Route::post('/access-requests/{id}/approve', [ForgotPasswordController::class, 'approve'])->name('access-requests.approve');
+    Route::post('/access-requests/{id}/reject',  [ForgotPasswordController::class, 'reject'])->name('access-requests.reject');
 
-    //pekerjaan teknis
-    Route::get('/pekerjaan', [pekerjaanController::class, 'index'])->name('pekerjaan.index');
-    Route::post('/pekerjaan/{id}/ambil', [pekerjaanController::class, 'ambil'])->name('pekerjaan.ambil');
-    Route::post('/pekerjaan/{id}/selesai', [pekerjaanController::class, 'selesai'])->name('pekerjaan.selesai');
-    Route::post('/keluhan/store', [pekerjaanController::class, 'store'])->name('keluhan.store');//  bagian input keluhan (admin service)
 });

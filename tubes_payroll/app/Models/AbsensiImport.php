@@ -25,18 +25,24 @@ class AbsensiImport implements ToModel, WithHeadingRow
         }
 
         // 1. Konversi tanggal
-        try {
-            if (is_numeric($tanggal)) {
-                $tanggalParsed = Carbon::instance(
-                    \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tanggal)
-                )->format('Y-m-d');
-            } else {
-                $tanggalParsed = Carbon::createFromFormat('d/m/Y', $tanggal)
-                    ->format('Y-m-d');
-            }
-        } catch (\Exception $e) {
-            $tanggalParsed = Carbon::now()->format('Y-m-d');
-        }
+try {
+    if (is_numeric($tanggal)) {
+        $tanggalParsed = Carbon::instance(
+            \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tanggal)
+        )->format('Y-m-d');
+    } elseif (preg_match('/^\d{4}-\d{2}-\d{2}$/', $tanggal)) {
+        $tanggalParsed = $tanggal;
+    } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $tanggal)) {
+        $tanggalParsed = Carbon::createFromFormat('d/m/Y', $tanggal)->format('Y-m-d');
+    } elseif (preg_match('/^\d{2}-\d{2}-\d{4}$/', $tanggal)) {
+        $tanggalParsed = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
+    } else {
+        $tanggalParsed = Carbon::parse($tanggal)->format('Y-m-d');
+    }
+} catch (\Exception $e) {
+    $this->gagal[] = "NIP {$nip}: format tanggal tidak dikenali ({$tanggal})";
+    return null;
+}
 
         // 2. Cek duplikasi
         $cekDuplikasi = Absensi::where('nip', $nip)

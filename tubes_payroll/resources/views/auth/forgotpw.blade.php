@@ -424,23 +424,44 @@
 
         /* ── Step 2 → 3 (submit) ── */
         function submitRequest() {
-            const nip = document.getElementById('nipInput').value.trim();
-            const btn = document.getElementById('btnSubmit');
-
-            btn.disabled = true;
-            btn.textContent = 'Mengirim...';
-
-            setTimeout(() => {
-                document.getElementById('nipFinal').textContent = nip;
-                document.getElementById('summaryNip').textContent = nip;
-
-            showPanel(3);
-            currentStep = 3;
-
-            btn.disabled = false;
-            btn.textContent = 'Send Recovery Request →';
-        }, 900);
-    }
+    const nip = document.getElementById('nipInput').value.trim();
+    const btn = document.getElementById('btnSubmit');
+ 
+    btn.disabled    = true;
+    btn.textContent = 'Mengirim...';
+ 
+    fetch('{{ route("password.forgot.submit") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type'  : 'application/json',
+            'X-CSRF-TOKEN'  : '{{ csrf_token() }}',
+            'Accept'        : 'application/json',
+        },
+        body: JSON.stringify({ nip }),
+    })
+    .then(async res => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Terjadi kesalahan.');
+        return data;
+    })
+    .then(() => {
+        document.getElementById('nipFinal').textContent   = nip;
+        document.getElementById('summaryNip').textContent = nip;
+        showPanel(3);
+    })
+    .catch(err => {
+        // Tampilkan pesan error di bawah input NIP
+        const msg  = document.getElementById('nipMsg');
+        msg.textContent = '• ' + err.message;
+        msg.classList.replace('text-green-500', 'text-red-500');
+        msg.classList.replace('opacity-0', 'opacity-100');
+ 
+        // Kembali ke step 1 supaya user bisa coba lagi
+        showPanel(1);
+        btn.disabled    = false;
+        btn.textContent = 'Send Recovery Request →';
+    });
+}
 
             /*
             ── Real Laravel submit example ──
