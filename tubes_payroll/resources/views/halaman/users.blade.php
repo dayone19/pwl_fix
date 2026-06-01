@@ -124,9 +124,13 @@
                                 <a href="{{ route('karyawan.show', $user->nip) }}" class="w-9 h-9 flex items-center justify-center bg-white text-slate-400 rounded-xl border border-slate-200 hover:text-orange-600 hover:shadow-md transition-all">
                                     <i class="fas fa-eye text-xs"></i>
                                 </a>
-                                <button class="w-9 h-9 flex items-center justify-center bg-white text-slate-400 rounded-xl border border-slate-200 hover:text-red-600 hover:shadow-md transition-all">
-                                    <i class="fas fa-trash text-xs"></i>
-                                </button>
+                                <form action="{{ route('karyawan.destroy', $user->nip) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus karyawan ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-9 h-9 flex items-center justify-center bg-white text-slate-400 rounded-xl border border-slate-200 hover:text-red-600 hover:shadow-md transition-all">
+                                        <i class="fas fa-trash text-xs"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -201,7 +205,7 @@
     </div>
     {{-- END TABEL CONTAINER --}}
 
-    <script>
+    <!-- <script>
     document.addEventListener('click', function(e) {
         const link = e.target.closest('#tabel-container a');
         if (!link) return;
@@ -226,6 +230,6 @@
             window.history.pushState({}, '', link.href);
         });
     });
-    </script>
+    </script> -->
 
 @endsection

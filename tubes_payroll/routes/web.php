@@ -36,7 +36,12 @@ Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetFo
 Route::post('/reset-password/{token}', [ForgotPasswordController::class, 'resetPassword'])
     ->name('password.reset.submit');
 
+// Edit Karyawan
+Route::get('/karyawan/{nip}/edit', [KaryawanController::class, 'edit'])
+    ->name('karyawan.edit');
 
+Route::put('/karyawan/{nip}', [KaryawanController::class, 'update'])
+    ->name('karyawan.update');
 // ── AUTH GROUP ────────────────────────────────────────────────────────────────
 Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 

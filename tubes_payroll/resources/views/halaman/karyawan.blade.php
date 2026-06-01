@@ -2,7 +2,6 @@
 
 @section('title', 'Data Kru | PayTato')
 
-
 @push('loading')
 
 <div class="space-y-6 animate-pulse">
@@ -106,15 +105,19 @@
 
                         <td class="px-8 py-6 bg-slate-50 rounded-r-[35px] border-y border-r border-slate-100 text-right group-hover:bg-white group-hover:border-orange-200 transition-colors">
                             <div class="flex justify-end gap-3">
-                                <a href="{{ route('karyawan.show', $p->id) }}" class="w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-blue-600 hover:shadow-md transition-all group/btn">
+                                <a href="{{ route('karyawan.show', $p->nip) }}" class="detail-link w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-blue-600 hover:shadow-md transition-all group/btn">
                                     <i class="fas fa-eye text-xs group-hover/btn:scale-110 transition-transform"></i>
                                 </a>
-                                <button class="w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-orange-600 hover:shadow-md transition-all">
+                                <a href="{{ route('karyawan.edit', $p->nip) }}" class="edit-link w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-orange-600 hover:shadow-md transition-all">
                                     <i class="fas fa-pen-nib text-xs"></i>
-                                </button>
-                                <button class="w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-red-600 hover:shadow-md transition-all">
-                                    <i class="fas fa-trash text-xs"></i>
-                                </button>
+                                </a>
+                                <form action="{{ route('karyawan.destroy', $p->nip) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus karyawan ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-red-600 hover:shadow-md transition-all">
+                                        <i class="fas fa-trash text-xs"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -188,31 +191,53 @@
     </div>
     {{-- END TABEL CONTAINER --}}
 
-    <script>
-    document.addEventListener('click', function(e) {
-        const link = e.target.closest('#tabel-container a');
-        if (!link) return;
-        e.preventDefault();
+<script>
+document.addEventListener('click', function(e) {
 
-        const container = document.getElementById('tabel-container');
-        container.style.opacity = '0.4';
-        container.style.transition = 'opacity 0.2s';
+    const link = e.target.closest('#tabel-container a');
+    if (!link) return;
 
-        fetch(link.href, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-        .then(res => res.text())
-        .then(html => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const newContent = doc.getElementById('tabel-container');
-            if (newContent) {
-                container.innerHTML = newContent.innerHTML;
-            }
-            container.style.opacity = '1';
-            window.history.pushState({}, '', link.href);
-        });
+    // Tombol detail dan edit jangan pakai AJAX
+    if (
+        link.classList.contains('detail-link') ||
+        link.classList.contains('edit-link')
+    ) {
+        return;
+    }
+
+    e.preventDefault();
+
+    const container = document.getElementById('tabel-container');
+
+    container.style.opacity = '0.4';
+    container.style.transition = 'opacity 0.2s';
+
+    fetch(link.href, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(res => res.text())
+    .then(html => {
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        const newContent = doc.getElementById('tabel-container');
+
+        if (newContent) {
+            container.innerHTML = newContent.innerHTML;
+        }
+
+        container.style.opacity = '1';
+
+        window.history.pushState({}, '', link.href);
+    })
+    .catch(() => {
+        container.style.opacity = '1';
     });
-    </script>
+
+});
+</script>
 
 @endsection

@@ -38,7 +38,9 @@
 
         <div>
             <h1 class="text-xl font-black text-slate-900 uppercase italic tracking-tighter">
-                Registrasi Teknisi Baru
+                {{ isset($pegawai)
+                    ? 'Edit Data Pegawai'
+                    : 'Registrasi Teknisi Baru' }}
             </h1>
 
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -80,11 +82,17 @@
     @endif
 
 
-    <form action="{{ route('karyawan.store') }}"
-          method="POST"
-          enctype="multipart/form-data">
+ <form action="{{ isset($pegawai)
+        ? route('karyawan.update', $pegawai->nip)
+        : route('karyawan.store') }}"
+      method="POST"
+      enctype="multipart/form-data">
 
-        @csrf
+    @csrf
+
+    @if(isset($pegawai))
+        @method('PUT')
+    @endif
 <!-- ================================= -->
 <!-- STEP 1 -->
 <!-- ================================= -->
@@ -471,7 +479,9 @@
                         class="flex-1 bg-orange-600 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-slate-900 transition-all italic flex items-center justify-center gap-3">
 
                     <i class="fas fa-save"></i>
-                    Simpan Data Pegawai Baru
+                    {{ isset($pegawai)
+                        ? 'Update Data Pegawai'
+                        : 'Simpan Data Pegawai Baru' }}
 
                 </button>
 
