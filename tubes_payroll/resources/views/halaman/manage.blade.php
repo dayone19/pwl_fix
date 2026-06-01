@@ -110,12 +110,15 @@
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Kru & Personel</p>
             <h3 class="text-2xl font-black text-slate-900">{{ $totalPegawai }} <span class="text-sm text-slate-400 italic">Orang</span></h3>
         </div>
-
+        
+        @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['HRD'])) 
         <div class="bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm relative overflow-hidden group">
             <i class="fas fa-calendar-check absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-10 group-hover:text-green-500 transition-all"></i>
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status Pembayaran</p>
             <h3 class="text-2xl font-black text-orange-600 uppercase italic">Drafting</h3>
+            
         </div>
+        @endif
     </div>
 
     <div class="bg-white rounded-[32px] border border-slate-200 shadow-sm overflow-hidden">

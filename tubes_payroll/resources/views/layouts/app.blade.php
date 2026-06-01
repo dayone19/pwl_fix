@@ -215,7 +215,7 @@
 
                 {{-- SECTION: SYSTEM: MANAJEMEN & HRD --}}
                 @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['MANAJEMEN', 'HRD']))
-                <div>
+                <div class ="gap-3">
                     <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
                         <i class="fas fa-gears text-[8px]"></i> System
                     </p>
@@ -225,11 +225,15 @@
                             class="{{ (request()->routeIs('users.*') || request()->routeIs('karyawan.create')) ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
                                 <i class="fas fa-key w-5 group-hover:text-orange-400"></i> Akses Kontrol
                             </a>
-                            <a href="{{ route('access-requests.index') }}"class="{{ request()->routeIs('access-requests.*') ? 'sidebar-item-active' : '' }}flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group"><i class="fas fa-user-shield w-5 group-hover:text-orange-400"></i>Permintaan Akses
+
+                          @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['HRD']))  
+                            <a href="{{ route('access-requests.index') }}"class="{{ request()->routeIs('access-requests.*') ? 'sidebar-item-active' : '' }}flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                                <i class="fas fa-user-shield w-5 group-hover:text-orange-400"></i>Permintaan Akses
                             {{-- Badge jumlah pending --}}
                             @php $pendingCount = \App\Models\AccessRequest::where('status','pending')->count(); @endphp
                             @if($pendingCount > 0)
                             <span class="ml-auto bg-orange-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full min-w-[20px] text-center">{{ $pendingCount }}</span>
+                            @endif
                             @endif
                         </a>
                         </li>
