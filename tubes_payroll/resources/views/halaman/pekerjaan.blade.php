@@ -123,7 +123,7 @@
     </div>
 
     {{-- KHUSUS ADMIN SERVICE --}}
-    @if($divisi == 'TEKNIS' && $jabatan == 'Admin Service')
+    @if($divisi == 'TEKNIS' && $jabatan == 'ADMIN SERVICE')
 
     <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 mb-12">
 
@@ -199,7 +199,7 @@
 
 
     {{-- KHUSUS TEKNISI --}}
-    @if($divisi == 'TEKNIS' && $jabatan != 'Admin Service')
+    @if($divisi == 'TEKNIS' && $jabatan != 'ADMIN SERVICE')
 
     <div class="space-y-6">
 
