@@ -112,22 +112,96 @@ class KaryawanController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($nip)
     {
         $p = DB::table('profil_pegawai')
                 ->join('pengguna', 'profil_pegawai.nip', '=', 'pengguna.nip')
                 ->join('divisi', 'profil_pegawai.id_divisi', '=', 'divisi.id')
+                ->join('jabatan', 'profil_pegawai.id_jabatan', '=', 'jabatan.id')
                 ->select(
                     'profil_pegawai.*', 
                     'pengguna.foto as foto_akun', 
                     'pengguna.email as email_akun', 
-                    'divisi.nama_divisi'
+                    'divisi.nama_divisi', 
+                    'jabatan.nama_jabatan as jabatan'
                 )
-                ->where('profil_pegawai.id', $id)
+                ->where('profil_pegawai.nip', $nip)
                 ->first();
 
         if (!$p) { abort(404); }
 
         return view('halaman.detail_karyawan', compact('p'));
     }
+
+    public function destroy($nip)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $pegawai = DB::table('profil_pegawai')
+                ->where('nip', $nip)
+                ->first();
+
+            if (!$pegawai) {
+                return back()->with('error', 'Pegawai tidak ditemukan');
+            }
+
+            // Hapus riwayat pegawai
+            DB::table('riwayat_pegawai')
+                ->where('pegawai_id', $pegawai->id)
+                ->delete();
+
+            // Hapus data penggajian
+            DB::table('penggajian')
+                ->where('id_pegawai', $pegawai->id)
+                ->delete();
+
+            // Hapus profil pegawai
+            DB::table('profil_pegawai')
+                ->where('id', $pegawai->id)
+                ->delete();
+
+            // Hapus akun pengguna
+            DB::table('pengguna')
+                ->where('nip', $nip)
+                ->delete();
+
+            DB::commit();
+
+            return redirect()
+                ->route('users.index')
+                ->with('success', 'Data pegawai berhasil dihapus');
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with(
+                'error',
+                'Gagal menghapus data: ' . $e->getMessage()
+            );
+        }
+    }
+
+    public function edit($nip)
+    {
+        $pegawai = DB::table('profil_pegawai')
+            ->join('pengguna', 'profil_pegawai.nip', '=', 'pengguna.nip')
+            ->where('profil_pegawai.nip', $nip)
+            ->select('profil_pegawai.*', 'pengguna.email')
+            ->first();
+
+        if (!$pegawai) {
+            abort(404);
+        }
+
+        $list_divisi = DB::table('divisi')->get();
+        $list_jabatan = DB::table('jabatan')->get();
+
+        return view(
+            'halaman.tambah',
+            compact('pegawai', 'list_divisi', 'list_jabatan')
+        );
+    } 
 }
