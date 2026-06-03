@@ -8,6 +8,8 @@ use App\Models\Pekerjaan;
 use App\Models\Keluhan; 
 use App\Models\ProfilPegawai; 
 use App\Models\Jabatan; 
+use App\Models\TerimaKerjaan; 
+use Illuminate\Support\Facades\DB;
 
 class pekerjaanController extends Controller
 {
@@ -38,11 +40,12 @@ class pekerjaanController extends Controller
                         ->count();
 
         $targetHarian = 5;
+        $bonusPerpekerjaan = 20000;
 
         $bonus = 0;
 
         if ($selesai >= $targetHarian) {
-            $bonus = 150000;
+            $bonus = $selesai * $bonusPerpekerjaan;
         }
 
         $divisi = strtoupper($user->divisi?->nama_divisi);
@@ -72,6 +75,14 @@ class pekerjaanController extends Controller
 
         $pekerjaan->save();
 
+        $teknisiId = Auth::user()->profilPegawai?->id;
+
+        TerimaKerjaan::create([
+            'pekerjaan_id' => $pekerjaan->pekerjaan_id,
+            'teknisi_id' => $teknisiId,
+            'status' => 'in_progress',
+        ]);
+
         return redirect()->back()
             ->with('success', 'Pekerjaan berhasil diambil');
     }
@@ -83,6 +94,13 @@ class pekerjaanController extends Controller
         $pekerjaan->status = 'done';
 
         $pekerjaan->save();
+
+        TerimaKerjaan::where('pekerjaan_id', $id)
+        ->where('status', 'in_progress')
+        ->update([
+            'status' => 'done',
+            'selesai_pada'   => now() 
+        ]);
 
         return redirect()->back()
             ->with('success', 'Pekerjaan selesai dikerjakan');
@@ -105,7 +123,7 @@ class pekerjaanController extends Controller
             'kendaraan' => $request->kendaraan,
             'keluhan_id' => $request->keluhan_id,
             'detail_keluhan' => $request->detail_keluhan,
-            'jabatan_id' => $keluhan->jabatan_id,
+            'id_jabatan' => $keluhan->jabatan_id,
             'status' => 'waiting',
         ]);
 

@@ -14,7 +14,7 @@ class Pekerjaan extends Model
         'kendaraan',
         'keluhan_id',
         'detail_keluhan',
-        'jabatan_id',
+        'id_jabatan',
         'status',
     ];
 
@@ -25,7 +25,7 @@ class Pekerjaan extends Model
 
     public function jabatan()
     {
-        return $this->belongsTo(jabatan::class, 'jabatan_id');
+        return $this->belongsTo(jabatan::class, 'id_jabatan');
     }
 
     public function terimaKerjaan()

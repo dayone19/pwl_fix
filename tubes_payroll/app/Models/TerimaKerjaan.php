@@ -8,13 +8,14 @@ class TerimaKerjaan extends Model
 {
     protected $primaryKey = 'id';
     protected $table = 'terima_kerjaan';
-    public $timestamps = true;
+    public $timestamps = false;
     protected $fillable = [
         'pekerjaan_id',
         'teknisi_id',
         'status',
         'progres',
         'selesai_pada',
+        'created_at',
     ];
 
     public function pekerjaans()
