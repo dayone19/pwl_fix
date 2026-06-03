@@ -5,22 +5,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penggajian extends Model
 {
-    protected $primaryKey = 'id_gaji'; 
+    protected $primaryKey = 'id'; 
     public $timestamps = false;
     protected $table = 'penggajian';
 
     protected $fillable = [
-        'id_pegawai',
-        'nip', 
-        'periode_mulai', 
-        'periode_selesai', 
-        'total_tunjangan', 
-        'total_potongan', 
-        'bonus', 
-        'gaji_bersih', 
-        'status_bayar', 
-        'bulan'
-    ];
+    'id_pegawai',
+    'nip',
+    'gaji_pokok',
+    'periode_mulai',
+    'periode_selesai',
+    'total_tunjangan',
+    'total_potongan',
+    'bonus',
+    'gaji_bersih',
+    'status_bayar',
+    'bulan'
+];
 
     public function pegawai()
     {

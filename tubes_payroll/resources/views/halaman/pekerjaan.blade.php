@@ -113,7 +113,7 @@
     @endphp -->
 
     <div class="mb-10">
-        <h1 class="text-3xl font-black italic uppercase tracking-tighter text-slate-900">
+        <h1 class="text-3xl font-black  uppercase tracking-tighter text-slate-900">
             Pekerjaan Bengkel
         </h1>
 
@@ -127,7 +127,7 @@
 
     <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 mb-12">
 
-        <h3 class="text-xl font-black text-slate-900 uppercase italic tracking-tighter mb-8">
+        <h3 class="text-xl font-black text-slate-900 uppercase  tracking-tighter mb-8">
             Form Keluhan Pelanggan
         </h3>
 
@@ -265,7 +265,7 @@
             <div class="flex justify-between items-center mb-6">
 
                 <div>
-                    <h3 class="text-xl font-black uppercase italic tracking-tighter text-slate-900">
+                    <h3 class="text-xl font-black uppercase  tracking-tighter text-slate-900">
                         Daftar Pekerjaan
                     </h3>
 

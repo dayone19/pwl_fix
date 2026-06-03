@@ -12,7 +12,7 @@
         <i class="fas fa-link text-sm"></i>
     </div>
     <div class="flex-1 min-w-0">
-        <p class="text-[10px] font-black uppercase tracking-widest text-blue-600 italic mb-1">
+        <p class="text-[10px] font-black uppercase tracking-widest text-blue-600  mb-1">
             Link Reset untuk NIP {{ session('success_nip') }}
         </p>
         <p class="text-[11px] text-blue-800 font-bold mb-3">
@@ -24,7 +24,7 @@
                 <i class="fas fa-copy mr-1"></i> Salin
             </button>
         </div>
-        <p class="text-[9px] text-blue-400 italic mt-2">* Link berlaku 24 jam</p>
+        <p class="text-[9px] text-blue-400  mt-2">* Link berlaku 24 jam</p>
     </div>
     <button @click="show = false" class="text-blue-300 hover:text-blue-500 flex-shrink-0">
         <i class="fas fa-times"></i>
@@ -49,8 +49,8 @@
 {{-- Header --}}
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
     <div>
-        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] italic mb-1">Human Resource</p>
-        <h1 class="text-3xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">Permintaan Akses</h1>
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]  mb-1">Human Resource</p>
+        <h1 class="text-3xl font-black text-slate-900 uppercase  tracking-tighter leading-none">Permintaan Akses</h1>
     </div>
     {{-- Statistik cepat --}}
     <div class="flex gap-3 flex-wrap">
@@ -67,7 +67,7 @@
         <div class="bg-white border border-slate-100 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm">
             <i class="fas {{ $s['icon'] }} text-{{ $s['color'] }}-500 text-sm"></i>
             <div>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic leading-none">{{ $s['label'] }}</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest  leading-none">{{ $s['label'] }}</p>
                 <p class="text-lg font-black text-slate-900 leading-none">
                     {{ \App\Models\AccessRequest::where('status', $s['status'])->count() }}
                 </p>
@@ -83,12 +83,12 @@
     {{-- Table header --}}
     <div class="px-10 py-6 border-b border-slate-50">
         <div class="grid grid-cols-12 gap-4">
-            <p class="col-span-2 text-[9px] font-black text-slate-400 uppercase tracking-widest italic">Tanggal</p>
-            <p class="col-span-2 text-[9px] font-black text-slate-400 uppercase tracking-widest italic">NIP</p>
-            <p class="col-span-3 text-[9px] font-black text-slate-400 uppercase tracking-widest italic">Nama</p>
-            <p class="col-span-2 text-[9px] font-black text-slate-400 uppercase tracking-widest italic">Divisi</p>
-            <p class="col-span-2 text-[9px] font-black text-slate-400 uppercase tracking-widest italic">Status</p>
-            <p class="col-span-1 text-[9px] font-black text-slate-400 uppercase tracking-widest italic text-right">Aksi</p>
+            <p class="col-span-2 text-[9px] font-black text-slate-400 uppercase tracking-widest ">Tanggal</p>
+            <p class="col-span-2 text-[9px] font-black text-slate-400 uppercase tracking-widest ">NIP</p>
+            <p class="col-span-3 text-[9px] font-black text-slate-400 uppercase tracking-widest ">Nama</p>
+            <p class="col-span-2 text-[9px] font-black text-slate-400 uppercase tracking-widest ">Divisi</p>
+            <p class="col-span-2 text-[9px] font-black text-slate-400 uppercase tracking-widest ">Status</p>
+            <p class="col-span-1 text-[9px] font-black text-slate-400 uppercase tracking-widest  text-right">Aksi</p>
         </div>
     </div>
 
@@ -115,12 +115,12 @@
     @endphp
     <div class="px-10 py-5 border-b border-slate-50 hover:bg-slate-50/50 transition group">
         <div class="grid grid-cols-12 gap-4 items-center">
-            <p class="col-span-2 text-[11px] font-bold text-slate-500 italic">
+            <p class="col-span-2 text-[11px] font-bold text-slate-500 ">
                 {{ $req->created_at->format('d M Y') }}
             </p>
             <p class="col-span-2 text-[11px] font-black text-slate-900 font-mono">{{ $req->nip }}</p>
-            <p class="col-span-3 text-[12px] font-black text-slate-900 italic uppercase tracking-tight truncate">{{ $nama }}</p>
-            <p class="col-span-2 text-[11px] font-bold text-slate-500 uppercase italic truncate">{{ $divisi }}</p>
+            <p class="col-span-3 text-[12px] font-black text-slate-900  uppercase tracking-tight truncate">{{ $nama }}</p>
+            <p class="col-span-2 text-[11px] font-bold text-slate-500 uppercase  truncate">{{ $divisi }}</p>
             <div class="col-span-2">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-widest {{ $colorMap[$badge['color']] }}">
                     <span class="w-1.5 h-1.5 rounded-full {{ $dotMap[$badge['color']] }} flex-shrink-0"></span>
@@ -139,7 +139,7 @@
     @empty
     <div class="px-10 py-20 text-center">
         <i class="fas fa-inbox text-4xl text-slate-200 mb-4"></i>
-        <p class="text-[11px] font-black text-slate-400 uppercase italic tracking-widest">Belum ada permintaan akses</p>
+        <p class="text-[11px] font-black text-slate-400 uppercase  tracking-widest">Belum ada permintaan akses</p>
     </div>
     @endforelse
 </div>
@@ -170,8 +170,8 @@
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-orange-500/15 via-transparent to-transparent pointer-events-none"></div>
             <div class="relative z-10 flex items-start justify-between">
                 <div>
-                    <p class="text-[9px] font-black text-orange-500 uppercase tracking-widest italic mb-2">Detail Permintaan</p>
-                    <h3 id="modalNama" class="text-2xl font-black text-white uppercase italic tracking-tighter leading-none">–</h3>
+                    <p class="text-[9px] font-black text-orange-500 uppercase tracking-widest  mb-2">Detail Permintaan</p>
+                    <h3 id="modalNama" class="text-2xl font-black text-white uppercase  tracking-tighter leading-none">–</h3>
                     <p id="modalNip" class="text-[11px] font-black text-slate-400 mt-1">NIP –</p>
                 </div>
                 <button onclick="closeDetail()" class="text-slate-500 hover:text-white transition p-2">
@@ -186,33 +186,33 @@
             {{-- Info grid --}}
             <div class="grid grid-cols-2 gap-4">
                 <div class="bg-slate-50 rounded-2xl p-4">
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic mb-1">Divisi</p>
-                    <p id="modalDivisi" class="text-[12px] font-black text-slate-900 uppercase italic">–</p>
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest  mb-1">Divisi</p>
+                    <p id="modalDivisi" class="text-[12px] font-black text-slate-900 uppercase ">–</p>
                 </div>
                 <div class="bg-slate-50 rounded-2xl p-4">
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic mb-1">Tanggal Request</p>
-                    <p id="modalTanggal" class="text-[12px] font-black text-slate-900 italic">–</p>
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest  mb-1">Tanggal Request</p>
+                    <p id="modalTanggal" class="text-[12px] font-black text-slate-900 ">–</p>
                 </div>
             </div>
 
             {{-- Status badge --}}
             <div id="modalStatusWrap" class="flex items-center gap-3">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic">Status Saat Ini:</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest ">Status Saat Ini:</p>
                 <span id="modalStatusBadge" class="px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-widest">–</span>
             </div>
 
             {{-- Catatan HR (jika ada) --}}
             <div id="modalCatatanWrap" class="hidden bg-orange-50 border border-orange-100 rounded-2xl p-4">
-                <p class="text-[9px] font-black text-orange-600 uppercase tracking-widest italic mb-1">Catatan HR</p>
-                <p id="modalCatatan" class="text-[11px] text-slate-700 italic">–</p>
+                <p class="text-[9px] font-black text-orange-600 uppercase tracking-widest  mb-1">Catatan HR</p>
+                <p id="modalCatatan" class="text-[11px] text-slate-700 ">–</p>
             </div>
 
             {{-- Token info (disetujui) --}}
             <div id="modalTokenWrap" class="hidden bg-blue-50 border border-blue-100 rounded-2xl p-4">
-                <p class="text-[9px] font-black text-blue-600 uppercase tracking-widest italic mb-1">
+                <p class="text-[9px] font-black text-blue-600 uppercase tracking-widest  mb-1">
                     <i class="fas fa-clock mr-1"></i> Token berlaku hingga
                 </p>
-                <p id="modalTokenExpiry" class="text-[12px] font-black text-slate-900 italic">–</p>
+                <p id="modalTokenExpiry" class="text-[12px] font-black text-slate-900 ">–</p>
             </div>
 
             {{-- ─── FORM AKSI (pending only) ─── --}}
@@ -234,7 +234,7 @@
 
             {{-- Penutup jika sudah diproses --}}
             <div id="modalDone" class="hidden text-center py-4">
-                <p class="text-[11px] font-black text-slate-400 uppercase italic tracking-widest">Permintaan ini sudah diproses.</p>
+                <p class="text-[11px] font-black text-slate-400 uppercase  tracking-widest">Permintaan ini sudah diproses.</p>
             </div>
 
         </div>
