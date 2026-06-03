@@ -56,6 +56,8 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::post('/absensi/import',      [absensiController::class, 'store'])->name('absensi.store');
     Route::get('/absensi/template',     [absensiController::class, 'downloadTemplate'])->name('absensi.template');
     Route::post('/absensi/{id}',         [absensiController::class, 'update'])->name('absensi.update');
+    Route::post('/cuti/{id}/approve', [CutiController::class, 'approve'])->name('cuti.approve');
+    Route::post('/cuti/{id}/tolak',   [CutiController::class, 'tolak'])->name('cuti.tolak');
 
     // Data Karyawan
     Route::resource('karyawan', karyawanController::class);

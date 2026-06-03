@@ -4,9 +4,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cuti extends Model
 {
+
+    public $timestamps = false;
+
     protected $table = 'cuti';
     protected $fillable = [
-        'nip',
+        'id_pegawai',
         'tanggal_mulai',
         'tanggal_selesai',
         'alasan',

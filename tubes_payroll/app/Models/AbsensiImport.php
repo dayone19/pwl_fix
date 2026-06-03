@@ -34,6 +34,8 @@ try {
         $tanggalParsed = $tanggal;
     } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $tanggal)) {
         $tanggalParsed = Carbon::createFromFormat('d/m/Y', $tanggal)->format('Y-m-d');
+    } elseif (preg_match('/^\d{1,2}\/\d{1,2}\/\d{4}$/', $tanggal)) {
+        $tanggalParsed = Carbon::createFromFormat('j/n/Y', $tanggal)->format('Y-m-d');
     } elseif (preg_match('/^\d{2}-\d{2}-\d{4}$/', $tanggal)) {
         $tanggalParsed = Carbon::createFromFormat('d-m-Y', $tanggal)->format('Y-m-d');
     } else {
@@ -69,8 +71,10 @@ try {
         if (!in_array($statusClean, [
             'Hadir',
             'Izin',
+            'Terlambat',
             'Sakit',
-            'Alpha'
+            'Alpha',
+            'Cuti'
         ])) {
             $statusClean = 'Hadir';
         }

@@ -165,12 +165,14 @@
         .dot-S  { background-color: #f3e8ff; color: #6b21a8; } /* Sakit */
         .dot-A  { background-color: #fee2e2; color: #991b1b; } /* Alpha */
         .dot-none { color: #cbd5e1; } /* Libur / Kosong */
+        .dot-C  { background-color: #ccfbf1; color: #115e59; }
 
         .bg-H  { background-color: #22c55e; }
         .bg-TL { background-color: #f97316; }
         .bg-I  { background-color: #3b82f6; }
         .bg-S  { background-color: #a855f7; }
         .bg-A  { background-color: #ef4444; }
+        .bg-C { background-color: #14b8a6; }
 
         .th-total { background-color: #f1f5f9 !important; color: #0f172a !important; font-weight: 900 !important; }
         .td-total { font-weight: bold; color: #0f172a; background-color: #f8fafc; }
@@ -225,6 +227,7 @@
         <span class="legend-item"><span class="legend-badge bg-I">I</span> Izin</span>
         <span class="legend-item"><span class="legend-badge bg-S">S</span> Sakit</span>
         <span class="legend-item"><span class="legend-badge bg-A">A</span> Alpha (Tidak Hadir)</span>
+        <span class="legend-item"><span class="legend-badge bg-C">C</span> Cuti</span>
     </div>
 
     <table class="matrix-table">
@@ -277,7 +280,7 @@
                             $char = '-'; $class = 'dot-none';
 
                             if ($absen) {
-                                $map = ['Hadir'=>'H', 'Terlambat'=>'TL', 'Izin'=>'I', 'Sakit'=>'S', 'Alpha'=>'A'];
+                                $map = ['Hadir'=>'H', 'Terlambat'=>'TL', 'Izin'=>'I', 'Sakit'=>'S', 'Alpha'=>'A', 'Cuti'=>'C'];
 $char = $map[$absen->status_kehadiran] ?? '-';
                                 $class = 'dot-' . $char;
                             }

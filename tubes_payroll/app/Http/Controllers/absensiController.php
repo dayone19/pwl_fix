@@ -62,40 +62,40 @@ class AbsensiController extends Controller
     }
 
     public function downloadTemplate(Request $request)
-    {
-        $tanggal = $request->input('tanggal', now('Asia/Jakarta')->format('d'));
-        $bulan   = $request->input('bulan', now('Asia/Jakarta')->format('m'));
-        $tahun   = $request->input('tahun', now('Asia/Jakarta')->format('Y'));
+{
+    $bulan = $request->input('bulan', now('Asia/Jakarta')->format('m'));
+    $tahun = $request->input('tahun', now('Asia/Jakarta')->format('Y'));
+    $tgl   = $request->input('tanggal', now('Asia/Jakarta')->format('d'));
 
-        $hari = sprintf('%02d/%02d/%04d', $tanggal, $bulan, $tahun);
+    $carbon = \Carbon\Carbon::createFromDate($tahun, $bulan, $tgl);
 
-        $headers = [
-            'Content-Type'        => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="template_absensi_' . sprintf('%02d-%02d-%04d', $tanggal, $bulan, $tahun) . '.csv"',
-        ];
+    $headers = [
+        'Content-Type'        => 'text/csv',
+        'Content-Disposition' => 'attachment; filename="template_absensi_' 
+            . sprintf('%02d-%02d-%04d', $tgl, $bulan, $tahun) . '.csv"',
+    ];
 
-        $callback = function () use ($hari) {
-            $file    = fopen('php://output', 'w');
-            $pegawai = ProfilPegawai::orderBy('nama_lengkap')->get();
+    $callback = function () use ($bulan, $tahun, $tgl, $carbon) {
+        $file    = fopen('php://output', 'w');
+        $pegawai = ProfilPegawai::orderBy('nama_lengkap')->get();
 
-            fputcsv($file, ['nip', 'nama', 'tanggal', 'jam_masuk', 'jam_keluar', 'status']);
+        fputcsv($file, ['nip', 'nama', 'tanggal', 'jam_masuk', 'jam_keluar', 'status']);
 
+        // Kalau hari Minggu, file kosong (hanya header)
+        if ($carbon->dayOfWeek !== \Carbon\Carbon::SUNDAY) {
+            $tanggalStr = sprintf('%02d/%02d/%04d', $tgl, $bulan, $tahun);
             foreach ($pegawai as $p) {
                 fputcsv($file, [
-                    $p->nip,
-                    $p->nama_lengkap,
-                    $hari,
-                    '08:00',
-                    '17:00',
-                    'Hadir',
+                    $p->nip, $p->nama_lengkap, $tanggalStr, '08:00', '17:00', 'Hadir',
                 ]);
             }
+        }
 
-            fclose($file);
-        };
+        fclose($file);
+    };
 
-        return response()->stream($callback, 200, $headers);
-    }
+    return response()->stream($callback, 200, $headers);
+}
 
     public function exportPdf(Request $request)
     {
@@ -135,8 +135,8 @@ class AbsensiController extends Controller
         $rataRata  = $totalData > 0 ? ($totalHadir / $totalData) * 100 : 0;
 
         $totalTidakHadir = $dataAbsen->filter(function ($item) {
-            $status = strtoupper(trim($item->status_kehadiran));
-            return in_array($status, ['IZIN', 'I', 'SAKIT', 'S', 'ALPHA', 'ALPA', 'A']);
+        $status = strtoupper(trim($item->status_kehadiran));
+        return in_array($status, ['IZIN', 'I', 'SAKIT', 'S', 'ALPHA', 'ALPA', 'A', 'CUTI', 'C']); 
         })->count();
 
         $pdf = Pdf::loadView('ekspor_pdf.absensi_pdf', compact(
@@ -208,41 +208,42 @@ class AbsensiController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        abort_if(auth()->user()->id_divisi != 2, 403);
+{
+    abort_if(auth()->user()->id_divisi != 2, 403);
 
-        $request->validate([
-            'jam_masuk'        => 'nullable|date_format:H:i',
-            'jam_keluar'       => 'nullable|date_format:H:i',
-            'status_kehadiran' => 'required|in:Hadir,Terlambat,Izin,Sakit,Alpha',
-        ]);
+    $request->validate([
+        'jam_masuk'        => 'nullable|date_format:H:i',
+        'jam_keluar'       => 'nullable|date_format:H:i',
+        'status_kehadiran' => 'required|in:Hadir,Terlambat,Izin,Sakit,Alpha,Cuti', // ← tambah Cuti
+    ]);
 
-        $absensi = Absensi::findOrFail($id);
+    $absensi = Absensi::findOrFail($id);
 
-        $menitTerlambat = 0;
-        $status         = $request->status_kehadiran;
-        $jamMasukInput  = $request->jam_masuk ? substr($request->jam_masuk, 0, 5) : null;
+    $menitTerlambat = 0;
+    $status         = $request->status_kehadiran;
+    $jamMasukInput  = $request->jam_masuk ? substr($request->jam_masuk, 0, 5) : null;
 
-        if ($jamMasukInput && in_array($status, ['Hadir', 'Terlambat'])) {
-            [$jam, $menit] = explode(':', $jamMasukInput);
-            $totalMenitMasuk = ((int)$jam * 60) + (int)$menit;
-            $totalMenitBatas = 8 * 60;
+    // Kalau status Cuti, jam tidak dihitung
+    if (!in_array($status, ['Cuti', 'Izin', 'Sakit', 'Alpha']) && $jamMasukInput) {
+        [$jam, $menit] = explode(':', $jamMasukInput);
+        $totalMenitMasuk = ((int)$jam * 60) + (int)$menit;
+        $totalMenitBatas = 8 * 60;
 
-            if ($totalMenitMasuk > $totalMenitBatas) {
-                $menitTerlambat = $totalMenitMasuk - $totalMenitBatas;
-                $status         = 'Terlambat';
-            }
+        if ($totalMenitMasuk > $totalMenitBatas) {
+            $menitTerlambat = $totalMenitMasuk - $totalMenitBatas;
+            $status         = 'Terlambat';
         }
-
-        $absensi->update([
-            'jam_masuk'        => $jamMasukInput,
-            'jam_keluar'       => $request->jam_keluar ? substr($request->jam_keluar, 0, 5) : null,
-            'status_kehadiran' => $status,
-            'menit_terlambat'  => $menitTerlambat,
-        ]);
-
-        return back()->with('success', 'Data absensi berhasil diperbarui.');
     }
+
+    $absensi->update([
+        'jam_masuk'        => in_array($status, ['Cuti']) ? null : $jamMasukInput,
+        'jam_keluar'       => in_array($status, ['Cuti']) ? null : ($request->jam_keluar ? substr($request->jam_keluar, 0, 5) : null),
+        'status_kehadiran' => $status,
+        'menit_terlambat'  => $menitTerlambat,
+    ]);
+
+    return back()->with('success', 'Data absensi berhasil diperbarui.');
+}
 
     // ↓↓↓ HANYA BAGIAN INI YANG DIUBAH ↓↓↓
     private function applyFilter(Request $request)

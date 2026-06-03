@@ -122,6 +122,7 @@
         .bg-izin { background-color: #3b82f6; }
         .bg-sakit { background-color: #a855f7; }
         .bg-alpha { background-color: #ef4444; }
+        .bg-cuti { background-color: #14b8a6; }
         .bg-libur { background-color: #cbd5e1; color: #64748b; }
         
         /* Kunci Footer Tetap Di Paling Bawah Halaman PDF */
@@ -191,6 +192,10 @@
                 <span class="badge-box bg-libur"><span class="badge-text">-</span></span>
                 <span class="legend-text">Libur / Tidak Ada Jadwal</span>
             </td>
+            <td class="legend-cell" style="width: 12%;">
+                <span class="badge-box bg-cuti"><span class="badge-text">C</span></span>
+                <span class="legend-text">Cuti</span>
+            </td>
         </tr>
     </table>
 
@@ -216,6 +221,7 @@
                     elseif (in_array($statusUpper, ['I', 'IZIN'])) { $badgeClass = 'bg-izin'; $statusInisial = 'I'; }
                     elseif (in_array($statusUpper, ['S', 'SAKIT'])) { $badgeClass = 'bg-sakit'; $statusInisial = 'S'; }
                     elseif (in_array($statusUpper, ['A', 'ALPHA', 'ALPA'])) { $badgeClass = 'bg-alpha'; $statusInisial = 'A'; }
+                    elseif (in_array($statusUpper, ['C', 'CUTI'])) { $badgeClass = 'bg-cuti'; $statusInisial = 'C'; }
                 @endphp
                 <tr>
                     <td class="td-no">{{ $index + 1 }}</td>

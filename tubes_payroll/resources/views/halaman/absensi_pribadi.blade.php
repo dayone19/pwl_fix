@@ -117,6 +117,7 @@
         <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-md bg-blue-500 text-white flex items-center justify-center text-[9px] font-black">I</span> Izin</div>
         <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-md bg-purple-500 text-white flex items-center justify-center text-[9px] font-black">S</span> Sakit</div>
         <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-md bg-red-500 text-white flex items-center justify-center text-[9px] font-black">A</span> Alpha (Tidak Hadir)</div>
+        <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-md bg-teal-500 text-white flex items-center justify-center text-[9px] font-black">C</span> Cuti</div>
         <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-400 flex items-center justify-center text-[9px] font-black">-</span> Libur / Tidak Ada Jadwal</div>
     </div>
 
@@ -161,6 +162,10 @@
         } elseif ($statusUpper == 'ALPHA') {
             $badgeClass = 'bg-red-500 text-white';
             $statusInisial = 'A';
+
+        } elseif ($statusUpper == 'CUTI') {     
+            $badgeClass = 'bg-teal-500 text-white';
+            $statusInisial = 'C';
         }
     @endphp
 

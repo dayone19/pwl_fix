@@ -177,6 +177,7 @@
                                     'Sakit'     => 'bg-purple-500 text-white border-purple-600',
                                     'Alpha'     => 'bg-red-500 text-white border-red-600',
                                     default     => 'bg-slate-200 text-slate-600 border-slate-300',
+                                    'Cuti'      => 'bg-teal-500 text-white border-teal-600'
                                 };
                             @endphp
                             <div class="flex items-center justify-end gap-2">
@@ -297,10 +298,35 @@
                     Format tanggal: <span class="font-mono text-slate-600">dd/mm/yyyy</span> &nbsp;|&nbsp;
                     Status: <span class="font-mono text-slate-600">Hadir / Terlambat / Izin / Sakit / Alpha</span>
                 </p>
-                <a href="{{ route('absensi.template', request()->only(['tanggal', 'bulan', 'tahun'])) }}"
-                    class="mt-3 inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-orange-600 hover:text-slate-900 transition-colors ">
-                    <i class="fas fa-download"></i> Download Template
-                </a>
+               <div class="mt-3 flex flex-col gap-2">
+    <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">Download Template Per Tanggal:</p>
+    <div class="flex items-center gap-2">
+        <select id="selectTanggalTemplate"
+            class="appearance-none bg-white border border-slate-200 text-slate-700 font-bold text-[10px] rounded-lg px-2 py-1 focus:outline-none focus:border-orange-500">
+            @foreach(range(1, 31) as $d)
+                @php
+                    $valD = sprintf('%02d', $d);
+                    $now  = now('Asia/Jakarta')->day;
+                @endphp
+                <option value="{{ $valD }}" {{ $now == $d ? 'selected' : '' }}>{{ $valD }}</option>
+            @endforeach
+        </select>
+        <button onclick="downloadTemplateTanggal()"
+            class="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest bg-orange-600 text-white px-3 py-1.5 rounded-lg hover:bg-slate-900 transition-colors">
+            <i class="fas fa-download"></i> Unduh Template
+        </button>
+    </div>
+</div>
+
+<script>
+function downloadTemplateTanggal() {
+    const tgl   = document.getElementById('selectTanggalTemplate').value;
+    const bulan = '{{ request('bulan', now('Asia/Jakarta')->format('m')) }}';
+    const tahun = '{{ request('tahun', now('Asia/Jakarta')->format('Y')) }}';
+    const url   = '{{ route('absensi.template') }}?tanggal=' + tgl + '&bulan=' + bulan + '&tahun=' + tahun;
+    window.location.href = url;
+}
+</script>
             </div>
 
             @if($errors->any())
@@ -386,6 +412,7 @@
                         <option value="Izin">Izin</option>
                         <option value="Sakit">Sakit</option>
                         <option value="Alpha">Alpha</option>
+                        <opytion value="Cuti">Cuti</option>
                     </select>
                 </div>
                 <div class="flex gap-3">
