@@ -51,12 +51,12 @@
                 <div class="bg-orange-600 p-2 rounded-xl text-white shadow-lg shadow-orange-900/50">
                     <i class="fas fa-screwdriver-wrench text-xl"></i>
                 </div>
-                <span class="font-extrabold text-2xl tracking-tighter uppercase italic text-white leading-none">
+                <span class="font-extrabold text-2xl tracking-tighter uppercase  text-white leading-none">
                     PAY<span class="text-orange-500">Tato</span>
                 </span>
             </div>
 
-            <h1 class="text-5xl font-black leading-none tracking-tighter uppercase italic mb-6">
+            <h1 class="text-5xl font-black leading-none tracking-tighter uppercase  mb-6">
                 Buat<br><span class="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-orange-500 to-amber-500">Password<br>Baru.</span>
             </h1>
             <p class="text-slate-400 text-sm leading-relaxed max-w-xs">
@@ -65,13 +65,13 @@
 
             {{-- NIP info box --}}
             <div class="mt-10 bg-white/5 border border-white/10 rounded-3xl p-6">
-                <p class="text-[9px] font-black uppercase tracking-widest text-slate-500 italic mb-3">Akun yang Akan Direset</p>
+                <p class="text-[9px] font-black uppercase tracking-widest text-slate-500  mb-3">Akun yang Akan Direset</p>
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 rounded-2xl bg-orange-600/20 border border-orange-500/30 flex items-center justify-center">
                         <i class="fas fa-user text-orange-400"></i>
                     </div>
                     <div>
-                        <p class="text-lg font-black text-white italic uppercase tracking-tight">{{ $ar->pengguna?->nama ?? '–' }}</p>
+                        <p class="text-lg font-black text-white  uppercase tracking-tight">{{ $ar->pengguna?->nama ?? '–' }}</p>
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">NIP: {{ $ar->nip }}</p>
                     </div>
                 </div>
@@ -88,10 +88,10 @@
     <div class="p-8 md:p-14 flex flex-col justify-center overflow-y-auto bg-white">
 
         <div class="mb-8">
-            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 italic mb-2">
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500  mb-2">
                 <i class="fas fa-shield-halved mr-1"></i> Step Terakhir
             </p>
-            <h3 class="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">Password Baru</h3>
+            <h3 class="text-3xl font-black text-slate-900 uppercase  tracking-tighter">Password Baru</h3>
             <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Isi dua kali untuk konfirmasi</p>
         </div>
 
@@ -111,7 +111,7 @@
 
             {{-- Password baru --}}
             <div>
-                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic ml-1">Password Baru</label>
+                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest  ml-1">Password Baru</label>
                 <div class="relative mt-2">
                     <input
                         type="password"
@@ -132,20 +132,20 @@
                 <div class="mt-2 w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
                     <div id="strengthBar" class="h-full rounded-full w-0 bg-red-400"></div>
                 </div>
-                <p id="strengthLabel" class="text-[9px] font-black uppercase tracking-widest mt-1 ml-1 text-slate-300 italic">Kekuatan password</p>
+                <p id="strengthLabel" class="text-[9px] font-black uppercase tracking-widest mt-1 ml-1 text-slate-300 ">Kekuatan password</p>
 
                 {{-- Rules checklist --}}
                 <ul class="mt-3 space-y-1.5 ml-1">
-                    <li id="rule-len"   class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 italic"><i class="fas fa-circle-dot w-3 text-[8px]"></i> Minimal 8 karakter</li>
-                    <li id="rule-upper" class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 italic"><i class="fas fa-circle-dot w-3 text-[8px]"></i> Huruf kapital (A–Z)</li>
-                    <li id="rule-num"   class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 italic"><i class="fas fa-circle-dot w-3 text-[8px]"></i> Angka (0–9)</li>
-                    <li id="rule-sym"   class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 italic"><i class="fas fa-circle-dot w-3 text-[8px]"></i> Simbol (!@#$...)</li>
+                    <li id="rule-len"   class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 "><i class="fas fa-circle-dot w-3 text-[8px]"></i> Minimal 8 karakter</li>
+                    <li id="rule-upper" class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 "><i class="fas fa-circle-dot w-3 text-[8px]"></i> Huruf kapital (A–Z)</li>
+                    <li id="rule-num"   class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 "><i class="fas fa-circle-dot w-3 text-[8px]"></i> Angka (0–9)</li>
+                    <li id="rule-sym"   class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 "><i class="fas fa-circle-dot w-3 text-[8px]"></i> Simbol (!@#$...)</li>
                 </ul>
             </div>
 
             {{-- Konfirmasi password --}}
             <div>
-                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic ml-1">Konfirmasi Password</label>
+                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest  ml-1">Konfirmasi Password</label>
                 <div class="relative mt-2">
                     <input
                         type="password"
@@ -161,19 +161,19 @@
                         <i class="fas fa-eye-slash"></i>
                     </button>
                 </div>
-                <p id="matchMsg" class="text-[10px] font-bold mt-1.5 ml-1 italic opacity-0 transition-opacity">&nbsp;</p>
+                <p id="matchMsg" class="text-[10px] font-bold mt-1.5 ml-1  opacity-0 transition-opacity">&nbsp;</p>
             </div>
 
             {{-- Token expiry info --}}
             <div class="bg-orange-50 border border-orange-100 rounded-2xl p-4 flex gap-3 items-start">
                 <i class="fas fa-triangle-exclamation text-orange-500 mt-0.5 text-sm flex-shrink-0"></i>
-                <p class="text-[10px] text-orange-700 leading-relaxed italic">
+                <p class="text-[10px] text-orange-700 leading-relaxed ">
                     Link ini berlaku hingga <span class="font-black">{{ $ar->token_expires_at?->format('d M Y, H:i') }} WIB</span>. Setelah itu kamu perlu mengajukan permintaan ulang ke HRD.
                 </p>
             </div>
 
             <button type="submit" id="submitBtn"
-                class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em] italic">
+                class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em] ">
                 <i class="fas fa-key mr-2"></i>Simpan Password Baru
             </button>
         </form>
@@ -226,7 +226,7 @@
         bar.style.width = c.w;
         bar.className   = 'h-full rounded-full transition-all duration-400 ' + c.color;
         label.textContent = c.text;
-        label.className   = 'text-[9px] font-black uppercase tracking-widest mt-1 ml-1 italic ' + c.cls;
+        label.className   = 'text-[9px] font-black uppercase tracking-widest mt-1 ml-1  ' + c.cls;
 
         checkMatch();
     }
@@ -239,10 +239,10 @@
         if (!cfm) { msg.style.opacity = 0; return; }
         if (pw === cfm) {
             msg.textContent = '✓ Password cocok';
-            msg.className   = 'text-[10px] font-bold mt-1.5 ml-1 italic text-green-500 transition-opacity';
+            msg.className   = 'text-[10px] font-bold mt-1.5 ml-1  text-green-500 transition-opacity';
         } else {
             msg.textContent = '✗ Password tidak cocok';
-            msg.className   = 'text-[10px] font-bold mt-1.5 ml-1 italic text-red-500 transition-opacity';
+            msg.className   = 'text-[10px] font-bold mt-1.5 ml-1  text-red-500 transition-opacity';
         }
         msg.style.opacity = 1;
     }

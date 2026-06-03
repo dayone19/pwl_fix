@@ -58,7 +58,7 @@
 
             <div class="flex flex-col gap-2">
                 <div>
-                    <h1 class="text-3xl font-black text-slate-900 italic uppercase tracking-tighter leading-none">
+                    <h1 class="text-3xl font-black text-slate-900  uppercase tracking-tighter leading-none">
                         {{ $user->nama }}
                     </h1>
                     <div class="mt-1 inline-block px-3 py-1 bg-slate-100 rounded-lg border border-slate-200">
@@ -104,11 +104,11 @@
         <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
             <div>
                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Track Kuota Cuti</p>
-                <h2 class="text-4xl font-black text-slate-900 italic tracking-tighter leading-none">{{ $cutiDiambil ?? 0 }} / 12</h2>
+                <h2 class="text-4xl font-black text-slate-900  tracking-tighter leading-none">{{ $cutiDiambil ?? 0 }} / 12</h2>
                 <div class="w-full bg-slate-100 h-1 rounded-full mt-2">
                     <div class="bg-orange-500 h-1 rounded-full" style="width: {{ (($cutiDiambil ?? 0)/12)*100 }}%"></div>
                 </div>
-                <span class="text-[9px] font-bold text-slate-500 uppercase italic mt-1 inline-block">Sisa: {{ 12 - ($cutiDiambil ?? 0) }} Hari</span>
+                <span class="text-[9px] font-bold text-slate-500 uppercase  mt-1 inline-block">Sisa: {{ 12 - ($cutiDiambil ?? 0) }} Hari</span>
             </div>
             <i class="fas fa-calendar-alt absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
         </div>
@@ -119,10 +119,10 @@
                 <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-6 flex items-center gap-2">
                     <i class="fas fa-file-invoice-dollar"></i> Status Pembayaran Gaji
                 </p>
-                <h2 class="text-4xl font-black italic tracking-tighter mb-2 leading-none">
+                <h2 class="text-4xl font-black  tracking-tighter mb-2 leading-none">
                     {{ Str::upper($gajiTerakhir->status_bayar ?? 'DRAFT') }}
                 </h2>
-                <p class="text-[10px] font-bold text-orange-200 uppercase italic">{{ date('F Y') }}</p>
+                <p class="text-[10px] font-bold text-orange-200 uppercase ">{{ date('F Y') }}</p>
             </div>
             <i class="fas fa-check-double absolute -bottom-6 -right-6 text-[100px] text-white/10 rotate-12 group-hover:scale-110 transition-transform"></i>
         </div>
@@ -131,24 +131,24 @@
     @elseif($divisi == 'HRD')
         <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Pegawai Aktif</p>
-            <h2 class="text-4xl font-black text-slate-900 italic tracking-tighter leading-none">{{ $totalPegawai }}</h2>
+            <h2 class="text-4xl font-black text-slate-900  tracking-tighter leading-none">{{ $totalPegawai }}</h2>
             <i class="fas fa-users absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
         </div>
 
         <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Pengajuan Cuti</p>
-            <h2 class="text-4xl font-black text-orange-500 italic tracking-tighter leading-none">{{ $jumlahCutiPending ?? 0 }}</h2>
+            <h2 class="text-4xl font-black text-orange-500  tracking-tighter leading-none">{{ $jumlahCutiPending ?? 0 }}</h2>
             <i class="fas fa-envelope-open-text absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
         </div>
 
         <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
             <div>
                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Track Kuota Cuti</p>
-                <h2 class="text-4xl font-black text-slate-900 italic tracking-tighter leading-none">{{ $cutiDiambil ?? 0 }} / 12</h2>
+                <h2 class="text-4xl font-black text-slate-900  tracking-tighter leading-none">{{ $cutiDiambil ?? 0 }} / 12</h2>
                 <div class="w-full bg-slate-100 h-1 rounded-full mt-2">
                     <div class="bg-orange-500 h-1 rounded-full" style="width: {{ (($cutiDiambil ?? 0)/12)*100 }}%"></div>
                 </div>
-                <span class="text-[9px] font-bold text-slate-500 uppercase italic mt-1 inline-block">Sisa: {{ 12 - ($cutiDiambil ?? 0) }} Hari</span>
+                <span class="text-[9px] font-bold text-slate-500 uppercase  mt-1 inline-block">Sisa: {{ 12 - ($cutiDiambil ?? 0) }} Hari</span>
             </div>
             <i class="fas fa-calendar-alt absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
         </div>
@@ -158,10 +158,10 @@
                 <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-6 flex items-center gap-2">
                     <i class="fas fa-file-invoice-dollar"></i> Status Pembayaran Gaji
                 </p>
-                <h2 class="text-4xl font-black italic tracking-tighter mb-2 leading-none">
+                <h2 class="text-4xl font-black  tracking-tighter mb-2 leading-none">
                     {{ Str::upper($gajiTerakhir->status_bayar ?? 'DRAFT') }}
                 </h2>
-                <p class="text-[10px] font-bold text-orange-200 uppercase italic">{{ date('F Y') }}</p>
+                <p class="text-[10px] font-bold text-orange-200 uppercase ">{{ date('F Y') }}</p>
             </div>
             <i class="fas fa-check-double absolute -bottom-6 -right-6 text-[100px] text-white/10 rotate-12 group-hover:scale-110 transition-transform"></i>
         </div>
@@ -171,19 +171,19 @@
 
         <div class="mesh-bg-workshop p-8 rounded-[45px] text-white shadow-2xl relative overflow-hidden group">
             <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-6">Total Biaya Gaji</p>
-            <h2 class="text-2xl font-black italic tracking-tighter leading-none">Rp {{ number_format($totalPayroll ?? 0, 0, ',', '.') }}</h2>
+            <h2 class="text-2xl font-black  tracking-tighter leading-none">Rp {{ number_format($totalPayroll ?? 0, 0, ',', '.') }}</h2>
             <i class="fas fa-coins absolute -right-4 -bottom-4 text-7xl text-white/10"></i>
         </div>
 
         <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group border-2 hover:border-blue-500 transition-all">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Payroll Submitted</p>
-            <h2 class="text-3xl font-black text-blue-600 italic tracking-tighter leading-none">{{ $slipIsiCount ?? 0 }} / {{ $totalPegawai }}</h2>
+            <h2 class="text-3xl font-black text-blue-600  tracking-tighter leading-none">{{ $slipIsiCount ?? 0 }} / {{ $totalPegawai }}</h2>
             <i class="fas fa-file-export absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
         </div>
 
         <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Track Cuti</p>
-                <h2 class="text-4xl font-black text-slate-900 italic tracking-tighter leading-none">{{ $cutiDiambil ?? 0 }} / 12</h2>
+                <h2 class="text-4xl font-black text-slate-900  tracking-tighter leading-none">{{ $cutiDiambil ?? 0 }} / 12</h2>
                 <i class="fas fa-calendar-check absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
         </div>
         
@@ -193,13 +193,13 @@
 
         <div class="mesh-bg-workshop p-8 rounded-[45px] text-white shadow-2xl relative overflow-hidden group">
             <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-6">Total Pengeluaran</p>
-            <h2 class="text-2xl font-black italic tracking-tighter leading-none">Rp {{ number_format($totalPayroll ?? 0, 0, ',', '.') }}</h2>
+            <h2 class="text-2xl font-black  tracking-tighter leading-none">Rp {{ number_format($totalPayroll ?? 0, 0, ',', '.') }}</h2>
             <i class="fas fa-vault absolute -right-4 -bottom-4 text-7xl text-white/10"></i>
         </div>
 
         <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Total Pegawai</p>
-            <h2 class="text-4xl font-black text-slate-900 italic tracking-tighter leading-none">{{ $totalPegawai }}</h2>
+            <h2 class="text-4xl font-black text-slate-900  tracking-tighter leading-none">{{ $totalPegawai }}</h2>
             <i class="fas fa-user-tie absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
         </div>
 
@@ -207,13 +207,13 @@
 
         <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group border-2 border-green-500">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Payroll Approved</p>
-            <h2 class="text-3xl font-black text-green-600 italic tracking-tighter leading-none">{{ $slipApprovedCount ?? 0 }} / {{ $totalPegawai }}</h2>
+            <h2 class="text-3xl font-black text-green-600  tracking-tighter leading-none">{{ $slipApprovedCount ?? 0 }} / {{ $totalPegawai }}</h2>
             <i class="fas fa-check-circle absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
         </div>
 
         <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Pengajuan Cuti</p>
-            <h2 class="text-4xl font-black text-orange-500 italic tracking-tighter leading-none">{{ $jumlahCutiPending ?? 0 }}</h2>
+            <h2 class="text-4xl font-black text-orange-500  tracking-tighter leading-none">{{ $jumlahCutiPending ?? 0 }}</h2>
             <i class="fas fa-user-clock absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
         </div>
     @endif
@@ -222,7 +222,7 @@
 
     @if(in_array($user->role, ['manager', 'hrd', 'akuntan']))
     <div class="bg-white rounded-[55px] p-10 border border-slate-100 shadow-sm mb-10">
-        <h3 class="text-xl font-black text-slate-900 uppercase italic tracking-tighter mb-8">Analisis Tren Gaji</h3>
+        <h3 class="text-xl font-black text-slate-900 uppercase  tracking-tighter mb-8">Analisis Tren Gaji</h3>
         <div class="h-64"><canvas id="mainChart"></canvas></div>
     </div>
     @endif
@@ -234,7 +234,7 @@
             <div class="flex justify-between items-center mb-8">
                 <div>
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-1">Analisis Bulanan</p>
-                    <h3 class="text-xl font-black text-slate-900 italic tracking-tighter">STATISTIK PAYROLL</h3>
+                    <h3 class="text-xl font-black text-slate-900  tracking-tighter">STATISTIK PAYROLL</h3>
                 </div>
                 <select class="text-[10px] font-black uppercase tracking-widest border-none bg-slate-50 rounded-xl px-4 py-2 focus:ring-0">
                     <option>Tahun 2026</option>
@@ -252,7 +252,7 @@
             {{-- Aksen Gradasi Oranye Tipis Pojok Kanan Atas Biar Se-Tema --}}
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent pointer-events-none"></div>
 
-            <h3 class="text-xl font-black uppercase italic tracking-tighter mb-8 text-orange-500 relative z-10">Workshop Info</h3>
+            <h3 class="text-xl font-black uppercase  tracking-tighter mb-8 text-orange-500 relative z-10">Workshop Info</h3>
             
             <div class="space-y-8 relative z-10">
                 <div class="flex gap-5">
@@ -260,8 +260,8 @@
                         <p class="text-2xl font-black">{{ $totalPegawai }}</p>
                     </div>
                     <div>
-                        <p class="text-xs font-black uppercase italic text-slate-200">Kru Aktif</p>
-                        <p class="text-[9px] font-bold text-green-400 uppercase mt-1 tracking-widest italic">All Units Ready</p>
+                        <p class="text-xs font-black uppercase  text-slate-200">Kru Aktif</p>
+                        <p class="text-[9px] font-bold text-green-400 uppercase mt-1 tracking-widest ">All Units Ready</p>
                     </div>
                 </div>
 
@@ -274,8 +274,8 @@
                             <i class="fas fa-exclamation-triangle"></i> Penting:
                         </p>
                         <ul class="space-y-3">
-                            <li class="text-[11px] font-bold text-slate-300 italic leading-tight uppercase">• Cek input gaji pegawai</li>
-                            <li class="text-[11px] font-bold text-slate-300 italic leading-tight uppercase">• Deadline Payroll H-2</li>
+                            <li class="text-[11px] font-bold text-slate-300  leading-tight uppercase">• Cek input gaji pegawai</li>
+                            <li class="text-[11px] font-bold text-slate-300  leading-tight uppercase">• Deadline Payroll H-2</li>
                         </ul>
                     </div>
                 @else
@@ -283,7 +283,7 @@
                         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                             <i class="fas fa-shield-alt"></i> Safety Note:
                         </p>
-                        <p class="text-[11px] font-bold text-slate-300 italic leading-relaxed uppercase">
+                        <p class="text-[11px] font-bold text-slate-300  leading-relaxed uppercase">
                             Gunakan APD lengkap dan patuhi protokol keselamatan kerja di area bengkel.
                         </p>
                     </div>

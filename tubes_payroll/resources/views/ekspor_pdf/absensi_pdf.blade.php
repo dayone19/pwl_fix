@@ -27,7 +27,7 @@
             font-weight: 900;
             color: #0f172a;
             text-transform: uppercase;
-            font-style: italic;
+            font-style: ;
             margin: 0;
         }
         .brand-subtitle {
@@ -232,7 +232,7 @@
             <tr>
                 <th rowspan="2" style="width: 20px;">NO</th>
                 <th rowspan="2" class="th-main">KARYAWAN / JABATAN</th>
-                <th colspan="{{ $totalHariKerja }}" style="background-color: #f1f5f9; italic: true;">
+                <th colspan="{{ $totalHariKerja }}" style="background-color: #f1f5f9; : true;">
                     MEI 2026
                 </th>
                 <th colspan="2" class="th-total">TOTAL</th>

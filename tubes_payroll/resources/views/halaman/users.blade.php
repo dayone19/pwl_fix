@@ -29,7 +29,7 @@
                         background: '#ffffff',
                         iconColor: '#ea580c',
                         customClass: {
-                            title: 'font-black text-slate-900 uppercase italic tracking-tighter',
+                            title: 'font-black text-slate-900 uppercase  tracking-tighter',
                             popup: 'rounded-[30px] border-none shadow-2xl'
                         }
                     });
@@ -48,7 +48,7 @@
                         text: "{{ session('error') }}",
                         confirmButtonColor: '#ea580c',
                         customClass: {
-                            title: 'font-black text-slate-900 uppercase italic tracking-tighter',
+                            title: 'font-black text-slate-900 uppercase  tracking-tighter',
                             popup: 'rounded-[30px]'
                         }
                     });
@@ -65,8 +65,8 @@
                     <i class="fas fa-user-shield text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-black text-slate-900 italic uppercase tracking-tighter leading-none">User Management</h1>
-                    <p class="text-orange-600 text-[10px] font-black mt-1 uppercase tracking-[0.3em] italic">Kontrol Akses Sistem</p>
+                    <h1 class="text-3xl font-black text-slate-900  uppercase tracking-tighter leading-none">User Management</h1>
+                    <p class="text-orange-600 text-[10px] font-black mt-1 uppercase tracking-[0.3em] ">Kontrol Akses Sistem</p>
                 </div>
             </div>
         </div>
@@ -106,16 +106,16 @@
                                      class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-sm group-hover:rotate-3 transition-transform"
                                      onerror="this.src='{{ asset('img/profil/default.jpg') }}'">
                                 <div>
-                                    <p class="font-black text-slate-800 uppercase italic tracking-tighter leading-none mb-1">{{ $user->nama_lengkap ?? $user->nama }}</p>
+                                    <p class="font-black text-slate-800 uppercase  tracking-tighter leading-none mb-1">{{ $user->nama_lengkap ?? $user->nama }}</p>
                                     <span class="font-mono text-[9px] text-slate-400 font-bold tracking-widest uppercase">NIP: #{{ $user->nip }}</span>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors italic font-bold text-slate-600 text-sm">
+                        <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors  font-bold text-slate-600 text-sm">
                             {{ $user->email }}
                         </td>
                         <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors">
-                            <span class="px-4 py-1.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-full font-black italic text-[9px] uppercase tracking-widest">
+                            <span class="px-4 py-1.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-full font-black  text-[9px] uppercase tracking-widest">
                                 {{ $user->role ?? 'Pegawai' }}
                             </span>
                         </td>
@@ -135,7 +135,7 @@
                         <td colspan="4" class="px-8 py-20 text-center">
                             <div class="flex flex-col items-center gap-2 opacity-20">
                                 <i class="fas fa-users-slash text-5xl mb-2"></i>
-                                <p class="font-black uppercase italic tracking-widest text-xs">Belum ada user terdaftar</p>
+                                <p class="font-black uppercase  tracking-widest text-xs">Belum ada user terdaftar</p>
                             </div>
                         </td>
                     </tr>
@@ -149,9 +149,9 @@
 
             {{-- PREV --}}
             @if ($data_karyawan->onFirstPage())
-                <span class="text-slate-300 text-[10px] font-black uppercase italic cursor-not-allowed">Prev</span>
+                <span class="text-slate-300 text-[10px] font-black uppercase  cursor-not-allowed">Prev</span>
             @else
-                <a href="{{ $data_karyawan->previousPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase italic hover:text-orange-600 transition-colors">Prev</a>
+                <a href="{{ $data_karyawan->previousPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Prev</a>
             @endif
 
             {{-- NOMOR HALAMAN --}}
@@ -171,7 +171,7 @@
 
                 @for ($i = $start; $i <= $end; $i++)
                     @if ($i == $curr)
-                        <span class="w-10 h-10 flex items-center justify-center bg-slate-900 text-orange-500 font-black rounded-xl shadow-lg italic text-xs border-b-2 border-orange-600">
+                        <span class="w-10 h-10 flex items-center justify-center bg-slate-900 text-orange-500 font-black rounded-xl shadow-lg  text-xs border-b-2 border-orange-600">
                             {{ $i }}
                         </span>
                     @else
@@ -190,9 +190,9 @@
 
             {{-- NEXT --}}
             @if ($data_karyawan->hasMorePages())
-                <a href="{{ $data_karyawan->nextPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase italic hover:text-orange-600 transition-colors">Next</a>
+                <a href="{{ $data_karyawan->nextPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Next</a>
             @else
-                <span class="text-slate-300 text-[10px] font-black uppercase italic cursor-not-allowed">Next</span>
+                <span class="text-slate-300 text-[10px] font-black uppercase  cursor-not-allowed">Next</span>
             @endif
 
         </div>

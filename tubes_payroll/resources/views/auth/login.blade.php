@@ -49,12 +49,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
                     </div>
-                    <span class="font-extrabold text-2xl tracking-tighter uppercase italic text-white leading-none">
+                    <span class="font-extrabold text-2xl tracking-tighter uppercase  text-white leading-none">
                         PAY<span class="text-orange-500">Tato</span>
                     </span>
                 </div>
                 
-                <h1 class="text-5xl font-black leading-none tracking-tighter uppercase italic">
+                <h1 class="text-5xl font-black leading-none tracking-tighter uppercase ">
                     Precision in <br>Every <span class="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-orange-500 to-amber-500">Payroll.</span>
                 </h1>
             </div>
@@ -66,13 +66,13 @@
 
         <div class="p-8 md:p-16 flex flex-col justify-center overflow-y-auto bg-white">
             <div class="mb-8">
-                <h3 class="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">Login Kru</h3>
+                <h3 class="text-3xl font-black text-slate-900 uppercase  tracking-tighter">Login Kru</h3>
                 <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2 leading-none">Otoritasi Identitas Teknisi & Staff</p>
             </div>
 
             @if ($errors->any())
                 <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl">
-                    <p class="text-xs font-bold text-red-600 uppercase italic">{{ $errors->first() }}</p>
+                    <p class="text-xs font-bold text-red-600 uppercase ">{{ $errors->first() }}</p>
                 </div>
             @endif
 
@@ -84,7 +84,7 @@
                         <div class="relative">
                             <input type="radio" name="id_divisi" id="teknisi" value="4" class="peer hidden" {{ old('id_divisi') == '4' ? 'checked' : '' }}>
                             <label for="teknisi" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
-                                <span class="text-xs font-black uppercase italic leading-none">Teknis</span>
+                                <span class="text-xs font-black uppercase  leading-none">Teknis</span>
                                 <span class="text-[9px] text-slate-400 mt-1 uppercase tracking-tighter">Payroll Check</span>
                             </label>
                         </div>
@@ -92,7 +92,7 @@
                         <div class="relative">
                             <input type="radio" name="id_divisi" id="akuntan" value="3" class="peer hidden" {{ old('id_divisi') == '3' ? 'checked' : '' }}>
                             <label for="akuntan" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
-                                <span class="text-xs font-black uppercase italic leading-none">Finance</span>
+                                <span class="text-xs font-black uppercase  leading-none">Finance</span>
                                 <span class="text-[9px] text-slate-400 mt-1 uppercase tracking-tighter">Generate Payroll</span>
                             </label>
                         </div>
@@ -100,7 +100,7 @@
                         <div class="relative">
                             <input type="radio" name="id_divisi" id="hrd" value="2" class="peer hidden" {{ old('id_divisi') == '2' ? 'checked' : '' }}>
                             <label for="hrd" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
-                                <span class="text-xs font-black uppercase italic leading-none">HR</span>
+                                <span class="text-xs font-black uppercase  leading-none">HR</span>
                                 <span class="text-[9px] text-slate-400 mt-1 uppercase tracking-tighter">Data Management</span>
                             </label>
                         </div>
@@ -108,7 +108,7 @@
                         <div class="relative">
                             <input type="radio" name="id_divisi" id="manager" value="1" class="peer hidden" {{ old('id_divisi') == '1' ? 'checked' : '' }}>
                             <label for="manager" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
-                                <span class="text-xs font-black uppercase italic leading-none">Management</span>
+                                <span class="text-xs font-black uppercase  leading-none">Management</span>
                                 <span class="text-[9px] text-slate-400 mt-1 uppercase tracking-tighter">Approve Request</span>
                             </label>
                         </div>
@@ -117,19 +117,19 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 italic">NIP / ID Karyawan</label>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 ">NIP / ID Karyawan</label>
                         <input type="text" name="nip" id="nipInput" value="{{ old('nip') }}" required
                             class="w-full mt-2 px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-600 outline-none transition font-semibold" 
                             placeholder="Contoh: 123456">
-                        <p id="nipHint" class="opacity-0 text-red-500 text-[11px] mt-2 ml-2 italic font-medium transition-all duration-300">
+                        <p id="nipHint" class="opacity-0 text-red-500 text-[11px] mt-2 ml-2  font-medium transition-all duration-300">
                             • minimal 6 digit angka
                         </p>
                     </div>
 
                     <div>
                         <div class="flex justify-between items-center ml-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Pass-Key</label>
-                            <a href="{{ route('password.forgot') }}"class="text-[10px] font-black uppercase tracking-widest text-orange-500 hover:text-orange-600 transition italic">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ">Pass-Key</label>
+                            <a href="{{ route('password.forgot') }}"class="text-[10px] font-black uppercase tracking-widest text-orange-500 hover:text-orange-600 transition ">
                                 Forgot Password?
                             </a>
                         </div>
@@ -147,22 +147,22 @@
 
                         <div id="passwordFeedback" class="mt-3 ml-2 opacity-0 transition-all duration-300">
                             <ul id="passwordError" class="space-y-1">
-                                <li id="reqLen" class="text-[11px] text-red-500 flex items-center gap-2 transition-colors italic">
+                                <li id="reqLen" class="text-[11px] text-red-500 flex items-center gap-2 transition-colors ">
                                     <span>•</span> Minimal 8 karakter
                                 </li>
-                                <li id="reqUpper" class="text-[11px] text-red-500 flex items-center gap-2 transition-colors italic">
+                                <li id="reqUpper" class="text-[11px] text-red-500 flex items-center gap-2 transition-colors ">
                                     <span>•</span> Minimal 1 huruf besar
                                 </li>
-                                <li id="reqNum" class="text-[11px] text-red-500 flex items-center gap-2 transition-colors italic">
+                                <li id="reqNum" class="text-[11px] text-red-500 flex items-center gap-2 transition-colors ">
                                     <span>•</span> Minimal 1 angka
                                 </li>
                             </ul>
-                            <p id="pwValidText" class="hidden text-[11px] font-bold text-green-500 italic">✓ Password Valid</p>
+                            <p id="pwValidText" class="hidden text-[11px] font-bold text-green-500 ">✓ Password Valid</p>
                         </div>
                     </div>
                 </div>
                 
-                <button type="submit" class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl shadow-orange-900/10 hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em] italic">
+                <button type="submit" class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl shadow-orange-900/10 hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em] ">
                     Masuk Dashboard →
                 </button>
             </form>

@@ -34,8 +34,8 @@
                 <i class="fas fa-clipboard-user text-2xl"></i>
             </div>
             <div>
-                <h1 class="text-3xl font-black text-slate-900 italic uppercase tracking-tighter leading-none">Absensi & Lembur</h1>
-                <p class="text-orange-600 text-[10px] font-black mt-1 uppercase tracking-[0.3em] italic">Log Kehadiran Kru Bengkel</p>
+                <h1 class="text-3xl font-black text-slate-900  uppercase tracking-tighter leading-none">Absensi & Lembur</h1>
+                <p class="text-orange-600 text-[10px] font-black mt-1 uppercase tracking-[0.3em] ">Log Kehadiran Kru Bengkel</p>
             </div>
         </div>
 
@@ -58,7 +58,7 @@
                 class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl border border-slate-200/60 shadow-sm">
                 <div class="relative">
                     <select name="tanggal" onchange="this.form.submit()"
-                        class="appearance-none bg-white border border-slate-200 text-slate-800 font-black italic text-[11px] uppercase tracking-wide rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:border-orange-500 cursor-pointer transition-colors">
+                        class="appearance-none bg-white border border-slate-200 text-slate-800 font-black  text-[11px] uppercase tracking-wide rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:border-orange-500 cursor-pointer transition-colors">
                         <option value="">Tanggal</option>
                         @foreach(range(1, 31) as $d)
                             @php $valTanggal = sprintf('%02d', $d); @endphp
@@ -72,7 +72,7 @@
 
                 <div class="relative">
                     <select name="bulan" onchange="this.form.submit()"
-                        class="appearance-none bg-white border border-slate-200 text-slate-800 font-black italic text-[11px] uppercase tracking-wide rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:border-orange-500 cursor-pointer transition-colors">
+                        class="appearance-none bg-white border border-slate-200 text-slate-800 font-black  text-[11px] uppercase tracking-wide rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:border-orange-500 cursor-pointer transition-colors">
                         <option value="">Bulan</option>
                         @foreach(range(1, 12) as $m)
                             @php
@@ -89,7 +89,7 @@
 
                 <div class="relative">
                     <select name="tahun" onchange="this.form.submit()"
-                        class="appearance-none bg-white border border-slate-200 text-slate-800 font-black italic text-[11px] uppercase tracking-wide rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:border-orange-500 cursor-pointer transition-colors">
+                        class="appearance-none bg-white border border-slate-200 text-slate-800 font-black  text-[11px] uppercase tracking-wide rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:border-orange-500 cursor-pointer transition-colors">
                         <option value="">Tahun</option>
                         @for($y = date('Y'); $y >= date('Y') - 4; $y--)
                             <option value="{{ $y }}" {{ request('tahun') == $y ? 'selected' : '' }}>{{ $y }}</option>
@@ -112,17 +112,17 @@
 
     {{-- FLASH MESSAGE --}}
     @if(session('success'))
-    <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest italic">
+    <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest ">
         <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
     </div>
     @endif
     @if(session('warning'))
-    <div class="mb-4 bg-yellow-50 border border-yellow-200 text-yellow-700 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest italic">
+    <div class="mb-4 bg-yellow-50 border border-yellow-200 text-yellow-700 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest ">
         <i class="fas fa-triangle-exclamation mr-2"></i>{{ session('warning') }}
     </div>
     @endif
     @if(session('error'))
-    <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest italic">
+    <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest ">
         <i class="fas fa-triangle-exclamation mr-2"></i>{{ session('error') }}
     </div>
     @endif
@@ -146,17 +146,17 @@
                     <tr class="group hover:scale-[1.01] transition-all duration-300">
                         <td class="px-8 py-6 bg-slate-50 rounded-l-[35px] border-y border-l border-slate-100 group-hover:bg-white group-hover:border-orange-200 transition-colors">
                             <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center font-black text-slate-400 border border-slate-200 italic group-hover:bg-slate-900 group-hover:text-orange-500 transition-all">
+                                <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center font-black text-slate-400 border border-slate-200  group-hover:bg-slate-900 group-hover:text-orange-500 transition-all">
                                     {{ strtoupper(substr($item->nama_pegawai, 0, 2)) }}
                                 </div>
                                 <div>
-                                    <p class="font-black text-slate-800 uppercase italic tracking-tighter leading-none mb-1">{{ $item->nama_pegawai }}</p>
+                                    <p class="font-black text-slate-800 uppercase  tracking-tighter leading-none mb-1">{{ $item->nama_pegawai }}</p>
                                     <span class="font-mono text-[9px] text-slate-400 font-bold tracking-widest uppercase">NIP: {{ $item->nip }}</span>
                                 </div>
                             </div>
                         </td>
                         <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors">
-                            <span class="text-slate-600 font-black italic text-xs uppercase">{{ $item->tanggal }}</span>
+                            <span class="text-slate-600 font-black  text-xs uppercase">{{ $item->tanggal }}</span>
                         </td>
                         <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors">
                             <div class="font-mono font-black text-sm text-blue-600 bg-blue-50 py-1 px-3 rounded-lg border border-blue-100 inline-block">
@@ -180,7 +180,7 @@
                                 };
                             @endphp
                             <div class="flex items-center justify-end gap-2">
-                                <span class="px-4 py-2 rounded-xl text-[9px] font-black uppercase italic border shadow-sm {{ $statusStyle }}">
+                                <span class="px-4 py-2 rounded-xl text-[9px] font-black uppercase  border shadow-sm {{ $statusStyle }}">
                                     {{ $item->status_kehadiran }}
                                 </span>
                                 @if(auth()->user()->id_divisi == 2)
@@ -197,7 +197,7 @@
                         <td colspan="5" class="px-8 py-20 text-center">
                             <div class="flex flex-col items-center gap-2 opacity-20">
                                 <i class="fas fa-calendar-xmark text-5xl mb-2"></i>
-                                <p class="font-black uppercase italic tracking-widest text-xs">Belum ada catatan absen di periode ini</p>
+                                <p class="font-black uppercase  tracking-widest text-xs">Belum ada catatan absen di periode ini</p>
                             </div>
                         </td>
                     </tr>
@@ -211,10 +211,10 @@
 
             {{-- PREV --}}
             @if ($dataAbsen->onFirstPage())
-                <span class="text-slate-300 text-[10px] font-black uppercase italic cursor-not-allowed">Prev</span>
+                <span class="text-slate-300 text-[10px] font-black uppercase  cursor-not-allowed">Prev</span>
             @else
                 <a href="{{ $dataAbsen->appends(request()->query())->previousPageUrl() }}"
-                    class="text-slate-600 text-[10px] font-black uppercase italic hover:text-orange-600 transition-colors">Prev</a>
+                    class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Prev</a>
             @endif
 
             {{-- NOMOR HALAMAN --}}
@@ -235,7 +235,7 @@
 
                 @for ($i = $start; $i <= $end; $i++)
                     @if ($i == $curr)
-                        <span class="w-10 h-10 flex items-center justify-center bg-slate-900 text-orange-500 font-black rounded-xl shadow-lg italic text-xs border-b-2 border-orange-600">{{ $i }}</span>
+                        <span class="w-10 h-10 flex items-center justify-center bg-slate-900 text-orange-500 font-black rounded-xl shadow-lg  text-xs border-b-2 border-orange-600">{{ $i }}</span>
                     @else
                         <a href="{{ $dataAbsen->appends(request()->query())->url($i) }}"
                             class="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 text-slate-600 font-bold rounded-xl hover:border-orange-500 hover:text-orange-600 transition-all shadow-sm text-xs">{{ $i }}</a>
@@ -253,9 +253,9 @@
             {{-- NEXT --}}
             @if ($dataAbsen->hasMorePages())
                 <a href="{{ $dataAbsen->appends(request()->query())->nextPageUrl() }}"
-                    class="text-slate-600 text-[10px] font-black uppercase italic hover:text-orange-600 transition-colors">Next</a>
+                    class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Next</a>
             @else
-                <span class="text-slate-300 text-[10px] font-black uppercase italic cursor-not-allowed">Next</span>
+                <span class="text-slate-300 text-[10px] font-black uppercase  cursor-not-allowed">Next</span>
             @endif
 
         </div>
@@ -276,7 +276,7 @@
                         <i class="fas fa-file-arrow-up text-sm"></i>
                     </div>
                     <div>
-                        <p class="font-black text-slate-800 uppercase italic tracking-tighter text-sm leading-none">Import Absen</p>
+                        <p class="font-black text-slate-800 uppercase  tracking-tighter text-sm leading-none">Import Absen</p>
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-0.5">Upload file XLS / XLSX / CSV</p>
                     </div>
                 </div>
@@ -287,24 +287,24 @@
             </div>
 
             <div class="mb-5 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4">
-                <p class="text-[9px] font-black uppercase tracking-widest text-slate-500 italic mb-2">Format Kolom yang Diperlukan:</p>
+                <p class="text-[9px] font-black uppercase tracking-widest text-slate-500  mb-2">Format Kolom yang Diperlukan:</p>
                 <div class="flex flex-wrap gap-2">
                     @foreach(['nip', 'nama', 'tanggal', 'jam_masuk', 'jam_keluar', 'status'] as $col)
                     <span class="font-mono text-[9px] bg-white border border-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-bold">{{ $col }}</span>
                     @endforeach
                 </div>
-                <p class="text-[9px] text-slate-400 font-bold mt-3 italic">
+                <p class="text-[9px] text-slate-400 font-bold mt-3 ">
                     Format tanggal: <span class="font-mono text-slate-600">dd/mm/yyyy</span> &nbsp;|&nbsp;
                     Status: <span class="font-mono text-slate-600">Hadir / Terlambat / Izin / Sakit / Alpha</span>
                 </p>
                 <a href="{{ route('absensi.template', request()->only(['tanggal', 'bulan', 'tahun'])) }}"
-                    class="mt-3 inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-orange-600 hover:text-slate-900 transition-colors italic">
+                    class="mt-3 inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-orange-600 hover:text-slate-900 transition-colors ">
                     <i class="fas fa-download"></i> Download Template
                 </a>
             </div>
 
             @if($errors->any())
-            <div class="mb-5 bg-red-50 border border-red-200 text-red-700 px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest italic">
+            <div class="mb-5 bg-red-50 border border-red-200 text-red-700 px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest ">
                 <i class="fas fa-triangle-exclamation mr-2"></i>{{ $errors->first() }}
             </div>
             @endif
@@ -312,16 +312,16 @@
             <form action="{{ route('absensi.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-5">
                 @csrf
                 <div>
-                    <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 italic mb-2">File Absensi</label>
+                    <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400  mb-2">File Absensi</label>
                     <label for="file_absen"
                         class="flex flex-col items-center justify-center w-full h-32 bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl cursor-pointer hover:border-orange-400 hover:bg-orange-50 transition-all group">
                         <i class="fas fa-cloud-arrow-up text-2xl text-slate-300 group-hover:text-orange-400 transition-colors mb-2"></i>
-                        <p class="text-[10px] font-black uppercase italic text-slate-400 group-hover:text-orange-500 transition-colors">Klik untuk pilih file</p>
+                        <p class="text-[10px] font-black uppercase  text-slate-400 group-hover:text-orange-500 transition-colors">Klik untuk pilih file</p>
                         <p class="text-[9px] font-bold text-slate-300 mt-1">XLS, XLSX, CSV — Maks. 2MB</p>
                         <input type="file" id="file_absen" name="file_absen" accept=".xlsx,.xls,.csv" class="hidden"
                             onchange="document.getElementById('namaFile').textContent = this.files[0]?.name ?? ''">
                     </label>
-                    <p id="namaFile" class="mt-2 text-[10px] font-mono font-bold text-orange-600 italic text-center"></p>
+                    <p id="namaFile" class="mt-2 text-[10px] font-mono font-bold text-orange-600  text-center"></p>
                 </div>
                 <div class="flex gap-3">
                     <button type="button"
@@ -353,7 +353,7 @@
                         <i class="fas fa-pen text-sm"></i>
                     </div>
                     <div>
-                        <p class="font-black text-slate-800 uppercase italic tracking-tighter text-sm leading-none">Edit Absensi</p>
+                        <p class="font-black text-slate-800 uppercase  tracking-tighter text-sm leading-none">Edit Absensi</p>
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-0.5">Ubah data kehadiran</p>
                     </div>
                 </div>
@@ -367,18 +367,18 @@
                 @csrf
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 italic mb-2">Jam Masuk</label>
+                        <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400  mb-2">Jam Masuk</label>
                         <input type="time" id="edit_jam_masuk" name="jam_masuk" step="60"
                             class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-black text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors">
                     </div>
                     <div>
-                        <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 italic mb-2">Jam Keluar</label>
+                        <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400  mb-2">Jam Keluar</label>
                         <input type="time" id="edit_jam_keluar" name="jam_keluar" step="60"
                             class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-black text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 italic mb-2">Status Kehadiran</label>
+                    <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400  mb-2">Status Kehadiran</label>
                     <select id="edit_status" name="status_kehadiran"
                         class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-black text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors">
                         <option value="Hadir">Hadir</option>

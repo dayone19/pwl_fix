@@ -51,6 +51,10 @@ class ProfilPegawai extends Model
         return $this->hasMany(RiwayatPegawai::class, 'pegawai_id');
     }
 
+    public function divisi()
+    {
+        return $this->belongsTo(Divisi::class, 'id_divisi', 'id');
+    }
 
     public function jabatan()
     {

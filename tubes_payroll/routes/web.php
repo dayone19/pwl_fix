@@ -60,9 +60,21 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::put('/users/{id}',     [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{id}',  [UserController::class, 'destroy'])->name('users.destroy');
 
-    // Penggajian / Payroll
-    Route::get('/hitung-payroll', [payrollController::class, 'dataPayroll'])->name('payroll.index');
+    Route::get('/hitung-payroll', [payrollController::class, 'dataPayroll'])->name('payroll.index'); 
     Route::get('/payroll/manage', [payrollController::class, 'manage'])->name('payroll.manage');
+    Route::post('/payroll/generate', [payrollController::class, 'generateGaji'])->name('payroll.generate');
+    Route::put('/payroll/update-draft/{id}', [PayrollController::class, 'updateDraft'])
+    ->name('payroll.update-draft');
+    Route::post('/payroll/submit/{id}', [PayrollController::class, 'submitGaji'])
+    ->name('payroll.submit');
+    Route::post('/payroll/aksi/{id}', [PayrollController::class, 'keputusanManajemen'])
+    ->name('payroll.aksi');
+    Route::delete('/payroll/delete/{id}', [PayrollController::class, 'destroyDraft'])
+    ->name('payroll.destroy-draft');
+    Route::post('/payroll/mass-action', [PayrollController::class, 'massAction'])
+    ->name('payroll.mass-action');
+    Route::get('/payroll/slip/{id}',[PayrollController::class, 'downloadSlip'])
+    ->name('payroll.slip');
 
     // Cuti
     Route::get('/cuti',           [CutiController::class, 'index'])->name('cuti.index');

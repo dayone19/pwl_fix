@@ -127,7 +127,7 @@
                     <div class="bg-orange-600 p-2.5 rounded-2xl text-white shadow-lg shadow-orange-900/50">
                         <i class="fas fa-screwdriver-wrench text-xl"></i>
                     </div>
-                    <span class="font-black text-xl text-white italic tracking-tighter uppercase leading-none">
+                    <span class="font-black text-xl text-white  tracking-tighter uppercase leading-none">
                         Pay<span class="text-orange-500">Tato</span>
                     </span>
                 </div>
@@ -248,7 +248,7 @@
                             <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-[#020617] rounded-full"></div>
                         </div>
                         <div class="overflow-hidden">
-                            <p class="text-[10px] font-black text-white truncate uppercase italic leading-none mb-1">
+                            <p class="text-[10px] font-black text-white truncate uppercase  leading-none mb-1">
                                 {{ Auth::user()->nama }}
                             </p>
                             <p class="text-[9px] text-slate-500 truncate uppercase tracking-widest">
@@ -277,7 +277,7 @@
                     <i class="fas fa-bars-staggered text-lg text-orange-600 group-hover:rotate-180 transition-all duration-500"></i>
                 </button>
                 <div class="hidden md:block">
-                    <h1 class="text-sm font-black text-slate-900 uppercase italic tracking-tighter">PayTato Dashboard</h1>
+                    <h1 class="text-sm font-black text-slate-900 uppercase  tracking-tighter">PayTato Dashboard</h1>
                     <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Sistem Manajemen Bengkel</p>
                 </div>
             </div>
@@ -285,7 +285,7 @@
             <div class="hidden lg:flex items-center gap-4 bg-white p-4 rounded-[30px] border border-slate-100 shadow-sm">
                 <div class="text-right">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">Last Sync</p>
-                    <p class="text-xs font-bold text-slate-900 uppercase italic">{{ date('D, d M Y') }}</p>
+                    <p class="text-xs font-bold text-slate-900 uppercase ">{{ date('D, d M Y') }}</p>
                 </div>
                 <div class="w-px h-8 bg-slate-100"></div>
                 <div class="flex items-center gap-3">
@@ -313,9 +313,24 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('main-content');
+
             sidebar.classList.toggle('sidebar-closed');
             mainContent.classList.toggle('main-full');
+
+            const isClosed = sidebar.classList.contains('sidebar-closed');
+
+            localStorage.setItem('sidebarClosed', isClosed);
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const sidebarClosed = localStorage.getItem('sidebarClosed');
+            if (sidebarClosed === 'true') {
+                sidebar.classList.add('sidebar-closed');
+                mainContent.classList.add('main-full');
+            }
+        });
 
         window.addEventListener('resize', () => {
             if (window.innerWidth < 1024) {
@@ -339,7 +354,6 @@
             const pageSkeleton = document.getElementById('page-skeleton');
             const main = document.getElementById('main-content');
 
-            // 1. Sembunyikan loader pakai class CSS bawaanmu agar hilang sempurna
             if (globalLoader) {
                 globalLoader.classList.add('loader-hidden');
                 setTimeout(() => globalLoader.remove(), 400);
@@ -350,7 +364,6 @@
                 setTimeout(() => pageSkeleton.remove(), 400);
             }
 
-            // 2. Paksa konten utama memunculkan opacity-100 agar data asli terlihat
             if (main) {
                 main.classList.remove('opacity-0');
                 main.classList.add('opacity-100'); 

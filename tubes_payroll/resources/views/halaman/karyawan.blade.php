@@ -57,8 +57,8 @@
                     <i class="fas fa-screwdriver-wrench text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-black text-slate-900 italic uppercase tracking-tighter leading-none">Database Kru</h1>
-                    <p class="text-orange-600 text-[10px] font-black mt-1 uppercase tracking-[0.3em] italic">Workshop Management System</p>
+                    <h1 class="text-3xl font-black text-slate-900  uppercase tracking-tighter leading-none">Database Kru</h1>
+                    <p class="text-orange-600 text-[10px] font-black mt-1 uppercase tracking-[0.3em] ">Workshop Management System</p>
                 </div>
             </div>
         </div>
@@ -86,11 +86,11 @@
                     <tr class="group hover:scale-[1.01] transition-all duration-300">
                         <td class="px-8 py-6 bg-slate-50 rounded-l-[35px] border-y border-l border-slate-100 group-hover:bg-white group-hover:border-orange-200 transition-colors">
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center font-black text-slate-900 border border-slate-200 italic shadow-sm group-hover:bg-orange-600 group-hover:text-white transition-all">
+                                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center font-black text-slate-900 border border-slate-200  shadow-sm group-hover:bg-orange-600 group-hover:text-white transition-all">
                                     {{ strtoupper(substr($p->nama_lengkap, 0, 2)) }}
                                 </div>
                                 <div>
-                                    <p class="font-black text-slate-800 uppercase italic tracking-tighter leading-none mb-1">{{ $p->nama_lengkap }}</p>
+                                    <p class="font-black text-slate-800 uppercase  tracking-tighter leading-none mb-1">{{ $p->nama_lengkap }}</p>
                                     <span class="font-mono text-[10px] text-orange-600 font-bold tracking-widest bg-orange-50 px-2 py-0.5 rounded border border-orange-100">
                                         #{{ $p->nip }}
                                     </span>
@@ -99,7 +99,7 @@
                         </td>
 
                         <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors">
-                            <span class="px-5 py-2 bg-white text-slate-800 text-[9px] font-black rounded-xl uppercase italic border border-slate-200 shadow-sm group-hover:text-orange-600 transition-colors">
+                            <span class="px-5 py-2 bg-white text-slate-800 text-[9px] font-black rounded-xl uppercase  border border-slate-200 shadow-sm group-hover:text-orange-600 transition-colors">
                                 {{ $p->jabatan ?? 'General Crew' }}
                             </span>
                         </td>
@@ -123,7 +123,7 @@
                         <td colspan="3" class="px-8 py-20 text-center">
                             <div class="flex flex-col items-center gap-2 opacity-20">
                                 <i class="fas fa-box-open text-5xl mb-2"></i>
-                                <p class="font-black uppercase italic tracking-widest text-xs">Garasi Kosong / Tidak Ada Data</p>
+                                <p class="font-black uppercase  tracking-widest text-xs">Garasi Kosong / Tidak Ada Data</p>
                             </div>
                         </td>
                     </tr>
@@ -136,9 +136,9 @@
 
             {{-- PREV --}}
             @if ($data_karyawan->onFirstPage())
-                <span class="text-slate-300 text-[10px] font-black uppercase italic cursor-not-allowed">Prev</span>
+                <span class="text-slate-300 text-[10px] font-black uppercase  cursor-not-allowed">Prev</span>
             @else
-                <a href="{{ $data_karyawan->previousPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase italic hover:text-orange-600 transition-colors">Prev</a>
+                <a href="{{ $data_karyawan->previousPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Prev</a>
             @endif
 
             {{-- NOMOR HALAMAN --}}
@@ -158,7 +158,7 @@
 
                 @for ($i = $start; $i <= $end; $i++)
                     @if ($i == $currentPage)
-                        <span class="w-10 h-10 flex items-center justify-center bg-slate-900 text-orange-500 font-black rounded-xl shadow-lg italic text-xs border-b-2 border-orange-600">
+                        <span class="w-10 h-10 flex items-center justify-center bg-slate-900 text-orange-500 font-black rounded-xl shadow-lg  text-xs border-b-2 border-orange-600">
                             {{ $i }}
                         </span>
                     @else
@@ -177,9 +177,9 @@
 
             {{-- NEXT --}}
             @if ($data_karyawan->hasMorePages())
-                <a href="{{ $data_karyawan->nextPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase italic hover:text-orange-600 transition-colors">Next</a>
+                <a href="{{ $data_karyawan->nextPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Next</a>
             @else
-                <span class="text-slate-300 text-[10px] font-black uppercase italic cursor-not-allowed">Next</span>
+                <span class="text-slate-300 text-[10px] font-black uppercase  cursor-not-allowed">Next</span>
             @endif
 
         </div>

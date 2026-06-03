@@ -108,14 +108,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
                     </div>
-                    <span class="font-extrabold text-2xl tracking-tighter uppercase italic text-white leading-none">
+                    <span class="font-extrabold text-2xl tracking-tighter uppercase  text-white leading-none">
                         PAY<span class="text-orange-500">Tato</span>
                     </span>
                 </div>
 
                 {{-- Dynamic left-panel copy per step --}}
                 <div id="leftStep1">
-                    <h1 class="text-5xl font-black leading-none tracking-tighter uppercase italic">
+                    <h1 class="text-5xl font-black leading-none tracking-tighter uppercase ">
                         Account<br><span class="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-orange-500 to-amber-500">Recovery.</span>
                     </h1>
                     <p class="text-slate-400 text-sm mt-6 leading-relaxed max-w-xs">
@@ -124,7 +124,7 @@
                 </div>
 
                 <div id="leftStep2" class="hidden">
-                    <h1 class="text-5xl font-black leading-none tracking-tighter uppercase italic">
+                    <h1 class="text-5xl font-black leading-none tracking-tighter uppercase ">
                         Request<br><span class="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-orange-500 to-amber-500">Sent.</span>
                     </h1>
                     <p class="text-slate-400 text-sm mt-6 leading-relaxed max-w-xs">
@@ -133,7 +133,7 @@
                 </div>
 
                 <div id="leftStep3" class="hidden">
-                    <h1 class="text-5xl font-black leading-none tracking-tighter uppercase italic">
+                    <h1 class="text-5xl font-black leading-none tracking-tighter uppercase ">
                         All<br><span class="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-orange-500 to-amber-500">Done.</span>
                     </h1>
                     <p class="text-slate-400 text-sm mt-6 leading-relaxed max-w-xs">
@@ -155,8 +155,8 @@
 
             {{-- Page header --}}
             <div class="mb-8">
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 italic mb-2">Account Recovery</p>
-                <h3 class="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">Reset Access</h3>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500  mb-2">Account Recovery</p>
+                <h3 class="text-3xl font-black text-slate-900 uppercase  tracking-tighter">Reset Access</h3>
                 <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2 leading-none">Verifikasi Identitas via HRD</p>
             </div>
 
@@ -164,26 +164,26 @@
             <div class="flex items-center mb-10">
                 {{-- Step 1 --}}
                 <div class="flex flex-col items-center gap-1">
-                    <div id="dot1" class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] font-black italic transition-all duration-300">
+                    <div id="dot1" class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] font-black  transition-all duration-300">
                         <span id="dot1label">01</span>
                     </div>
-                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-900 italic">NIP</span>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-900 ">NIP</span>
                 </div>
                 <div class="step-line" id="line12"></div>
                 {{-- Step 2 --}}
                 <div class="flex flex-col items-center gap-1">
-                    <div id="dot2" class="w-8 h-8 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center text-[10px] font-black italic transition-all duration-300">
+                    <div id="dot2" class="w-8 h-8 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center text-[10px] font-black  transition-all duration-300">
                         <span id="dot2label">02</span>
                     </div>
-                    <span id="label2" class="text-[9px] font-black uppercase tracking-widest text-slate-400 italic">Konfirmasi</span>
+                    <span id="label2" class="text-[9px] font-black uppercase tracking-widest text-slate-400 ">Konfirmasi</span>
                 </div>
                 <div class="step-line" id="line23"></div>
                 {{-- Step 3 --}}
                 <div class="flex flex-col items-center gap-1">
-                    <div id="dot3" class="w-8 h-8 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center text-[10px] font-black italic transition-all duration-300">
+                    <div id="dot3" class="w-8 h-8 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center text-[10px] font-black  transition-all duration-300">
                         <span id="dot3label">03</span>
                     </div>
-                    <span id="label3" class="text-[9px] font-black uppercase tracking-widest text-slate-400 italic">Selesai</span>
+                    <span id="label3" class="text-[9px] font-black uppercase tracking-widest text-slate-400 ">Selesai</span>
                 </div>
             </div>
 
@@ -199,14 +199,14 @@
                                 </svg>
                             </div>
                             <p class="text-[11px] text-orange-700 leading-relaxed">
-                                Password <span class="font-black italic">tidak</span> direset otomatis. HRD yang akan memverifikasi dan memberikan password baru melalui saluran resmi.
+                                Password <span class="font-black ">tidak</span> direset otomatis. HRD yang akan memverifikasi dan memberikan password baru melalui saluran resmi.
                             </p>
                         </div>
                     </div>
 
                     <div class="space-y-5">
                         <div>
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 italic">NIP / Employee ID</label>
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 ">NIP / Employee ID</label>
                             <input
                                 type="text"
                                 id="nipInput"
@@ -215,18 +215,18 @@
                                 maxlength="20"
                                 class="w-full mt-2 px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-600 outline-none transition font-semibold"
                             >
-                            <p id="nipMsg" class="opacity-0 text-red-500 text-[11px] mt-2 ml-2 italic font-medium transition-all duration-300">• minimal 6 digit angka</p>
+                            <p id="nipMsg" class="opacity-0 text-red-500 text-[11px] mt-2 ml-2  font-medium transition-all duration-300">• minimal 6 digit angka</p>
                         </div>
 
                         <button onclick="goToStep2()" id="btnStep1"
-                            class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl shadow-orange-900/10 hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em] italic">
+                            class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl shadow-orange-900/10 hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em] ">
                             Lanjutkan →
                         </button>
                     </div>
 
                     <div class="mt-6 flex items-center justify-center">
                         <a href="{{ route('login') }}"
-                            class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition italic">
+                            class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition ">
                             ← Kembali ke Login
                         </a>
                     </div>
@@ -242,15 +242,15 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 italic">NIP Terdeteksi</p>
-                            <p id="nipDisplay" class="text-sm font-black text-slate-900 italic">–</p>
+                            <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 ">NIP Terdeteksi</p>
+                            <p id="nipDisplay" class="text-sm font-black text-slate-900 ">–</p>
                         </div>
-                        <button onclick="goToStep1()" class="ml-auto text-[9px] font-black uppercase tracking-widest text-orange-500 hover:text-orange-600 italic transition">Ubah</button>
+                        <button onclick="goToStep1()" class="ml-auto text-[9px] font-black uppercase tracking-widest text-orange-500 hover:text-orange-600  transition">Ubah</button>
                     </div>
 
                     <div class="space-y-4">
                         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5">
-                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 italic mb-2">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400  mb-2">
                                 Konfirmasi Data
                             </p>
                             <p class="text-sm text-slate-600 leading-relaxed">
@@ -266,20 +266,20 @@
                                     </svg>
                                 </div>
                                 <p class="text-[11px] text-orange-700 leading-relaxed">
-                                    Request akan dikirim ke <span class="font-black italic">HRD</span> untuk verifikasi identitas sebelum akses dipulihkan. Estimasi respons: <span class="font-black italic">1×24 jam kerja.</span>
+                                    Request akan dikirim ke <span class="font-black ">HRD</span> untuk verifikasi identitas sebelum akses dipulihkan. Estimasi respons: <span class="font-black ">1×24 jam kerja.</span>
                                 </p>
                             </div>
                         </div>
 
                         <button onclick="submitRequest()" id="btnSubmit"
-                            class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl shadow-orange-900/10 hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em] italic">
+                            class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl shadow-orange-900/10 hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em] ">
                             Send Recovery Request →
                         </button>
                     </div>
 
                     <div class="mt-6 flex items-center justify-center">
                         <button onclick="goToStep1()"
-                            class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition italic">
+                            class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition ">
                             ← Kembali
                         </button>
                     </div>
@@ -299,37 +299,37 @@
                             </div>
                         </div>
 
-                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 italic mb-3">Request Terkirim</p>
-                        <h3 class="text-3xl font-black uppercase italic tracking-tighter text-slate-900 mb-3">All Done!</h3>
+                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500  mb-3">Request Terkirim</p>
+                        <h3 class="text-3xl font-black uppercase  tracking-tighter text-slate-900 mb-3">All Done!</h3>
                         <p class="text-slate-400 text-sm leading-relaxed max-w-xs mb-2">
                             Permintaan reset password untuk NIP
-                            <span id="nipFinal" class="font-black text-slate-700 italic">–</span>
+                            <span id="nipFinal" class="font-black text-slate-700 ">–</span>
                             sudah tercatat di sistem.
                         </p>
                         <p class="text-slate-400 text-sm leading-relaxed max-w-xs">
-                            HRD akan memproses dan menghubungimu melalui <span class="font-black italic text-slate-600">saluran resmi internal</span>.
+                            HRD akan memproses dan menghubungimu melalui <span class="font-black  text-slate-600">saluran resmi internal</span>.
                         </p>
 
                         {{-- Summary card --}}
                         <div class="mt-8 w-full bg-slate-50 border border-slate-100 rounded-[25px] p-6 text-left space-y-3">
                             <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 italic">NIP</span>
-                                <span id="summaryNip" class="text-sm font-black text-slate-900 italic">–</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 ">NIP</span>
+                                <span id="summaryNip" class="text-sm font-black text-slate-900 ">–</span>
                             </div>
                             <div class="border-t border-slate-100"></div>
                             <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Status</span>
-                                <span class="text-[10px] font-black text-orange-600 uppercase italic bg-orange-50 px-3 py-1 rounded-full border border-orange-100">Pending Verifikasi</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 ">Status</span>
+                                <span class="text-[10px] font-black text-orange-600 uppercase  bg-orange-50 px-3 py-1 rounded-full border border-orange-100">Pending Verifikasi</span>
                             </div>
                             <div class="border-t border-slate-100"></div>
                             <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Estimasi</span>
-                                <span class="text-[10px] font-black text-slate-700 italic">1×24 Jam Kerja</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 ">Estimasi</span>
+                                <span class="text-[10px] font-black text-slate-700 ">1×24 Jam Kerja</span>
                             </div>
                         </div>
 
                         <a href="{{ route('login') }}"
-                            class="mt-8 w-full inline-block bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl shadow-orange-900/10 hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em] italic text-center">
+                            class="mt-8 w-full inline-block bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl shadow-orange-900/10 hover:bg-orange-600 transition transform active:scale-[0.97] uppercase text-[10px] tracking-[0.3em]  text-center">
                             ← Kembali ke Login
                         </a>
                     </div>
@@ -367,15 +367,15 @@
                 const label = document.getElementById('dot' + id + 'label');
                 if (id < n) {
                     // done
-                    dot.className = 'w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-[10px] font-black italic transition-all duration-300';
+                    dot.className = 'w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-[10px] font-black  transition-all duration-300';
                     label.innerHTML = '✓';
                 } else if (id === n) {
                     // active
-                    dot.className = 'w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] font-black italic transition-all duration-300';
+                    dot.className = 'w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] font-black  transition-all duration-300';
                     label.innerHTML = '0' + id;
                 } else {
                     // future
-                    dot.className = 'w-8 h-8 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center text-[10px] font-black italic transition-all duration-300';
+                    dot.className = 'w-8 h-8 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center text-[10px] font-black  transition-all duration-300';
                     label.innerHTML = '0' + id;
                 }
                 if (line) {
