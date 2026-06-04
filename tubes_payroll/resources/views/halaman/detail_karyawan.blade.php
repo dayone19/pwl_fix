@@ -122,7 +122,7 @@
             <div class="flex flex-col md:flex-row items-end gap-6 -mt-16 mb-10 relative z-10">
                 <div class="relative">
                     <div class="w-40 h-48 bg-slate-200 rounded-[35px] border-[6px] border-white shadow-2xl overflow-hidden shadow-orange-900/10">
-                        <img src="{{ $p->foto ? asset('img/profil/' . $p->foto) : 'https://via.placeholder.com/400x500' }}" class="w-full h-full object-cover" alt="Foto Pegawai">
+                        <img src="{{ $p->foto_akun ? asset('img/profil/' . $p->foto_akun) : 'https://via.placeholder.com/400x500' }}" class="w-full h-full object-cover" alt="Foto Pegawai">
                     </div>
                     <div class="absolute -bottom-2 -right-2 bg-orange-600 text-white w-10 h-10 rounded-2xl flex items-center justify-center border-4 border-white shadow-lg">
                         <i class="fas fa-wrench text-xs"></i>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Penggajian; 
 use App\Models\Pengguna;
+use App\Models\TerimaKerjaan;
+use App\Models\Pekerjaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -46,7 +48,7 @@ class PayrollController extends Controller
         // Filter Nama
         if ($request->filled('nama')) {
             $query->whereHas('pegawai', function ($q) use ($request) {
-                $q->where('nama', 'like', '%' . $request->nama . '%');
+                $q->where('nama_lengkap', 'like', '%' . $request->nama . '%');
             });
         }
 
@@ -136,6 +138,18 @@ class PayrollController extends Controller
             return redirect()->back()->with('error', 'Karyawan tidak ditemukan.');
         }
 
+        //validasi tambahan tidak boleh melakukan draft 2x di karyawan dan bulan yg sama
+        $cekDraft = Penggajian::where('nip', $request->nip)
+        ->where('bulan', $periodeInput)
+        ->exists();
+        
+        if ($cekDraft) {
+            return redirect()->back()->with(
+                'error', 
+                'Gagal! Payroll untuk karyawan dengan NIP ' . $request->nip . ' pada periode ' . $periodeInput . '   sudah pernah dibuat.'
+            );
+        }
+
         // 2. Tarik data dari tabel profil_pegawai menggunakan NIP
         $profil = DB::table('profil_pegawai')->where('nip', $karyawan->nip)->first();
         $statusKerja = $profil ? $profil->status_kerja : 'Tetap';
@@ -217,7 +231,54 @@ class PayrollController extends Controller
             $bonusTarget = $kelipatan * 35000;
         }
 
+        if ($karyawan->id_divisi == 4) {
+            try {
+                $idPenggunaMasingMasing = $karyawan->id_pengguna ?? ($karyawan->id ?? null);
+                $nipKaryawan = $karyawan->nip ?? null;
+                $idTeknisi = null;
+
+                $profilPegawai = DB::table('profil_pegawai')
+                    ->where('nip', $nipKaryawan)
+                    ->orWhere('user_id', $idPenggunaMasingMasing)
+                    ->first();
+
+                $idTeknisi = $profilPegawai->id ?? $idPenggunaMasingMasing;
+
+                if ($idTeknisi) {
+                    $jumlahSelesai = DB::table('terima_kerjaan')
+                        ->where('teknisi_id', $idTeknisi)
+                        ->where('status', 'done')
+                        ->whereRaw("DATE_FORMAT(selesai_pada, '%Y-%m') = ?", [sprintf('%04d-%02d', $tahunSekarang, $bulanInput)])
+                        ->count();
+
+                    $targetHarian = 5;
+                    $bonusPerPekerjaan = 20000;
+                    $bonusTeknisi = 0;
+
+                    if ($jumlahSelesai >= $targetHarian) {
+                        $kelipatan = floor($jumlahSelesai / $targetHarian);
+                        $bonusTeknisi = $kelipatan * $bonusPerPekerjaan;
+                    }
+
+                    $bonusTarget = $bonusTeknisi; 
+                }
+
+            } catch (\Exception $e) {
+                // Jika ada kendala format, paksa hitung total tanpa filter tanggal sebagai data emergency
+                $idTeknisiEmergency = $karyawan->id ?? $karyawan->id_pengguna;
+                $jumlahSelesai = DB::table('terima_kerjaan')
+                    ->where('teknisi_id', $idTeknisiEmergency)
+                    ->where('status', 'done')
+                    ->count();
+
+                if ($jumlahSelesai >= 5) {
+                    $bonusTarget = floor($jumlahSelesai / 5) * 20000;
+                }
+            }
+        }
+
         $pendapatanKotorSebulan = $gapok + $tunjangan + $bonusTarget;
+
         $pendapatanKotorSetahun = $pendapatanKotorSebulan * 12;
 
         // Biaya jabatan (5% max 500rb/bulan)
@@ -284,8 +345,7 @@ class PayrollController extends Controller
         $gapok = $gaji->gaji_pokok;
 
         $gajiBersihBaru =
-            ($gapok + $request->total_tunjangan + $request->bonus)
-            - $request->total_potongan;
+            ($gapok + $request->total_tunjangan + $request->bonus) - $request->total_potongan;
 
         $gaji->update([
             'total_tunjangan' => $request->total_tunjangan,
@@ -350,7 +410,7 @@ class PayrollController extends Controller
             return redirect()->back()->with('error', 'Berkas tidak dalam status menunggu persetujuan.');
         }
 
-        $statusBaru = ($request->aksi === 'approve') ? 'Approved' : 'Ditolak';
+        $statusBaru = ($request->aksi === 'approve') ? 'Dibayar' : 'Ditolak';
         $gaji->update(['status_bayar' => $statusBaru]);
 
         return redirect()->back()->with('success', "Berkas payroll berhasil diperbarui menjadi: $statusBaru.");

@@ -17,7 +17,7 @@ class pekerjaanController extends Controller
     public function index()
     {
         $user = Auth::user();
-
+        $idTeknisi = auth()->user()->id;
         $jabatanId = $user->profilPegawai?->id_jabatan;
 
         $pekerjaanList = Pekerjaan::with('keluhan')
@@ -35,9 +35,11 @@ class pekerjaanController extends Controller
                                 ->where('status', 'in_progress')
                                 ->count();
 
-        $selesai = $pekerjaanList
-                        ->where('status', 'done')
-                        ->count();
+        $selesai = TerimaKerjaan::where('teknisi_id', $idTeknisi) 
+                                ->where('status', 'done')
+                                ->whereMonth('selesai_pada', date('m'))
+                                ->whereYear('selesai_pada', date('Y'))
+                                ->count();
 
         $targetHarian = 5;
         $bonusPerpekerjaan = 20000;
@@ -45,7 +47,8 @@ class pekerjaanController extends Controller
         $bonus = 0;
 
         if ($selesai >= $targetHarian) {
-            $bonus = $selesai * $bonusPerpekerjaan;
+            $kelipatan = floor($selesai / $targetHarian);
+            $bonus = $kelipatan * $bonusPerpekerjaan;
         }
 
         $divisi = strtoupper($user->divisi?->nama_divisi);

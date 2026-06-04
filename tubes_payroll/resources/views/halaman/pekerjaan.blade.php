@@ -160,96 +160,96 @@
             {{-- GRID DUA KOLOM --}}
             <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
                 
-                {{-- KOLOM KIRI: WAITING --}}
+                {{-- KOLOM KIRI: WAITING DENGAN DETAILS BORDER --}}
                 <div class="space-y-4 bg-slate-50/50 p-4 rounded-[32px] border border-dashed border-slate-200">
-                    <div class="flex justify-between items-center px-2 mb-2">
-                        <span class="text-xs font-black uppercase text-yellow-600 tracking-wider bg-yellow-100/70 px-3 py-1.5 rounded-xl">
-                            📌 Antrean (Waiting)
-                        </span>
-                        <span class="text-xs font-bold text-slate-400 bg-white shadow-sm border border-slate-100 px-2.5 py-1 rounded-lg">
-                            {{ $pekerjaanList->where('status', 'waiting')->count() }} Tugas
-                        </span>
-                    </div>
-
-                    @forelse($pekerjaanList->where('status', 'waiting') as $job)
-                        <div class="border border-slate-200 bg-white rounded-[24px] p-5 hover:border-orange-300 transition shadow-sm">
-                            <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
-                                <div class="flex-1">
-                                    <div class="flex flex-wrap items-center gap-2 mb-2">
-                                        <h4 class="text-base font-black uppercase text-slate-900">{{ $job->kendaraan }}</h4>
-                                        <span class="bg-orange-100 text-orange-700 text-[9px] font-black px-2 py-0.5 rounded-lg uppercase">
-                                            {{ $job->keluhan->kategori }}
-                                        </span>
+                    <details class="w-full border border-slate-900 rounded-lg p-1 bg-white" open>
+                        <summary class="flex justify-between items-center font-black uppercase tracking-widest text-xs text-slate-700 cursor-pointer p-2 select-none hover:bg-slate-50 transition rounded">
+                            <span class="flex items-center gap-2">📌 Antrean (Waiting)</span>
+                            <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 mr-2">{{ $pekerjaanList->where('status', 'waiting')->count() }} Tugas</span>
+                        </summary>
+                        
+                        <div class="mt-4 space-y-4">
+                            @forelse($pekerjaanList->where('status', 'waiting') as $job)
+                                <div class="border border-slate-200 bg-white rounded-[24px] p-5 hover:border-orange-300 transition shadow-sm">
+                                    <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+                                        <div class="flex-1">
+                                            <div class="flex flex-wrap items-center gap-2 mb-2">
+                                                <h4 class="text-base font-black uppercase text-slate-900">{{ $job->kendaraan }}</h4>
+                                                <span class="bg-orange-100 text-orange-700 text-[9px] font-black px-2 py-0.5 rounded-lg uppercase">
+                                                    {{ $job->keluhan->kategori }}
+                                                </span>
+                                            </div>
+                                            <div class="flex gap-3 text-[11px] font-bold text-slate-400 uppercase">
+                                                <span>Plat: {{ $job->plat_nomor }}</span>
+                                                <span>{{ $job->created_at->format('d M') }}</span>
+                                            </div>
+                                            <p class="text-xs text-slate-600 mt-3 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                                                {{ $job->detail_keluhan }}
+                                            </p>
+                                        </div>
+                                        <div class="w-full sm:w-auto sm:min-w-[100px] mt-2 sm:mt-0">
+                                            <form action="{{ route('pekerjaan.ambil', $job->pekerjaan_id) }}" method="POST">
+                                                @csrf
+                                                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase w-full transition shadow-sm">
+                                                    Ambil
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="flex gap-3 text-[11px] font-bold text-slate-400 uppercase">
-                                        <span>Plat: {{ $job->plat_nomor }}</span>
-                                        <span>{{ $job->created_at->format('d M') }}</span>
-                                    </div>
-                                    <p class="text-xs text-slate-600 mt-3 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                                        {{ $job->detail_keluhan }}
-                                    </p>
                                 </div>
-                                <div class="w-full sm:w-auto sm:min-w-[100px] mt-2 sm:mt-0">
-                                    <form action="{{ route('pekerjaan.ambil', $job->pekerjaan_id) }}" method="POST">
-                                        @csrf
-                                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase w-full transition shadow-sm">
-                                            Ambil
-                                        </button>
-                                    </form>
+                            @empty
+                                <div class="text-center py-12 bg-white rounded-[24px] border border-slate-100 shadow-sm">
+                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Antrean Kosong</p>
                                 </div>
-                            </div>
+                            @endforelse
                         </div>
-                    @empty
-                        <div class="text-center py-12 bg-white rounded-[24px] border border-slate-100 shadow-sm">
-                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Antrean Kosong</p>
-                        </div>
-                    @endforelse
+                    </details>
                 </div>
 
-                {{-- KOLOM KANAN: IN PROGRESS --}}
+                {{-- KOLOM KANAN: IN PROGRESS DENGAN DETAILS BORDER --}}
                 <div class="space-y-4 bg-slate-50/50 p-4 rounded-[32px] border border-dashed border-slate-200">
-                    <div class="flex justify-between items-center px-2 mb-2">
-                        <span class="text-xs font-black uppercase text-blue-600 tracking-wider bg-blue-100/70 px-3 py-1.5 rounded-xl">
-                            ⚡ Aktif (In Progress)
-                        </span>
-                        <span class="text-xs font-bold text-slate-400 bg-white shadow-sm border border-slate-100 px-2.5 py-1 rounded-lg">
-                            {{ $pekerjaanList->where('status', 'in_progress')->count() }} Berjalan
-                        </span>
-                    </div>
+                    <details class="w-full border border-slate-900 rounded-lg p-1 bg-white" open>
+                        <summary class="flex justify-between items-center font-black uppercase tracking-widest text-xs text-slate-700 cursor-pointer p-2 select-none hover:bg-slate-50 transition rounded">
+                            <span class="flex items-center gap-2">⚡ Aktif (In Progress)</span>
+                            <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 mr-2">{{ $pekerjaanList->where('status', 'in_progress')->count() }} Berjalan</span>
+                        </summary>
 
-                    @forelse($pekerjaanList->where('status', 'in_progress') as $job)
-                        <div class="border border-slate-200 bg-white rounded-[24px] p-5 hover:border-orange-300 transition shadow-sm">
-                            <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
-                                <div class="flex-1">
-                                    <div class="flex flex-wrap items-center gap-2 mb-2">
-                                        <h4 class="text-base font-black uppercase text-slate-900">{{ $job->kendaraan }}</h4>
-                                        <span class="bg-orange-100 text-orange-700 text-[9px] font-black px-2 py-0.5 rounded-lg uppercase">
-                                            {{ $job->keluhan->kategori }}
-                                        </span>
+                        <div class="mt-4 space-y-4">
+                            @forelse($pekerjaanList->where('status', 'in_progress') as $job)
+                                <div class="border border-slate-200 bg-white rounded-[24px] p-5 hover:border-orange-300 transition shadow-sm">
+                                    <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+                                        <div class="flex-1">
+                                            <div class="flex flex-wrap items-center gap-2 mb-2">
+                                                <h4 class="text-base font-black uppercase text-slate-900">{{ $job->kendaraan }}</h4>
+                                                <span class="bg-orange-100 text-orange-700 text-[9px] font-black px-2 py-0.5 rounded-lg uppercase">
+                                                    {{ $job->keluhan->kategori }}
+                                                </span>
+                                            </div>
+                                            <div class="flex gap-3 text-[11px] font-bold text-slate-400 uppercase">
+                                                <span>Plat: {{ $job->plat_nomor }}</span>
+                                                <span>{{ $job->created_at->format('d M') }}</span>
+                                            </div>
+                                            <p class="text-xs text-slate-600 mt-3 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                                                {{ $job->detail_keluhan }}
+                                            </p>
+                                        </div>
+                                        <div class="w-full sm:w-auto sm:min-w-[100px] mt-2 sm:mt-0">
+                                            <form action="{{ route('pekerjaan.selesai', $job->pekerjaan_id) }}" method="POST">
+                                                @csrf
+                                                <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase w-full transition shadow-sm">
+                                                    Selesai
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="flex gap-3 text-[11px] font-bold text-slate-400 uppercase">
-                                        <span>Plat: {{ $job->plat_nomor }}</span>
-                                        <span>{{ $job->created_at->format('d M') }}</span>
-                                    </div>
-                                    <p class="text-xs text-slate-600 mt-3 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                                        {{ $job->detail_keluhan }}
-                                    </p>
                                 </div>
-                                <div class="w-full sm:w-auto sm:min-w-[100px] mt-2 sm:mt-0">
-                                    <form action="{{ route('pekerjaan.selesai', $job->pekerjaan_id) }}" method="POST">
-                                        @csrf
-                                        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase w-full transition shadow-sm">
-                                            Selesai
-                                        </button>
-                                    </form>
+                            @empty
+                                <div class="text-center py-12 bg-white rounded-[24px] border border-slate-100 shadow-sm">
+                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Belum Ada Kerja Aktif</p>
                                 </div>
-                            </div>
+                            @endforelse
                         </div>
-                    @empty
-                        <div class="text-center py-12 bg-white rounded-[24px] border border-slate-100 shadow-sm">
-                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Belum Ada Kerja Aktif</p>
-                        </div>
-                    @endforelse
+                    </details>
                 </div>
 
             </div>
@@ -257,10 +257,9 @@
             {{-- SEPARATOR UNTUK RIWAYAT DONE --}}
             @if($pekerjaanList->where('status', 'done')->count() > 0)
             <div class="mt-8 pt-6 border-t border-slate-100">
-                <details class="group">
-                    <summary class="flex justify-between items-center font-black uppercase tracking-widest text-xs text-slate-400 cursor-pointer list-none select-none hover:text-slate-600 transition">
-                        <span>📋 Lihat Riwayat Pekerjaan Selesai ({{ $pekerjaanList->where('status', 'done')->count() }})</span>
-                        <span class="transition group-open:rotate-180">▼</span>
+                <details class="border border-slate-900 rounded-lg p-1 bg-white">
+                    <summary class="font-black uppercase tracking-widest text-xs text-slate-700 cursor-pointer p-1 select-none hover:bg-slate-50 transition rounded">
+                        📋 LIHAT RIWAYAT PEKERJAAN SELESAI ({{ $pekerjaanList->where('status', 'done')->count() }})
                     </summary>
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                         @foreach($pekerjaanList->where('status', 'done') as $job)
