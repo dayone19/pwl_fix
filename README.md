@@ -93,7 +93,7 @@ Manager menerima data individu yang berstatus 'Terbit' dan bertugas untuk mengec
 Status berubah: 🔴 **Ditolak** 
 
 -  Jika benar → **Manager menyetujui payroll**  
-Status berubah: 🟢 **Approved**
+Status berubah: 🟢 **Dibayar**
 
 ---
 
