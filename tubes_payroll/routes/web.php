@@ -61,6 +61,8 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 
     // Data Karyawan
     Route::resource('karyawan', karyawanController::class);
+    Route::get('/kartu_pegawai/{nip}', [KaryawanController::class, 'kartuPegawai'])
+    ->name('kartu.pegawai');
 
     // Kelola Akses / Users
     Route::get('/users',          [UserController::class, 'index'])->name('users.index');
