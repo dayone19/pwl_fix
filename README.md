@@ -45,8 +45,10 @@ HRD bertugas mengurus data dasar karyawan.
 -  Grafik pengeluaran gaji karyawan  
 -  Ekspor Pdf Rekap Absensi Pribadi dan Slip Gaji
 -  Ekspor Pdf Absensi Seluruh Karyawan
--  Melihat Slip gaji
+-  Melihat Slip Gaji
 -  Melihat Riwayat Gaji 
+-  Melihat Data Profil Karyawan 
+-  Cetak Kartu Pegawai 
 
 ---
 
@@ -62,19 +64,23 @@ Setelah data lengkap, bagian **Payroll Staff** membuat perhitungan gaji.
   -  Bonus  
   -  Potongan  
 
-### 📤 Output:
--  **Draft payroll** untuk setiap karyawan  
-  Status:  **Draft**
+### 📤 Status:
+-  **Draft Payroll Karyawan** untuk setiap karyawan  
+  Status awal:  **Draft** (Masih bisa diedit oleh payroll, belum dilihat/ dikirim ke manager)
+-  **Aksi Payroll** jika perhitungan sudah selsesai, Payroll menekan tombol sumbit.
+  Status berubah:  **Terbit** (Data dikirim dan masuk ke antrian manager)
 
+### 📤 Output :  
 -  Melihat Slip gaji
 -  Melihat Riwayat Gaji  
 -  Melihat laporan gaji seluruh karyawan setelah finalisasi  
+-  Cetak Kartu Pegawai 
 
 ---
 
 ## ✅ 3. Manager Melakukan Approval
 
-Manager bertugas mengecek apakah perhitungan payroll sudah benar.
+Manager menerima data individu yang berstatus 'Terbit' dan bertugas untuk mengecek, apakah perhitungan sesuai dengan data.
 
 ### 🔍 Yang dicek:
 -  Rekap Absensi seluruh karyawan
@@ -83,18 +89,21 @@ Manager bertugas mengecek apakah perhitungan payroll sudah benar.
 -  Total gaji  
 
 ### 🔄 Keputusan:
--  Jika salah → dikembalikan ke Payroll Staff  
--  Jika benar → **Manager menyetujui payroll**  
+-  Jika salah → dikembalikan ke Payroll Staff untuk diperbaiki.
+Status berubah: 🔴 **Ditolak** 
 
+-  Jika benar → **Manager menyetujui payroll**  
 Status berubah: 🟢 **Approved**
 
 ---
 
 ## 📦 4. Payroll Staff Finalisasi Payroll
 
-Setelah disetujui manager:
+Setelah data per individu disetujui manager:
 
--  Payroll staff memfinalisasi payroll  
+-  Payroll staff melakukan finalisasi dan transfer gaji. 
+
+Status berubah: 🟢 **Dibayar**  
 -  Sistem membuat **slip gaji**  
 
 ---
@@ -130,7 +139,7 @@ Karyawan login ke sistem untuk:
 
   Bonus :
   -  Target harian teknis = 5 pekerjaan 
-  -  Jika melebihi target harian, walaupun menyelesaikan 1 saja, maka teknisi mendapatkan bonus harian sebesar Rp. 150.000
+  -  Jika melebihi target harian, walaupun menyelesaikan 1 saja, maka teknisi mendapatkan bonus harian.
     
 ---
 # 📌 ATURAN CUTI & PERHITUNGAN GAJI
@@ -170,6 +179,14 @@ Pajak Bulanan = Pajak Tahunan / 12
 Gaji Bersih = Gaji Bulanan − (Potongan Alpha + Potongan Telat + Pajak Bulanan)  
 
 Alur perhitungannya dimulai dari menghitung gaji harian berdasarkan gaji bulanan, kemudian menghitung jumlah ketidakhadiran (alpha) dan keterlambatan untuk mendapatkan total potongan. Setelah itu dihitung pajak bulanan berdasarkan penghasilan tahunan. Seluruh potongan tersebut kemudian dikurangkan dari gaji bulanan sehingga menghasilkan **gaji bersih** yang diterima karyawan.
+
+# 🛠️ PENAMBAHAN FITUR
+
+- Karyawan dapat mencetak kartu pegawai 
+- Karyawan dapat mengetahui status pembayaran gaji mereka secara individu  
+- Pembatasan login sebanyak 3x, jika lebih dari 3x, maka harus menunggu uselama 15 menit untuk login  
+- Sistem Forgot password yang harus di setujui oleh HRD
+
 
 # 🛠️ PERBAIKAN DAN SARAN OLEH DOSEN
 
