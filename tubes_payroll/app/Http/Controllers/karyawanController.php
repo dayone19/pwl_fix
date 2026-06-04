@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KaryawanController extends Controller
 {
@@ -204,4 +205,33 @@ class KaryawanController extends Controller
             compact('pegawai', 'list_divisi', 'list_jabatan')
         );
     } 
+    public function kartuPegawai($nip)
+    {
+        $pegawai = DB::table('profil_pegawai')
+            ->join('pengguna', 'profil_pegawai.nip', '=', 'pengguna.nip')
+            ->join('divisi', 'profil_pegawai.id_divisi', '=', 'divisi.id')
+            ->join('jabatan', 'profil_pegawai.id_jabatan', '=', 'jabatan.id')
+            ->select(
+                'profil_pegawai.*',
+                'pengguna.foto as foto_akun',
+                'pengguna.email as email_akun',
+                'divisi.nama_divisi',
+                'jabatan.nama_jabatan as jabatan'
+            )
+            ->where('profil_pegawai.nip', $nip)
+            ->first();
+
+        if (!$pegawai) {
+            abort(404);
+        }
+        
+        $pdf = Pdf::loadView(
+            'ekspor_pdf.kartu_pegawai',
+            compact('pegawai')
+        );
+
+        return $pdf->download(
+            'Kartu-Pegawai-' . $pegawai->nip . '.pdf'
+        );
+    }
 }

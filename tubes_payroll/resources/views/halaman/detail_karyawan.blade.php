@@ -216,9 +216,9 @@
                     </div>
 
                     <div class="pt-6 flex gap-3">
-                        <button class="flex-1 bg-slate-900 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-orange-600 transition-all ">
-                            Cetak Kartu Pegawai
-                        </button>
+                        <a href="{{ route('kartu.pegawai', $p->nip) }}"
+                        class="flex-1 bg-slate-900 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-orange-600 transition-all text-center block">
+                            Cetak Kartu Pegawai</a>
                         <button class="w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center border border-orange-100 hover:bg-orange-600 hover:text-white transition-all shadow-sm">
                             <i class="fas fa-paper-plane"></i>
                         </button>
