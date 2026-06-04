@@ -80,6 +80,8 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     ->name('payroll.destroy-draft');
     Route::post('/payroll/mass-action', [PayrollController::class, 'massAction'])
     ->name('payroll.mass-action');
+    Route::post('/payroll/{id}/bayar', [PayrollController::class, 'bayarGaji'])
+    ->name('payroll.bayar');
     Route::get('/payroll/slip/{id}',[PayrollController::class, 'downloadSlip'])
     ->name('payroll.slip');
 

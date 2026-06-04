@@ -350,7 +350,7 @@ class PayrollController extends Controller
             return redirect()->back()->with('error', 'Berkas tidak dalam status menunggu persetujuan.');
         }
 
-        $statusBaru = ($request->aksi === 'approve') ? 'Dibayar' : 'Ditolak';
+        $statusBaru = ($request->aksi === 'approve') ? 'Approved' : 'Ditolak';
         $gaji->update(['status_bayar' => $statusBaru]);
 
         return redirect()->back()->with('success', "Berkas payroll berhasil diperbarui menjadi: $statusBaru.");
@@ -414,6 +414,18 @@ class PayrollController extends Controller
                 : 'ditolak')
             . '.'
         );
+    }
+
+    // FINANCE: Menandai gaji sudah dibayarkan (Status: Terbit -> Dibayar)
+    public function bayarGaji($id)
+    {
+        $gaji = Penggajian::findOrFail($id);
+
+        $gaji->update([
+            'status_bayar' => 'Dibayar'
+        ]);
+
+        return back()->with('success', 'Gaji berhasil dibayarkan');
     }
 
     /**

@@ -156,15 +156,36 @@
         <div class="mesh-bg-workshop p-8 rounded-[45px] text-white shadow-2xl relative overflow-hidden group">
             <div class="relative z-10">
                 <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-6 flex items-center gap-2">
-                    <i class="fas fa-file-invoice-dollar"></i> Status Pembayaran Gaji
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    Status Pembayaran Gaji
                 </p>
-                <h2 class="text-4xl font-black  tracking-tighter mb-2 leading-none">
-                    {{ Str::upper($gajiTerakhir->status_bayar ?? 'DRAFT') }}
-                </h2>
-                <p class="text-[10px] font-bold text-orange-200 uppercase ">{{ date('F Y') }}</p>
-            </div>
-            <i class="fas fa-check-double absolute -bottom-6 -right-6 text-[100px] text-white/10 rotate-12 group-hover:scale-110 transition-transform"></i>
+
+                <div class="mb-4">
+                    <h2 class="text-4xl font-black tracking-tighter leading-none">
+                        {{ $sudahDibayar }}
+                    </h2>
+                    <p class="text-[10px] font-bold text-green-200 uppercase mt-1">
+                        Sudah Dibayar
+                    </p>
+                </div>
+
+                <div class="border-t border-white/20 pt-4">
+                    <h2 class="text-3xl font-black tracking-tighter leading-none">
+                        {{ $belumDibayar }}
+                    </h2>
+                    <p class="text-[10px] font-bold text-red-200 uppercase mt-1">
+                        Belum Dibayar
+                    </p>
+                </div>
+
+                <p class="text-[10px] font-bold text-orange-200 uppercase mt-4">
+                    Periode {{ date('F Y') }}
+                </p>
         </div>
+
+    <i class="fas fa-money-check-alt absolute -bottom-6 -right-6 text-[100px] text-white/10 rotate-12"></i>
+
+</div>
 
     {{-- LOGIKA DASHBOARD: FINANCE --}}
     @elseif($divisi == 'FINANCE')
