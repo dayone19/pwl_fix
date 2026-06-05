@@ -12,9 +12,21 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class KaryawanController extends Controller
 {
     private function isHRD(): bool
-    {
-        return Str::upper(Auth::user()->divisi?->nama_divisi) === 'HRD';
+{   
+    $user = Auth::user();
+
+    if (!$user) {
+        return false;
     }
+
+    $profil = DB::table('profil_pegawai')
+        ->join('divisi', 'profil_pegawai.id_divisi', '=', 'divisi.id')
+        ->where('profil_pegawai.nip', $user->nip)
+        ->select('divisi.nama_divisi')
+        ->first();
+
+    return strtoupper($profil->nama_divisi ?? '') === 'HRD';
+}
 
     public function index(Request $request)
     {
@@ -23,10 +35,13 @@ class KaryawanController extends Controller
 
         $data_karyawan = DB::table('profil_pegawai')
             ->join('pengguna', 'profil_pegawai.nip', '=', 'pengguna.nip')
+            ->join('jabatan', 'profil_pegawai.id_jabatan', '=', 'jabatan.id')
             ->select(
                 'profil_pegawai.*',
                 'pengguna.foto',
-                'pengguna.email'
+                'pengguna.email',
+                'pengguna.apakah_aktif',
+                'jabatan.nama_jabatan as jabatan'
             )
 
             ->when($nama, function ($query) use ($nama) {
@@ -163,31 +178,40 @@ class KaryawanController extends Controller
     }
 
     public function destroy($nip)
-    {
+    { 
         abort_unless($this->isHRD(), 403);
 
         DB::beginTransaction();
 
         try {
-            $pegawai = DB::table('profil_pegawai')->where('nip', $nip)->first();
+
+            $pegawai = DB::table('profil_pegawai')
+                ->where('nip', $nip)
+                ->first();
 
             if (!$pegawai) {
                 return back()->with('error', 'Pegawai tidak ditemukan');
             }
 
-            DB::table('riwayat_pegawai')->where('pegawai_id', $pegawai->id)->delete();
-            DB::table('penggajian')->where('id_pegawai', $pegawai->id)->delete();
-            DB::table('profil_pegawai')->where('id', $pegawai->id)->delete();
-            DB::table('pengguna')->where('nip', $nip)->delete();
+            DB::table('pengguna')
+                ->where('nip', $nip)
+                ->update([
+                    'apakah_aktif' => 0
+                ]);
 
             DB::commit();
 
-            return redirect()->route('users.index')
-                ->with('success', 'Data pegawai berhasil dihapus');
+            return redirect()->route('karyawan.index')
+                ->with('success', 'Akun berhasil dinonaktifkan');
 
         } catch (\Exception $e) {
+
             DB::rollBack();
-            return back()->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+
+            return back()->with(
+                'error',
+                'Gagal menonaktifkan akun: ' . $e->getMessage()
+            );
         }
     }
 

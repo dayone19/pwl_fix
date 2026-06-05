@@ -183,7 +183,7 @@
         
         <div class="bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm relative overflow-hidden group">
             <i class="fas fa-users absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-10 group-hover:text-blue-500 transition-all"></i>
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Kru & Personel</p>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Penerima Payroll</p>
             <h3 class="text-2xl font-black text-slate-900">{{ $totalPegawai }} <span class="text-sm text-slate-400 ">Orang</span></h3>
         </div>
         
@@ -191,7 +191,7 @@
         <div class="bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm relative overflow-hidden group">
             <i class="fas fa-shield-alt absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-10 group-hover:text-green-500 transition-all"></i>
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
-                Progress Payroll
+                Progress Payroll Bulan Ini
             </p>
 
             <h3 class="text-2xl font-black text-orange-600">
@@ -228,11 +228,28 @@
             <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Pilih Rekap Bulan & Tahun</label>
             <select name="bulan" id="select-bulan" required>
                 <option value="">-- Pilih Periode --</option>
-                @php $tahunSekarang = date('Y'); @endphp
-                @for($m = 1; $m <= 12; $m++)
-                    @php $value = sprintf('%02d-%s', $m, $tahunSekarang); @endphp
-                    <option value="{{ $value }}">{{ date('F', mktime(0, 0, 0, $m, 1)) }} {{ $tahunSekarang }}</option>
-                @endfor
+                @php
+                $bulan = [
+                    'JAN' => 'Januari',
+                    'FEB' => 'Februari',
+                    'MAR' => 'Maret',
+                    'APR' => 'April',
+                    'MEI' => 'Mei',
+                    'JUN' => 'Juni',
+                    'JUL' => 'Juli',
+                    'AGU' => 'Agustus',
+                    'SEP' => 'September',
+                    'OKT' => 'Oktober',
+                    'NOV' => 'November',
+                    'DES' => 'Desember',
+                ];
+                @endphp
+
+                @foreach($bulan as $kode => $nama)
+                    <option value="{{ $kode }}-26">
+                        {{ $nama }} 2026
+                    </option>
+                @endforeach
             </select>
         </div>
         <div>

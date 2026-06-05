@@ -49,7 +49,7 @@
         
         <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-start lg:justify-end">
             
-            <form action="{{ route('absensi.pribadi') }}" method="GET" class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl border border-slate-100">
+            <form action="{{ route('pribadi.absensi') }}" method="GET" class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl border border-slate-100">
                 <select name="bulan" onchange="this.form.submit()" class="bg-white border-0 text-xs font-bold text-slate-700 px-3 py-2 rounded-lg focus:ring-2 focus:ring-orange-500 shadow-sm cursor-pointer uppercase">
                     @for ($m=1; $m<=12; $m++)
                         <option value="{{ sprintf('%02d', $m) }}" {{ $bulanPilihan == sprintf('%02d', $m) ? 'selected' : '' }}>
@@ -65,7 +65,7 @@
                 </select>
             </form>
 
-            <a href="{{ route('absensi.pribadi.pdf', ['bulan' => $bulanPilihan, 'tahun' => $tahunPilihan]) }}" 
+            <a href="{{ route('pribadi.absensi.pdf', ['bulan' => $bulanPilihan, 'tahun' => $tahunPilihan]) }}" 
                class="flex items-center gap-2.5 px-5 py-2.5 bg-slate-900 hover:bg-orange-600 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-orange-500/20 group">
                 <i class="fas fa-file-pdf text-sm text-orange-500 group-hover:text-white transition-colors"></i>
                 Cetak Rekap (PDF)

@@ -126,9 +126,15 @@
                         </td>
 
                         <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors">
-                            <span class="px-5 py-2 bg-white text-slate-800 text-[9px] font-black rounded-xl uppercase  border border-slate-200 shadow-sm group-hover:text-orange-600 transition-colors">
-                                {{ $p->jabatan ?? 'General Crew' }}
-                            </span>
+                            @if($p->apakah_aktif)
+                                <span class="px-5 py-2 bg-white text-slate-800 text-[9px] font-black rounded-xl uppercase border border-slate-200 shadow-sm group-hover:text-orange-600 transition-colors">
+                                    {{ $p->jabatan ?? 'General Crew' }}
+                                </span>
+                            @else
+                                <span class="px-5 py-2 bg-red-50 text-red-700 text-[9px] font-black rounded-xl uppercase border border-red-200 shadow-sm">
+                                    {{ ($p->jabatan ?? 'General Crew') . ' (Nonaktif)' }}
+                                </span>
+                            @endif
                         </td>
 
                         <td class="px-8 py-6 bg-slate-50 rounded-r-[35px] border-y border-r border-slate-100 text-right group-hover:bg-white group-hover:border-orange-200 transition-colors">
@@ -139,11 +145,15 @@
                                 <a href="{{ route('karyawan.edit', $p->nip) }}" class="edit-link w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-orange-600 hover:shadow-md transition-all">
                                     <i class="fas fa-pen-nib text-xs"></i>
                                 </a>
-                                <form action="{{ route('karyawan.destroy', $p->nip) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus karyawan ini?')">
+                                <form action="{{ route('karyawan.destroy', $p->nip) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Yakin ingin menonaktifkan akun ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-red-600 hover:shadow-md transition-all">
-                                        <i class="fas fa-trash text-xs"></i>
+
+                                    <button type="submit"
+                                        class="w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-red-600 hover:shadow-md transition-all">
+                                        <i class="fas fa-user-slash text-xs"></i>
                                     </button>
                                 </form>
                             </div>
