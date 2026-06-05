@@ -47,8 +47,8 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     // Absensi
     Route::get('/absensi',              [absensiController::class, 'index'])->name('absensi.index');
     Route::get('/absensi/pdf',          [absensiController::class, 'exportPdf'])->name('absensi.pdf');
-    Route::get('/absensi/pribadi',      [absensiController::class, 'pribadi'])->name('absensi.pribadi');
-    Route::get('/absensi/pribadi/pdf',  [absensiController::class, 'pribadiPdf'])->name('absensi.pribadi.pdf');
+    Route::get('/absensi/pribadi',      [absensiController::class, 'pribadi'])->name('pribadi.absensi');
+    Route::get('/absensi/pribadi/pdf',  [absensiController::class, 'pribadiPdf'])->name('pribadi.absensi.pdf');
     Route::post('/absensi/import',      [absensiController::class, 'store'])->name('absensi.store');
     Route::get('/absensi/template',     [absensiController::class, 'downloadTemplate'])->name('absensi.template');
     Route::post('/absensi/{id}',         [absensiController::class, 'update'])->name('absensi.update');

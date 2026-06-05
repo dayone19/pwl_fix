@@ -122,9 +122,15 @@
                             {{ $user->email }}
                         </td>
                         <td class="px-8 py-6 border-y border-slate-100 text-center group-hover:bg-white group-hover:border-orange-200 transition-colors">
-                            <span class="px-4 py-1.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-full font-black  text-[9px] uppercase tracking-widest">
-                                {{ $user->role ?? 'Pegawai' }}
-                            </span>
+                            @if($user->apakah_aktif)
+                                <span class="inline-block whitespace-nowrap px-5 py-2 bg-white text-slate-800 text-[9px] font-black rounded-xl uppercase border border-slate-200 shadow-sm">
+                                    {{ $user->jabatan ?? 'General Crew' }}
+                                </span>
+                            @else
+                                <span class="inline-block whitespace-nowrap px-5 py-2 bg-red-50 text-red-700 text-[9px] font-black rounded-xl uppercase border border-red-200 shadow-sm">
+                                    {{ ($user->jabatan ?? 'General Crew') . ' (Nonaktif)' }}
+                                </span>
+                            @endif
                         </td>
                         <td class="px-8 py-6 bg-slate-50 rounded-r-[35px] border-y border-r border-slate-100 text-right group-hover:bg-white group-hover:border-orange-200 transition-colors">
                             <div class="flex justify-end gap-3">
