@@ -27,6 +27,13 @@
 
 @section('content')
 
+@php
+    // Parse tempat & tanggal lahir dari kolom gabungan
+    $ttlParts     = isset($pegawai) ? explode(', ', $pegawai->tempat_tanggal_lahir, 2) : ['', ''];
+    $tempatLahir  = $ttlParts[0] ?? '';
+    $tanggalLahir = $ttlParts[1] ?? '';
+@endphp
+
 <div class="max-w-4xl mx-auto">
 
     <!-- HEADER -->
@@ -38,9 +45,7 @@
 
         <div>
             <h1 class="text-xl font-black text-slate-900 uppercase italic tracking-tighter">
-                {{ isset($pegawai)
-                    ? 'Edit Data Pegawai'
-                    : 'Registrasi Teknisi Baru' }}
+                {{ isset($pegawai) ? 'Edit Data Pegawai' : 'Registrasi Teknisi Baru' }}
             </h1>
 
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -53,12 +58,10 @@
     <!-- PROGRESS -->
     <div class="flex gap-4 mb-6">
         <div class="flex-1 h-2 rounded-full overflow-hidden bg-slate-200">
-
             <div id="progressBar"
                  class="h-full bg-orange-600 transition-all duration-500"
                  style="width:50%">
             </div>
-
         </div>
     </div>
 
@@ -82,9 +85,7 @@
     @endif
 
 
-    <form action="{{ isset($pegawai)
-            ? route('karyawan.update', $pegawai->nip)
-            : route('karyawan.store') }}"
+    <form action="{{ isset($pegawai) ? route('karyawan.update', $pegawai->nip) : route('karyawan.store') }}"
           method="POST"
           enctype="multipart/form-data">
 
@@ -95,7 +96,7 @@
         @endif
 
         <!-- ================================= -->
-        <!-- STEP 1 -->
+        <!-- STEP 1                            -->
         <!-- ================================= -->
 
         <div id="step1">
@@ -113,7 +114,6 @@
 
                         <!-- NIP -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 NIP (Nomor Induk Pegawai)
                             </label>
@@ -121,7 +121,9 @@
                             <input type="text"
                                    id="nipInput"
                                    name="nip"
-                                   class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 outline-none"
+                                   value="{{ isset($pegawai) ? $pegawai->nip : old('nip') }}"
+                                   {{ isset($pegawai) ? 'readonly' : '' }}
+                                   class="w-full border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 outline-none {{ isset($pegawai) ? 'bg-slate-100 cursor-not-allowed text-slate-400' : 'bg-slate-50' }}"
                                    placeholder="Contoh: 123456">
 
                             <p id="nipStatus"
@@ -129,13 +131,11 @@
                                 <span id="nipIcon">⚠️</span>
                                 <span id="nipText">Minimal 6 Digit</span>
                             </p>
-
                         </div>
 
-                        
+
                         <!-- EMAIL -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Alamat Email
                             </label>
@@ -143,6 +143,7 @@
                             <input type="email"
                                    id="emailInput"
                                    name="email"
+                                   value="{{ isset($pegawai) ? $pegawai->email : old('email') }}"
                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 outline-none"
                                    placeholder="Contoh: example@gmail.com">
 
@@ -151,22 +152,24 @@
                                 <span id="statusIcon">⚠️</span>
                                 <span id="statusText">Wajib menggunakan @gmail.com</span>
                             </p>
-
                         </div>
-                       
+
+
                         <!-- PASSWORD -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Kata Sandi
+                                @if(isset($pegawai))
+                                    <span class="text-orange-500 normal-case">(kosongkan jika tidak diganti)</span>
+                                @endif
                             </label>
 
                             <div class="relative">
                                 <input type="password"
-                                    id="passwordInput"
-                                    name="kata_sandi"
-                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 pr-14 text-sm font-bold text-slate-800 outline-none"
-                                    placeholder="Masukkan kata sandi">
+                                       id="passwordInput"
+                                       name="kata_sandi"
+                                       class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 pr-14 text-sm font-bold text-slate-800 outline-none"
+                                       placeholder="{{ isset($pegawai) ? 'Kosongkan jika tidak diganti' : 'Masukkan kata sandi' }}">
                                 <button type="button"
                                         id="togglePassword"
                                         class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-600 transition-colors">
@@ -178,43 +181,41 @@
                                  class="mt-3 ml-2 opacity-0 transition-all duration-300 hidden">
 
                                 <ul id="passwordError" class="space-y-1">
-
-                                    <li id="reqLen"
-                                        class="text-[11px] text-red-500 flex items-center gap-2">
-                                        <span>•</span>
-                                        Minimal 8 karakter
+                                    <li id="reqLen" class="text-[11px] text-red-500 flex items-center gap-2">
+                                        <span>•</span> Minimal 8 karakter
                                     </li>
-
-                                    <li id="reqUpper"
-                                        class="text-[11px] text-red-500 flex items-center gap-2">
-                                        <span>•</span>
-                                        Minimal 1 huruf besar
+                                    <li id="reqUpper" class="text-[11px] text-red-500 flex items-center gap-2">
+                                        <span>•</span> Minimal 1 huruf besar
                                     </li>
-
-                                    <li id="reqNum"
-                                        class="text-[11px] text-red-500 flex items-center gap-2">
-                                        <span>•</span>
-                                        Minimal 1 angka
+                                    <li id="reqNum" class="text-[11px] text-red-500 flex items-center gap-2">
+                                        <span>•</span> Minimal 1 angka
                                     </li>
-
                                 </ul>
 
-                                <p id="pwValidText"
-                                   class="hidden text-[11px] font-bold text-green-500">
+                                <p id="pwValidText" class="hidden text-[11px] font-bold text-green-500">
                                     ✓ Password Valid
                                 </p>
-
                             </div>
-
                         </div>
 
 
                         <!-- FOTO -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Foto Profil Resmi
+                                @if(isset($pegawai))
+                                    <span class="text-orange-500 normal-case">(opsional)</span>
+                                @endif
                             </label>
+
+                            @if(isset($pegawai) && $pegawai->foto && $pegawai->foto !== 'default.jpg')
+                                <div class="flex items-center gap-3 mb-2">
+                                    <img src="{{ asset('img/profil/' . $pegawai->foto) }}"
+                                         class="w-12 h-12 rounded-xl object-cover border border-slate-200"
+                                         alt="Foto saat ini">
+                                    <span class="text-[10px] text-slate-400 font-bold">Foto saat ini</span>
+                                </div>
+                            @endif
 
                             <input type="file"
                                    id="fotoInput"
@@ -227,7 +228,6 @@
                                 <span id="fotoIcon"></span>
                                 <span id="fotoText"></span>
                             </p>
-
                         </div>
 
                     </div>
@@ -235,14 +235,12 @@
 
                     <!-- NEXT BUTTON -->
                     <div class="mt-10 flex justify-end">
-
                         <button type="button"
                                 id="nextStepBtn"
                                 class="bg-slate-900 text-white px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-orange-600 transition-all flex items-center gap-3">
                             Lanjut Ke Profil
                             <i class="fas fa-chevron-right"></i>
                         </button>
-
                     </div>
 
                 </div>
@@ -254,7 +252,7 @@
 
 
         <!-- ================================= -->
-        <!-- STEP 2 -->
+        <!-- STEP 2                            -->
         <!-- ================================= -->
 
         <div id="step2" class="hidden">
@@ -272,193 +270,166 @@
 
                         <!-- NAMA -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Nama Lengkap Sesuai KTP
                             </label>
-
                             <input type="text"
                                    name="nama_lengkap"
+                                   value="{{ isset($pegawai) ? $pegawai->nama_lengkap : old('nama_lengkap') }}"
                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-black text-slate-900 uppercase"
                                    placeholder="Contoh : Antono Antini">
-
                         </div>
 
 
-                        <!-- JK -->
+                        <!-- JENIS KELAMIN -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Jenis Kelamin
                             </label>
-
                             <select name="jenis_kelamin"
                                     class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-black text-slate-900">
                                 <option value="">PILIH...</option>
-                                <option value="L">LAKI-LAKI</option>
-                                <option value="P">PEREMPUAN</option>
+                                <option value="L" {{ isset($pegawai) && $pegawai->jenis_kelamin == 'L' ? 'selected' : '' }}>LAKI-LAKI</option>
+                                <option value="P" {{ isset($pegawai) && $pegawai->jenis_kelamin == 'P' ? 'selected' : '' }}>PEREMPUAN</option>
                             </select>
-
                         </div>
 
 
                         <!-- DIVISI -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Divisi / Departemen
                             </label>
-
                             <select id="divisiSelect"
                                     name="id_divisi"
                                     class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800">
                                 <option value="">-- Pilih Divisi --</option>
                                 @foreach($list_divisi as $divisi)
-                                    <option value="{{ $divisi->id }}">
+                                    <option value="{{ $divisi->id }}"
+                                        {{ isset($pegawai) && $pegawai->id_divisi == $divisi->id ? 'selected' : '' }}>
                                         {{ $divisi->nama_divisi }}
                                     </option>
                                 @endforeach
                             </select>
-
                         </div>
 
 
                         <!-- JABATAN -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Jabatan
                             </label>
-
                             <select id="jabatanSelect"
                                     name="id_jabatan"
                                     class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800"
                                     required>
                                 <option value="" disabled selected>-- Pilih Divisi Dulu --</option>
                             </select>
-
                         </div>
 
 
                         <!-- TELEPON -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Nomor Telepon
                             </label>
-
                             <input type="text"
                                    id="phoneInput"
                                    name="nomor_telepon"
+                                   value="{{ isset($pegawai) ? $pegawai->nomor_telepon : old('nomor_telepon') }}"
                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 transition-all"
                                    placeholder="Contoh : 08123456789">
-
                             <p id="phoneStatus" class="text-[9px] font-bold uppercase tracking-widest ml-4 hidden">
                                 <span id="phoneIcon">⚠️</span>
                                 <span id="phoneText">Nomor telepon tidak valid</span>
                             </p>
-
                         </div>
 
 
                         <!-- NIK -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Nomor NIK
                             </label>
-
                             <input type="text"
                                    id="nikInput"
                                    name="nik"
+                                   value="{{ isset($pegawai) ? $pegawai->nik : old('nik') }}"
                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 transition-all"
                                    placeholder="Contoh : 1234567890123456">
-
                             <p id="nikStatus" class="text-[9px] font-bold uppercase tracking-widest ml-4 hidden">
                                 <span id="nikIcon">⚠️</span>
                                 <span id="nikText">NIK harus 16 digit angka</span>
                             </p>
-
                         </div>
 
 
                         <!-- AGAMA -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Agama
                             </label>
-
                             <select name="agama"
                                     class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800">
                                 <option value="">-- Pilih Agama --</option>
-                                <option value="Islam">Islam</option>
-                                <option value="Kristen">Kristen</option>
-                                <option value="Katolik">Katolik</option>
-                                <option value="Hindu">Hindu</option>
-                                <option value="Buddha">Buddha</option>
-                                <option value="Konghucu">Konghucu</option>
+                                @foreach(['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu'] as $agama)
+                                    <option value="{{ $agama }}"
+                                        {{ isset($pegawai) && $pegawai->agama == $agama ? 'selected' : '' }}>
+                                        {{ $agama }}
+                                    </option>
+                                @endforeach
                             </select>
-
                         </div>
 
 
                         <!-- TTL -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Tempat & Tanggal Lahir
                             </label>
-
                             <div class="flex gap-2 bg-slate-50 rounded-2xl p-2">
-
                                 <input type="text"
                                        name="tempat_lahir"
+                                       value="{{ $tempatLahir }}"
                                        class="flex-[2] bg-transparent border-none px-4 py-2 text-sm font-bold text-slate-800 uppercase"
                                        placeholder="BINJAI">
-
                                 <div class="w-px h-8 bg-slate-200 my-auto"></div>
-
                                 <input type="date"
                                        name="tanggal_lahir"
+                                       value="{{ $tanggalLahir }}"
                                        class="flex-1 bg-transparent border-none px-4 py-2 text-sm font-bold text-slate-800">
-
                             </div>
-
                         </div>
 
 
                         <!-- PENDIDIKAN -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Pendidikan Terakhir
                             </label>
-
                             <input type="text"
                                    name="pendidikan"
+                                   value="{{ isset($pegawai) ? $pegawai->pendidikan : old('pendidikan') }}"
                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800"
                                    placeholder="SMK Otomotif">
-
                         </div>
 
 
                         <!-- STATUS KERJA -->
                         <div class="space-y-2">
-
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Status Kerja
                             </label>
-
                             <select name="status_kerja"
                                     class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800">
                                 <option value="">-- Pilih Status --</option>
-                                <option value="Tetap">Tetap</option>
-                                <option value="Kontrak">Kontrak</option>
-                                <option value="Magang">Magang</option>
-                                <option value="PKL">PKL</option>
+                                @foreach(['Tetap','Kontrak','Magang','PKL'] as $status)
+                                    <option value="{{ $status }}"
+                                        {{ isset($pegawai) && $pegawai->status_kerja == $status ? 'selected' : '' }}>
+                                        {{ $status }}
+                                    </option>
+                                @endforeach
                             </select>
-
                         </div>
 
                     </div>
@@ -466,7 +437,6 @@
 
                     <!-- BUTTON -->
                     <div class="mt-10 flex justify-between gap-4">
-
                         <button type="button"
                                 id="backStepBtn"
                                 class="bg-slate-100 text-slate-500 px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-3">
@@ -477,11 +447,8 @@
                         <button type="submit"
                                 class="flex-1 bg-orange-600 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-slate-900 transition-all flex items-center justify-center gap-3">
                             <i class="fas fa-save"></i>
-                            {{ isset($pegawai)
-                                ? 'Update Data Pegawai'
-                                : 'Simpan Data Pegawai Baru' }}
+                            {{ isset($pegawai) ? 'Update Data Pegawai' : 'Simpan Data Pegawai Baru' }}
                         </button>
-
                     </div>
 
                 </div>
@@ -498,31 +465,29 @@
 
 window.onload = function () {
 
-    // =========================
+    // Deteksi mode edit dari PHP
+    const isEditMode = {{ isset($pegawai) ? 'true' : 'false' }};
+
+    // ===========================
     // ELEMENT STEP
-    // =========================
+    // ===========================
+    const step1       = document.getElementById('step1');
+    const step2       = document.getElementById('step2');
+    const progressBar = document.getElementById('progressBar');
+    const nextStepBtn = document.getElementById('nextStepBtn');
+    const backStepBtn = document.getElementById('backStepBtn');
 
-    const step1        = document.getElementById('step1');
-    const step2        = document.getElementById('step2');
-    const progressBar  = document.getElementById('progressBar');
-    const nextStepBtn  = document.getElementById('nextStepBtn');
-    const backStepBtn  = document.getElementById('backStepBtn');
-
-
-    // =========================
+    // ===========================
     // EMAIL
-    // =========================
-
+    // ===========================
     const emailInput  = document.getElementById('emailInput');
     const emailStatus = document.getElementById('emailStatus');
     const statusText  = document.getElementById('statusText');
     const statusIcon  = document.getElementById('statusIcon');
 
-
-    // =========================
+    // ===========================
     // PASSWORD
-    // =========================
-
+    // ===========================
     const pwInput     = document.getElementById('passwordInput');
     const pwFeedback  = document.getElementById('passwordFeedback');
     const pwErrorList = document.getElementById('passwordError');
@@ -531,11 +496,9 @@ window.onload = function () {
     const reqUpper    = document.getElementById('reqUpper');
     const reqNum      = document.getElementById('reqNum');
 
-
-    // =========================
+    // ===========================
     // TOGGLE PASSWORD
-    // =========================
-
+    // ===========================
     const togglePassword = document.getElementById('togglePassword');
     const eyeIcon        = document.getElementById('eyeIcon');
 
@@ -555,51 +518,41 @@ window.onload = function () {
         }
     });
 
-
-    // =========================
+    // ===========================
     // NIP
-    // =========================
-
+    // ===========================
     const nipInput  = document.getElementById('nipInput');
     const nipStatus = document.getElementById('nipStatus');
     const nipText   = document.getElementById('nipText');
     const nipIcon   = document.getElementById('nipIcon');
 
-
-    // =========================
+    // ===========================
     // FOTO
-    // =========================
-
+    // ===========================
     const fotoInput  = document.getElementById('fotoInput');
     const fotoStatus = document.getElementById('fotoStatus');
     const fotoText   = document.getElementById('fotoText');
     const fotoIcon   = document.getElementById('fotoIcon');
 
-
-    // =========================
+    // ===========================
     // PHONE
-    // =========================
-
+    // ===========================
     const phoneInput  = document.getElementById('phoneInput');
     const phoneStatus = document.getElementById('phoneStatus');
     const phoneText   = document.getElementById('phoneText');
     const phoneIcon   = document.getElementById('phoneIcon');
 
-
-    // =========================
+    // ===========================
     // NIK
-    // =========================
-
+    // ===========================
     const nikInput  = document.getElementById('nikInput');
     const nikStatus = document.getElementById('nikStatus');
     const nikText   = document.getElementById('nikText');
     const nikIcon   = document.getElementById('nikIcon');
 
-
-    // =========================
+    // ===========================
     // DIVISI & JABATAN FILTER
-    // =========================
-
+    // ===========================
     const divisiSelect  = document.getElementById('divisiSelect');
     const jabatanSelect = document.getElementById('jabatanSelect');
 
@@ -621,11 +574,8 @@ window.onload = function () {
 
     divisiSelect.addEventListener('change', function () {
         const selectedDivisi = parseInt(this.value);
-
         jabatanSelect.innerHTML = '<option value="" disabled selected>-- Pilih Jabatan --</option>';
-
         if (!selectedDivisi) return;
-
         jabatanData.forEach(function (jabatan) {
             const allowedDivisi = jabatanDivisiMap[jabatan.id] || [];
             if (allowedDivisi.includes(selectedDivisi)) {
@@ -637,30 +587,33 @@ window.onload = function () {
         });
     });
 
+    // ===========================
+    // PRE-SELECT JABATAN (EDIT)
+    // ===========================
+    @if(isset($pegawai))
+    const editJabatanId = {{ $pegawai->id_jabatan }};
+    // Trigger change divisi supaya opsi jabatan terisi
+    divisiSelect.dispatchEvent(new Event('change'));
+    setTimeout(function () {
+        jabatanSelect.value = editJabatanId;
+    }, 50);
+    @endif
 
-    // =========================
+    // ===========================
     // HELPER
-    // =========================
-
+    // ===========================
     function updateStatus(el, isValid) {
         el.style.color = isValid ? "#22c55e" : "#ef4444";
         el.querySelector('span').innerText = isValid ? '✓' : '•';
     }
 
-
-    // =========================
+    // ===========================
     // VALIDASI PASSWORD
-    // =========================
-
+    // ===========================
     function validasiPassword() {
-
         const val = pwInput.value;
-
         pwFeedback.classList.remove('hidden');
-
-        setTimeout(() => {
-            pwFeedback.classList.add('opacity-100');
-        }, 10);
+        setTimeout(() => { pwFeedback.classList.add('opacity-100'); }, 10);
 
         const isLenOk   = val.length >= 8;
         const isUpperOk = /[A-Z]/.test(val);
@@ -681,17 +634,12 @@ window.onload = function () {
         }
     }
 
-
-    // =========================
+    // ===========================
     // VALIDASI EMAIL
-    // =========================
-
+    // ===========================
     function validasiEmail() {
-
         const value = emailInput.value.toLowerCase();
-
         emailStatus.classList.remove('hidden');
-
         if (value.endsWith('@gmail.com') && value.length > 10) {
             emailStatus.style.color    = "#22c55e";
             statusText.innerText       = "Format Email Valid";
@@ -705,18 +653,13 @@ window.onload = function () {
         }
     }
 
-
-    // =========================
+    // ===========================
     // VALIDASI NIP
-    // =========================
-
+    // ===========================
     function validasiNip() {
-
         const value      = nipInput.value.trim();
         const onlyNumber = /^[0-9]+$/.test(value);
-
         nipStatus.classList.remove('hidden');
-
         if (onlyNumber && value.length >= 6) {
             nipStatus.style.color    = "#22c55e";
             nipText.innerText        = "NIP Valid";
@@ -730,20 +673,15 @@ window.onload = function () {
         }
     }
 
-
-    // =========================
+    // ===========================
     // VALIDASI PHONE
-    // =========================
-
+    // ===========================
     function validasiPhone() {
-
         const value       = phoneInput.value.trim();
         const onlyNumber  = /^[0-9]+$/.test(value);
         const validPrefix = value.startsWith('08') || value.startsWith('628');
         const validLength = value.length >= 10 && value.length <= 15;
-
         phoneStatus.classList.remove('hidden');
-
         if (onlyNumber && validPrefix && validLength) {
             phoneStatus.style.color    = "#22c55e";
             phoneText.innerText        = "Nomor Telepon Valid";
@@ -757,18 +695,13 @@ window.onload = function () {
         }
     }
 
-
-    // =========================
+    // ===========================
     // VALIDASI NIK
-    // =========================
-
+    // ===========================
     function validasiNik() {
-
         const value      = nikInput.value.trim();
         const onlyNumber = /^[0-9]+$/.test(value);
-
         nikStatus.classList.remove('hidden');
-
         if (onlyNumber && value.length === 16) {
             nikStatus.style.color    = "#22c55e";
             nikText.innerText        = "NIK Valid";
@@ -782,21 +715,14 @@ window.onload = function () {
         }
     }
 
-
-    // =========================
+    // ===========================
     // VALIDASI FOTO
-    // =========================
-
+    // ===========================
     fotoInput.addEventListener('change', function () {
-
         const file = this.files[0];
-
         if (!file) return;
-
         fotoStatus.classList.remove('hidden');
-
         const fileSizeMB = file.size / (1024 * 1024);
-
         if (fileSizeMB > 2) {
             fotoStatus.style.color = "#ef4444";
             fotoIcon.innerText     = "⚠️";
@@ -809,23 +735,27 @@ window.onload = function () {
         }
     });
 
-
-    // =========================
+    // ===========================
     // EVENT LISTENER
-    // =========================
-
+    // ===========================
     pwInput.addEventListener('input', validasiPassword);
     emailInput.addEventListener('input', validasiEmail);
     nipInput.addEventListener('input', validasiNip);
     phoneInput.addEventListener('input', validasiPhone);
     nikInput.addEventListener('input', validasiNik);
 
-
-    // =========================
+    // ===========================
     // NEXT STEP
-    // =========================
-
+    // ===========================
     nextStepBtn.addEventListener('click', function () {
+
+        // Mode edit: skip validasi NIP/email/password, langsung lanjut
+        if (isEditMode) {
+            step1.classList.add('hidden');
+            step2.classList.remove('hidden');
+            progressBar.style.width = '100%';
+            return;
+        }
 
         validasiNip();
         validasiEmail();
@@ -854,22 +784,18 @@ window.onload = function () {
         progressBar.style.width = '100%';
     });
 
-
-    // =========================
+    // ===========================
     // BACK STEP
-    // =========================
-
+    // ===========================
     backStepBtn.addEventListener('click', function () {
         step2.classList.add('hidden');
         step1.classList.remove('hidden');
         progressBar.style.width = '50%';
     });
 
-
-    // =========================
+    // ===========================
     // VALIDASI SUBMIT
-    // =========================
-
+    // ===========================
     const form = document.querySelector('form');
 
     form.addEventListener('submit', function (e) {

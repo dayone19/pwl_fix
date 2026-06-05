@@ -207,6 +207,68 @@ class KaryawanController extends Controller
             compact('pegawai', 'list_divisi', 'list_jabatan')
         );
     } 
+
+    public function update(Request $request, $nip)
+{
+    $request->validate([
+        'nama_lengkap'  => 'required|string',
+        'id_divisi'     => 'required',
+        'id_jabatan'    => 'required',
+        'nik'           => 'required|digits:16',
+        'status_kerja'  => 'required',
+        'tempat_lahir'  => 'required|string',
+        'tanggal_lahir' => 'required|date',
+        'foto'          => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+        'email'         => 'required|email|unique:pengguna,email,' . $nip . ',nip',
+    ]);
+
+    try {
+        DB::beginTransaction();
+
+        $tempatTanggalGabung = strtoupper($request->tempat_lahir) . ', ' . $request->tanggal_lahir;
+
+        $pegawai = DB::table('profil_pegawai')->where('nip', $nip)->first();
+        $namaFoto = $pegawai->foto;
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $namaFoto = time() . '_' . $nip . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('img/profil'), $namaFoto);
+        }
+
+        DB::table('pengguna')->where('nip', $nip)->update([
+            'nama'      => $request->nama_lengkap,
+            'email'     => $request->email,
+            'id_divisi' => $request->id_divisi,
+            'foto'      => $namaFoto,
+        ]);
+
+        DB::table('profil_pegawai')->where('nip', $nip)->update([
+            'nama_lengkap'         => $request->nama_lengkap,
+            'jenis_kelamin'        => $request->jenis_kelamin,
+            'nik'                  => $request->nik,
+            'email'                => $request->email,
+            'nomor_telepon'        => $request->nomor_telepon ?? '-',
+            'id_jabatan'           => $request->id_jabatan,
+            'id_divisi'            => $request->id_divisi,
+            'agama'                => $request->agama,
+            'tempat_tanggal_lahir' => $tempatTanggalGabung,
+            'pendidikan'           => $request->pendidikan,
+            'status_kerja'         => $request->status_kerja,
+            'foto'                 => $namaFoto,
+        ]);
+
+        DB::commit();
+
+        return redirect()->route('karyawan.index')
+            ->with('success', 'Data ' . $request->nama_lengkap . ' berhasil diperbarui!');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->withInput()->with('error', 'Gagal: ' . $e->getMessage());
+    }
+}
+
     public function kartuPegawai($nip)
     {
         $pegawai = DB::table('profil_pegawai')
