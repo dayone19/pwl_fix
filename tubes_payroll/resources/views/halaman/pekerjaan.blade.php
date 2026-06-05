@@ -4,13 +4,11 @@
 
 @push('loading')
 <div class="space-y-8 animate-pulse">
-    {{-- HEADER SKELETON --}}
     <div class="space-y-3">
         <div class="h-10 w-72 skeleton rounded-2xl"></div>
         <div class="h-4 w-56 skeleton rounded-xl"></div>
     </div>
 
-    {{-- ADMIN SERVICE FORM SKELETON --}}
     <div class="bg-white rounded-[45px] p-8 border border-slate-100 space-y-6">
         <div class="h-8 w-64 skeleton rounded-2xl"></div>
         <div class="space-y-3">
@@ -32,7 +30,6 @@
         <div class="h-12 w-48 skeleton rounded-xl"></div>
     </div>
 
-    {{-- STATISTIK SKELETON --}}
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
         @for($i = 0; $i < 5; $i++)
         <div class="bg-white rounded-[30px] p-5 border border-slate-100 space-y-4">
@@ -42,7 +39,6 @@
         @endfor
     </div>
 
-    {{-- LIST PEKERJAAN SKELETON --}}
     <div class="bg-white rounded-[40px] p-6 border border-slate-100 space-y-6">
         <div class="flex justify-between items-center">
             <div class="space-y-3">
@@ -74,7 +70,6 @@
         </p>
     </div>
 
-    {{-- KHUSUS ADMIN SERVICE --}}
     @if($divisi == 'TEKNIS' && $jabatan == 'ADMIN SERVICE')
     <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 mb-12">
         <h3 class="text-xl font-black text-slate-900 uppercase tracking-tighter mb-8">
@@ -115,11 +110,11 @@
     </div>
     @endif
 
-    {{-- KHUSUS TEKNISI --}}
+    <!-- untuk jabatan selain admin service -->
     @if($divisi == 'TEKNIS' && $jabatan != 'ADMIN SERVICE')
     <div class="space-y-6">
 
-        {{-- STATISTIK ATAS --}}
+    <!-- statis atas -->
         <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
             <div class="bg-white rounded-[30px] p-5 border border-slate-100 shadow-sm">
                 <p class="text-[10px] uppercase font-black tracking-widest text-slate-400 mb-2">Total</p>
@@ -147,7 +142,6 @@
             </div>
         </div>
 
-        {{-- LAYOUT UTAMA KANBAN BOARD --}}
         <div class="bg-white rounded-[40px] p-6 border border-slate-100 shadow-sm">
             
             <div class="mb-6">
@@ -157,20 +151,45 @@
                 </p>
             </div>
 
-            {{-- GRID DUA KOLOM --}}
-            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
                 
-                {{-- KOLOM KIRI: WAITING DENGAN DETAILS BORDER --}}
-                <div class="space-y-4 bg-slate-50/50 p-4 rounded-[32px] border border-dashed border-slate-200">
+            <!-- ini untuk nampilin 2 pekerjaan aja yg status=waiting. perPage: 2 itu -->
+                <div class="space-y-4 bg-slate-50/50 p-4 rounded-[32px] border border-dashed border-slate-200"
+                     x-data="{ page: 0, perPage: 2, total: {{ $pekerjaanList->where('status', 'waiting')->count() }} }">
                     <details class="w-full border border-slate-900 rounded-lg p-1 bg-white" open>
-                        <summary class="flex justify-between items-center font-black uppercase tracking-widest text-xs text-slate-700 cursor-pointer p-2 select-none hover:bg-slate-50 transition rounded">
+                        <summary class="flex justify-between items-center font-black uppercase tracking-widest text-xs text-slate-700 cursor-pointer p-2 select-none hover:bg-slate-50 transition rounded list-none">
                             <span class="flex items-center gap-2">📌 Antrean (Waiting)</span>
-                            <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 mr-2">{{ $pekerjaanList->where('status', 'waiting')->count() }} Tugas</span>
+                            
+                            <div class="flex items-center gap-1.5 ml-auto mr-2" @click.stop="">
+                                <button 
+                                    type="button"
+                                    @click="if(page > 0) page--" 
+                                    :class="page === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-slate-200 active:scale-95'"
+                                    class="w-6 h-6 flex items-center justify-center border border-slate-300 rounded-full bg-slate-50 text-slate-800 transition font-black text-sm select-none">
+                                    ‹
+                                </button>
+                                <button 
+                                    type="button"
+                                    @click="if((page + 1) * perPage < total) page++" 
+                                    :class="(page + 1) * perPage >= total ? 'opacity-30 cursor-not-allowed' : 'hover:bg-slate-200 active:scale-95'"
+                                    class="w-6 h-6 flex items-center justify-center border border-slate-300 rounded-full bg-slate-50 text-slate-800 transition font-black text-sm select-none">
+                                    ›
+                                </button>
+                            </div>
+
+                            <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                                {{ $pekerjaanList->where('status', 'waiting')->count() }} Tugas
+                            </span>
                         </summary>
                         
+                        <!-- pagination <> we-->
+                        <!-- ga dibuat di controller biar  ga ter reload halaman nya. karna kalo di controller klik <> bakal kena request lagi ke server-->
                         <div class="mt-4 space-y-4">
+                            @php $indexWaiting = 0; @endphp
                             @forelse($pekerjaanList->where('status', 'waiting') as $job)
-                                <div class="border border-slate-200 bg-white rounded-[24px] p-5 hover:border-orange-300 transition shadow-sm">
+                                <div 
+                                    x-show="Math.floor({{ $indexWaiting }} / perPage) === page"
+                                    class="border border-slate-200 bg-white rounded-[24px] p-5 hover:border-orange-300 transition shadow-sm">
                                     <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
                                         <div class="flex-1">
                                             <div class="flex flex-wrap items-center gap-2 mb-2">
@@ -197,6 +216,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @php $indexWaiting++; @endphp
                             @empty
                                 <div class="text-center py-12 bg-white rounded-[24px] border border-slate-100 shadow-sm">
                                     <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Antrean Kosong</p>
@@ -206,10 +226,10 @@
                     </details>
                 </div>
 
-                {{-- KOLOM KANAN: IN PROGRESS DENGAN DETAILS BORDER --}}
+                <!-- untuk status in progres -->
                 <div class="space-y-4 bg-slate-50/50 p-4 rounded-[32px] border border-dashed border-slate-200">
                     <details class="w-full border border-slate-900 rounded-lg p-1 bg-white" open>
-                        <summary class="flex justify-between items-center font-black uppercase tracking-widest text-xs text-slate-700 cursor-pointer p-2 select-none hover:bg-slate-50 transition rounded">
+                        <summary class="flex justify-between items-center font-black uppercase tracking-widest text-xs text-slate-700 cursor-pointer p-2 select-none hover:bg-slate-50 transition rounded list-none">
                             <span class="flex items-center gap-2">⚡ Aktif (In Progress)</span>
                             <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 mr-2">{{ $pekerjaanList->where('status', 'in_progress')->count() }} Berjalan</span>
                         </summary>
@@ -252,30 +272,32 @@
                     </details>
                 </div>
 
-            </div>
+                <div class="space-y-4 bg-slate-50/50 p-4 rounded-[32px] border border-dashed border-slate-200">
+                    <details class="border border-slate-900 rounded-lg p-1 bg-white">
+                        <summary class="flex justify-between items-center font-black uppercase tracking-widest text-xs text-slate-700 cursor-pointer p-2 select-none hover:bg-slate-50 transition rounded list-none">
+                            <span class="flex items-center gap-2">📋 LIHAT RIWAYAT PEKERJAAN SELESAI</span>
+                            <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 mr-2">({{ $pekerjaanList->where('status', 'done')->count() }}) SELESAI</span>
+                        </summary>
 
-            {{-- SEPARATOR UNTUK RIWAYAT DONE --}}
-            @if($pekerjaanList->where('status', 'done')->count() > 0)
-            <div class="mt-8 pt-6 border-t border-slate-100">
-                <details class="border border-slate-900 rounded-lg p-1 bg-white">
-                    <summary class="font-black uppercase tracking-widest text-xs text-slate-700 cursor-pointer p-1 select-none hover:bg-slate-50 transition rounded">
-                        📋 LIHAT RIWAYAT PEKERJAAN SELESAI ({{ $pekerjaanList->where('status', 'done')->count() }})
-                    </summary>
-                    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        @foreach($pekerjaanList->where('status', 'done') as $job)
-                            <div class="border border-slate-100 bg-slate-50/50 rounded-2xl p-4 flex justify-between items-center opacity-70">
-                                <div>
-                                    <h5 class="text-sm font-black uppercase text-slate-700">{{ $job->kendaraan }} - <span class="text-xs font-bold text-slate-400">{{ $job->plat_nomor }}</span></h5>
-                                    <p class="text-[11px] font-bold text-slate-400 mt-1">Kategori: {{ $job->keluhan->kategori }}</p>
+                        <div class="mt-4 grid grid-cols-1 gap-4">
+                            @forelse($pekerjaanList->where('status', 'done') as $job)
+                                <div class="border border-slate-100 bg-slate-50/50 rounded-2xl p-4 flex justify-between items-center opacity-70">
+                                    <div>
+                                        <h5 class="text-sm font-black uppercase text-slate-700">{{ $job->kendaraan }} - <span class="text-xs font-bold text-slate-400">{{ $job->plat_nomor }}</span></h5>
+                                        <p class="text-[11px] font-bold text-slate-400 mt-1">Kategori: {{ $job->keluhan->kategori }}</p>
+                                    </div>
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-xl text-[10px] font-black uppercase">Done</span>
                                 </div>
-                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-xl text-[10px] font-black uppercase">Done</span>
-                            </div>
-                        @endforeach
-                    </div>
-                </details>
-            </div>
-            @endif
+                            @empty
+                                <div class="text-center py-12 bg-white rounded-[24px] border border-slate-100 shadow-sm">
+                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Belum Ada Riwayat</p>
+                                </div>
+                            @endforelse
+                        </div>
+                    </details>
+                </div>
 
+            </div>
         </div>
     </div>
     @endif
