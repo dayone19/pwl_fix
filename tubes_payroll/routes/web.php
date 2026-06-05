@@ -11,6 +11,7 @@ use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\pekerjaanController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\pengeluaranController;
 
 // Landing
 Route::get('/', [LandingController::class, 'index'])->name('landing');

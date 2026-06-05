@@ -218,11 +218,11 @@
                 <i class="fas fa-calendar-check absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
             </div>
 
-        <!-- LOGIKA DASHBOARD: MANAJEMEN -->
-        @elseif($divisi == 'MANAJEMEN')
+        {{-- LOGIKA DASHBOARD: MANAJEMEN --}}
+        @elseif($divisi == 'MANAJEMEN' || $divisi == 'FINANCE')
 
             <div class="mesh-bg-workshop p-8 rounded-[45px] text-white shadow-2xl relative overflow-hidden group">
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-6">Total Pengeluaran</p>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-6">Total Pengeluaran Gaji Bulan {{ $namaBulan }}</p>
                 <h2 class="text-2xl font-black tracking-tighter leading-none">Rp {{ number_format($totalPayroll ?? 0, 0, ',', '.') }}</h2>
                 <i class="fas fa-vault absolute -right-4 -bottom-4 text-7xl text-white/10"></i>
             </div>
@@ -257,16 +257,20 @@
     </div>
     @endif
 
-    @if($divisi == 'MANAJEMEN')
+    @if($divisi == 'MANAJEMEN' || $divisi == 'FINANCE')
     <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 mb-12">
         <div class="flex justify-between items-center mb-8">
             <div>
                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-1">Analisis Bulanan</p>
-                <h3 class="text-xl font-black text-slate-900 tracking-tighter">STATISTIK PAYROLL</h3>
+                <h3 class="text-xl font-black text-slate-900 tracking-tighter">STATISTIK PENGELUARAN GAJI</h3>
             </div>
-            <select class="text-[10px] font-black uppercase tracking-widest border-none bg-slate-50 rounded-xl px-4 py-2 focus:ring-0">
-                <option>Tahun 2026</option>
-            </select>
+            <form action="{{ route('dashboard') }}" method="GET" id="formTahun">
+                <select name="tahun" onchange="document.getElementById('formTahun').submit()" class="text-[10px] font-black uppercase tracking-widest border-none bg-slate-50 rounded-xl px-4 py-2 focus:ring-0 cursor-pointer">
+                    <option value="2025" {{ $tahunDipilih == 2025 ? 'selected' : '' }}>Tahun 2025</option>
+                    <option value="2026" {{ $tahunDipilih == 2026 ? 'selected' : '' }}>Tahun 2026</option>
+                    <option value="2027" {{ $tahunDipilih == 2027 ? 'selected' : '' }}>Tahun 2027</option>
+                </select>
+            </form>
         </div>
         <div class="h-[300px]">
             <canvas id="mainChart"></canvas>
@@ -339,8 +343,8 @@
         <i class="fas fa-tools absolute -bottom-6 -right-6 text-[120px] text-white/5 -rotate-12"></i>
     </div>
 
-    @if($divisi == 'MANAJEMEN')
-    <!-- CHART SCRIPT -->
+    @if($divisi == 'MANAJEMEN' || $divisi == 'FINANCE')
+    {{-- CHART SCRIPT --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('mainChart').getContext('2d');
@@ -349,7 +353,7 @@
             gradient.addColorStop(0, 'rgba(234, 88, 12, 0.3)');
             gradient.addColorStop(1, 'rgba(234, 88, 12, 0)');
 
-            const chartData = @json(\App\Models\StatistikBulanan::orderBy('bulan', 'asc')->pluck('total_biaya') ?? []);
+            const chartData = @json($chartData ?? []);
             const chartLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
             new Chart(ctx, {

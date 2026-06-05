@@ -11,10 +11,12 @@ use App\Models\Jabatan;
 use App\Models\Penggajian;
 use App\Models\Cuti;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $idUser = $user->id;
@@ -50,6 +52,37 @@ class DashboardController extends Controller
                 ->diffInDays(Carbon::parse($cuti->tanggal_selesai)) + 1;
         });
 
+        // untuk statistik bulanan
+        $tahunDipilih = $request->input('tahun', date('Y'));
+
+        $rawDatabaseData = DB::table('statistik_bulanan')
+                    ->where('tahun', $tahunDipilih)
+                    ->orderBy('bulan', 'asc')
+                    ->get();
+
+        // array untuk 12 bulan/tahun
+        $gajiBulanan = array_fill(1, 12, 0);   
+        
+        foreach ($rawDatabaseData as $data) {
+            $gajiBulanan[$data->bulan] = $data->total_biaya;
+        }
+
+        $chartData = array_values($gajiBulanan);
+
+        $namaBulan = Carbon::now()->translatedFormat('F');
+
+        $bulanSekarang = now()->month;
+        $tahunSekarang = now()->year;
+
+        $totalPayroll = StatistikBulanan::where('bulan', $bulanSekarang)
+            ->where('tahun', $tahunSekarang)
+            ->value('total_biaya') ?? 0;
+
+        // tes
+        // $totalPayroll = StatistikBulanan::where('bulan', 5)
+        //     ->where('tahun', 2026)
+        //     ->value('total_biaya') ?? 0;
+
         return view('dashboard', compact(
             'user',
             'users', 
@@ -58,7 +91,11 @@ class DashboardController extends Controller
             'namaJabatan',
             'sudahDibayar',
             'belumDibayar',
-            'cutiDiambil'
+            'cutiDiambil',
+            'tahunDipilih', 
+            'chartData',
+            'totalPayroll',
+            'namaBulan',
         ));
     }
 }

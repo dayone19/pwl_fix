@@ -12,6 +12,8 @@ class StatistikBulanan extends Model
         'total_pegawai',
         'total_pengeluaran_gaji',
         'jumlah_pegawai_baru',
-        'jumlah_pegawai_keluar'
+        'jumlah_pegawai_keluar',
+        'status',
+        'total_biaya',
     ];
 }
