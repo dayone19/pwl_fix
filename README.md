@@ -41,8 +41,7 @@ HRD bertugas mengurus data dasar karyawan.
 -  Kelola bonus
 -  Approve Cuti Karyawan  
 
-### 📤 Output:
--  Grafik pengeluaran gaji karyawan  
+### 📤 Output: 
 -  Ekspor Pdf Rekap Absensi Pribadi dan Slip Gaji
 -  Ekspor Pdf Absensi Seluruh Karyawan
 -  Melihat Slip Gaji
