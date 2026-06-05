@@ -170,7 +170,7 @@
                                 <button type="button"
                                         id="togglePassword"
                                         class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-600 transition-colors">
-                                    <i id="eyeIcon" class="fas fa-eye text-sm"></i>
+                                    <i id="eyeIcon" class="fas fa-eye-slash text-sm"></i>
                                 </button>
                             </div>
 
@@ -540,10 +540,19 @@ window.onload = function () {
     const eyeIcon        = document.getElementById('eyeIcon');
 
     togglePassword.addEventListener('click', function () {
-        const isHidden = pwInput.type === 'password';
-        pwInput.type   = isHidden ? 'text' : 'password';
-        eyeIcon.classList.toggle('fa-eye',       !isHidden);
-        eyeIcon.classList.toggle('fa-eye-slash',  isHidden);
+        const isPassword = pwInput.type === 'password';
+
+        pwInput.type = isPassword ? 'text' : 'password';
+
+        if (isPassword) {
+            // Password terlihat → mata terbuka
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        } else {
+            // Password disembunyikan → mata dicoret
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        }
     });
 
 

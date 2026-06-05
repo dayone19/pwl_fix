@@ -227,7 +227,7 @@
                             </a>
 
                           @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['HRD']))  
-                            <a href="{{ route('access-requests.index') }}"class="{{ request()->routeIs('access-requests.*') ? 'sidebar-item-active' : '' }}flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                            <a href="{{ route('access-requests.index') }}"class="{{ request()->routeIs('access-requests.*') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
                                 <i class="fas fa-user-shield w-5 group-hover:text-orange-400"></i>Permintaan Akses
                             {{-- Badge jumlah pending --}}
                             @php $pendingCount = \App\Models\AccessRequest::where('status','pending')->count(); @endphp
