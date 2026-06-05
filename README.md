@@ -148,7 +148,6 @@ Cuti tahunan ditetapkan sebanyak **12 hari kerja per tahun**. Cuti ini hanya ber
 
 Adapun cuti khusus yang tidak mengurangi jatah cuti tahunan meliputi:
 - 🤰 Cuti melahirkan selama **3 bulan** (1,5 bulan sebelum dan 1,5 bulan setelah melahirkan)
-- ⚠️ Cuti keguguran selama **1,5 bulan**
 - 🤒 Cuti sakit berdasarkan **surat keterangan dokter**
 
 Jika karyawan mengambil cuti melebihi batas yang ditentukan, maka kelebihan tersebut akan dianggap sebagai **alpha (tidak masuk kerja)** dan akan mempengaruhi perhitungan gaji.
