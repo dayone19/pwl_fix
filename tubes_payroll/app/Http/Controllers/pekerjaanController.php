@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class pekerjaanController extends Controller
 {
-   
+    
     public function index()
     {
         $user = Auth::user();

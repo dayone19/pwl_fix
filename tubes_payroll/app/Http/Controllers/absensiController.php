@@ -81,7 +81,7 @@ class AbsensiController extends Controller
 
         fputcsv($file, ['nip', 'nama', 'tanggal', 'jam_masuk', 'jam_keluar', 'status']);
 
-        // Kalau hari Minggu, file kosong (hanya header)
+        // hari Minggu, file kosong (hanya header)
         if ($carbon->dayOfWeek !== \Carbon\Carbon::SUNDAY) {
             $tanggalStr = sprintf('%02d/%02d/%04d', $tgl, $bulan, $tahun);
             foreach ($pegawai as $p) {
@@ -223,7 +223,7 @@ class AbsensiController extends Controller
     $status         = $request->status_kehadiran;
     $jamMasukInput  = $request->jam_masuk ? substr($request->jam_masuk, 0, 5) : null;
 
-    // Kalau status Cuti, jam tidak dihitung
+    // status Cuti, jam tidak dihitung
     if (!in_array($status, ['Cuti', 'Izin', 'Sakit', 'Alpha']) && $jamMasukInput) {
         [$jam, $menit] = explode(':', $jamMasukInput);
         $totalMenitMasuk = ((int)$jam * 60) + (int)$menit;
@@ -245,7 +245,6 @@ class AbsensiController extends Controller
     return back()->with('success', 'Data absensi berhasil diperbarui.');
 }
 
-    // ↓↓↓ HANYA BAGIAN INI YANG DIUBAH ↓↓↓
     private function applyFilter(Request $request)
     {
         $query = Absensi::with('profilPegawai');
