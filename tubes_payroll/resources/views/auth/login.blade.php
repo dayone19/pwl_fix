@@ -100,7 +100,7 @@
                         <div class="relative">
                             <input type="radio" name="id_divisi" id="hrd" value="2" class="peer hidden" {{ old('id_divisi') == '2' ? 'checked' : '' }}>
                             <label for="hrd" class="flex flex-col p-4 border-2 border-slate-100 rounded-[25px] cursor-pointer transition-all hover:border-orange-200">
-                                <span class="text-xs font-black uppercase  leading-none">HR</span>
+                                <span class="text-xs font-black uppercase  leading-none">HRD</span>
                                 <span class="text-[9px] text-slate-400 mt-1 uppercase tracking-tighter">Data Management</span>
                             </label>
                         </div>

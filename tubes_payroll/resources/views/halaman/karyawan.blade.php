@@ -197,7 +197,7 @@ document.addEventListener('click', function(e) {
     const link = e.target.closest('#tabel-container a');
     if (!link) return;
 
-    // Tombol detail dan edit jangan pakai AJAX
+    // Tombol detail dan edit 
     if (
         link.classList.contains('detail-link') ||
         link.classList.contains('edit-link')

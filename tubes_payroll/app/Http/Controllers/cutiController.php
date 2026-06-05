@@ -50,15 +50,75 @@ public function store(Request $request)
         'alasan'          => 'required|string|max:255',
     ]);
 
+    // Cek apakah ada pengajuan cuti yang bentrok
+    $adaCutiBentrok = Cuti::where('id_pegawai', auth()->id())
+        ->whereIn('status_persetujuan', ['Menunggu', 'Disetujui'])
+        ->where(function ($query) use ($request) {
+            $query->whereBetween('tanggal_mulai', [
+                    $request->tanggal_mulai,
+                    $request->tanggal_selesai
+                ])
+                ->orWhereBetween('tanggal_selesai', [
+                    $request->tanggal_mulai,
+                    $request->tanggal_selesai
+                ])
+                ->orWhere(function ($q) use ($request) {
+                    $q->where('tanggal_mulai', '<=', $request->tanggal_mulai)
+                      ->where('tanggal_selesai', '>=', $request->tanggal_selesai);
+                });
+        })
+        ->exists();
+
+    if ($adaCutiBentrok) {
+        return back()->with(
+            'error',
+            'Pengajuan cuti tidak dapat diproses karena terdapat pengajuan cuti lain pada rentang tanggal yang sama.'
+        );
+    }
+
+    // Hitung total cuti yang sudah disetujui
+    $totalCutiDiambil = Cuti::where('id_pegawai', auth()->id())
+        ->where('status_persetujuan', 'Disetujui')
+        ->get()
+        ->sum(function ($cuti) {
+            return Carbon::parse($cuti->tanggal_mulai)
+                ->diffInDays(Carbon::parse($cuti->tanggal_selesai)) + 1;
+        });
+
+    // Jika kuota sudah habis
+    if ($totalCutiDiambil >= 12) {
+        return back()->with(
+            'error',
+            'Kuota cuti tahunan Anda telah habis (12/12 hari).'
+        );
+    }
+
+    // Durasi cuti yang diajukan
+    $durasiPengajuan = Carbon::parse($request->tanggal_mulai)
+        ->diffInDays(Carbon::parse($request->tanggal_selesai)) + 1;
+
+    $sisaCuti = 12 - $totalCutiDiambil;
+
+    // Jika pengajuan melebihi sisa kuota
+    if ($durasiPengajuan > $sisaCuti) {
+        return back()->with(
+            'error',
+            "Pengajuan cuti melebihi kuota yang tersedia. Sisa cuti Anda hanya {$sisaCuti} hari."
+        );
+    }
+
     Cuti::create([
-        'id_pegawai'         => auth()->id(), // ← pakai id_pegawai
+        'id_pegawai'         => auth()->id(),
         'tanggal_mulai'      => $request->tanggal_mulai,
         'tanggal_selesai'    => $request->tanggal_selesai,
         'alasan'             => $request->alasan,
-        'status_persetujuan' => 'Menunggu', // ← sesuai ENUM
+        'status_persetujuan' => 'Menunggu',
     ]);
 
-    return back()->with('success', 'Pengajuan cuti berhasil dikirim!');
+    return back()->with(
+        'success',
+        'Pengajuan cuti berhasil dikirim dan menunggu persetujuan.'
+    );
 }
 
 public function approve($id)

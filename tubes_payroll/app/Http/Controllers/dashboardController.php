@@ -9,6 +9,8 @@ use App\Models\pengguna;
 use App\Models\ProfilPegawai;
 use App\Models\Jabatan;
 use App\Models\Penggajian;
+use App\Models\Cuti;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -40,6 +42,14 @@ class DashboardController extends Controller
             'Approved'
         ])->count();
 
+        $cutiDiambil = Cuti::where('id_pegawai', $user->id)
+        ->where('status_persetujuan', 'Disetujui')
+        ->get()
+        ->sum(function ($cuti) {
+            return Carbon::parse($cuti->tanggal_mulai)
+                ->diffInDays(Carbon::parse($cuti->tanggal_selesai)) + 1;
+        });
+
         return view('dashboard', compact(
             'user',
             'users', 
@@ -47,7 +57,8 @@ class DashboardController extends Controller
             'stats',
             'namaJabatan',
             'sudahDibayar',
-            'belumDibayar'
+            'belumDibayar',
+            'cutiDiambil'
         ));
     }
 }
