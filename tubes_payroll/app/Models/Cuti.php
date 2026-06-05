@@ -14,13 +14,14 @@ class Cuti extends Model
         'tanggal_selesai',
         'alasan',
         'status_persetujuan',
+        'jenis_pengajuan',
         'disetujui_oleh_id'
     ];
 
     public function pegawai()
-    {
-        return $this->belongsTo(ProfilPegawai::class, 'nip', 'nip');
-    }
+{
+    return $this->belongsTo(Pengguna::class, 'id_pegawai', 'id');
+}
 
     public function disetujuiOleh()
     {

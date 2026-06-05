@@ -15,26 +15,26 @@
 
     {{-- FLASH --}}
     @foreach(['success','warning','error'] as $msg)
-    @if(session($msg))
-    <div class="mb-6 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest
-        {{ $msg == 'success' ? 'bg-green-50 border border-green-200 text-green-700' : ($msg == 'warning' ? 'bg-yellow-50 border border-yellow-200 text-yellow-700' : 'bg-red-50 border border-red-200 text-red-700') }}">
-        <i class="fas fa-{{ $msg == 'success' ? 'check-circle' : 'triangle-exclamation' }} mr-2"></i>{{ session($msg) }}
-    </div>
-    @endif
+        @if(session($msg))
+            <div class="mb-6 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest
+                {{ $msg == 'success' ? 'bg-green-50 border border-green-200 text-green-700' : ($msg == 'warning' ? 'bg-yellow-50 border border-yellow-200 text-yellow-700' : 'bg-red-50 border border-red-200 text-red-700') }}">
+                <i class="fas fa-{{ $msg == 'success' ? 'check-circle' : 'triangle-exclamation' }} mr-2"></i>{{ session($msg) }}
+            </div>
+        @endif
     @endforeach
 
     {{-- KARTU STATISTIK --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+    <div class="grid grid-cols-3 gap-6 mb-10">
         <div class="bg-slate-900 p-6 rounded-[35px] border-b-4 border-orange-500 shadow-xl">
             <p class="text-orange-500 text-[10px] font-black uppercase tracking-widest mb-2">Sisa Kuota Cuti</p>
-            <h2 class="text-4xl font-black text-white tracking-tighter">{{ $sisaCuti }} <span class="text-sm">Hari</span></h2>
+            <h2 class="text-4xl font-black text-white tracking-tighter">{{ $sisaCuti }} <span class="text-sm font-bold">Hari</span></h2>
         </div>
         <div class="bg-white p-6 rounded-[35px] border border-slate-100 shadow-sm">
             <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Cuti Terpakai</p>
-            <h2 class="text-4xl font-black text-slate-900 tracking-tighter">{{ $totalCutiDiambil }} <span class="text-sm">Hari</span></h2>
+            <h2 class="text-4xl font-black text-slate-900 tracking-tighter">{{ $totalCutiDiambil }} <span class="text-sm font-bold">Hari</span></h2>
         </div>
         <button onclick="document.getElementById('modalAjukanCuti').classList.remove('hidden')"
-            class="bg-orange-500 hover:bg-orange-600 p-6 rounded-[35px] shadow-lg shadow-orange-200 transition-all group flex flex-col justify-center text-left">
+            class="bg-orange-500 hover:bg-orange-600 p-6 rounded-[35px] shadow-lg shadow-orange-200 transition-all group flex flex-col justify-center text-left cursor-pointer">
             <p class="text-white text-[10px] font-black uppercase tracking-widest mb-1">Ajukan Sekarang</p>
             <h2 class="text-2xl font-black text-white tracking-tighter group-hover:translate-x-2 transition-transform">
                 Request Cuti <i class="fas fa-arrow-right ml-2"></i>
@@ -46,66 +46,92 @@
     <h3 class="text-xl font-black text-slate-900 uppercase tracking-tighter mb-6">Riwayat Pengajuan</h3>
     <div class="space-y-4">
         @forelse($riwayatCuti as $c)
-        @php
-            $durasi = \Carbon\Carbon::parse($c->tanggal_mulai)->diffInDays(\Carbon\Carbon::parse($c->tanggal_selesai)) + 1;
-            $statusStyle = match($c->status_persetujuan) {
-            'Disetujui' => 'bg-green-100 text-green-600',
-            'Ditolak'   => 'bg-red-100 text-red-600',
-            default     => 'bg-orange-100 text-orange-600', // Menunggu
-            };
-        @endphp
-        <div class="bg-white p-6 rounded-[30px] border border-slate-100 flex items-center justify-between hover:shadow-md transition-shadow">
-            <div class="flex items-center gap-6">
-                <div class="text-center bg-slate-50 px-4 py-2 rounded-2xl">
-                    <p class="text-[10px] font-black text-slate-400 uppercase leading-none mb-1">Durasi</p>
-                    <p class="text-lg font-black text-slate-900">{{ $durasi }} Hari</p>
+            @php
+                $durasi = \Carbon\Carbon::parse($c->tanggal_mulai)->diffInDays(\Carbon\Carbon::parse($c->tanggal_selesai)) + 1;
+                $statusStyle = match($c->status_persetujuan) {
+                    'Disetujui' => 'bg-green-100 text-green-600',
+                    'Ditolak'   => 'bg-red-100 text-red-600',
+                    default     => 'bg-orange-100 text-orange-600',
+                };
+            @endphp
+
+            <div class="bg-white px-6 py-5 rounded-[28px] border border-slate-100 hover:shadow-md transition-shadow flex items-center justify-between gap-6">
+
+                {{-- KIRI: Durasi --}}
+                <div class="text-center bg-slate-50 px-5 py-3 rounded-2xl shrink-0">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Durasi</p>
+                    <p class="text-2xl font-black text-slate-900 leading-none">{{ $durasi }}</p>
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Hari</p>
                 </div>
-                <div>
-                    <p class="text-sm font-black text-slate-900 uppercase tracking-tighter">{{ $c->alasan }}</p>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">
-                        {{ \Carbon\Carbon::parse($c->tanggal_mulai)->format('d M Y') }}
-                        s/d
-                        {{ \Carbon\Carbon::parse($c->tanggal_selesai)->format('d M Y') }}
+
+                {{-- TENGAH: Info --}}
+                <div class="flex-1 min-w-0">
+                    {{-- Badge jenis + bukti --}}
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest
+                            {{ $c->jenis_pengajuan === 'Keperluan' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600' }}">
+                            {{ $c->jenis_pengajuan }}
+                        </span>
+                        @if($c->bukti)
+                            <a href="{{ asset('uploads/bukti_cuti/'.$c->bukti) }}" target="_blank"
+                                class="px-2.5 py-1 rounded-full bg-green-100 text-green-600 text-[9px] font-black uppercase tracking-widest hover:bg-green-200 transition-colors">
+                                <i class="fas fa-paperclip mr-1"></i>Lihat Bukti
+                            </a>
+                        @endif
+                    </div>
+
+                    {{-- Alasan --}}
+                    <p class="text-sm font-bold text-slate-800 leading-snug mb-1.5 truncate">
+                        {{ $c->alasan }}
                     </p>
+
+                    {{-- Tanggal --}}
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                        {{ \Carbon\Carbon::parse($c->tanggal_mulai)->format('d M Y') }}
+                        @if($c->tanggal_mulai !== $c->tanggal_selesai)
+                            &mdash; {{ \Carbon\Carbon::parse($c->tanggal_selesai)->format('d M Y') }}
+                        @endif
+                    </p>
+
+                    {{-- Nama pegawai (hanya HRD) --}}
                     @if(auth()->user()->id_divisi == 2)
-                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">
-                    <i class="fas fa-user mr-1"></i>
-                    {{ optional(\App\Models\Pengguna::find($c->id_pegawai))->nama ?? 'Tidak diketahui' }}
-                </p>
-                @endif
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">
+                            <i class="fas fa-user mr-1"></i>
+                            {{ optional(\App\Models\Pengguna::find($c->id_pegawai))->nama ?? 'Tidak diketahui' }}
+                        </p>
+                    @endif
                 </div>
-            </div>
 
-            <div class="flex items-center gap-3">
-                {{-- Badge status --}}
-                <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest {{ $statusStyle }}">
-                    {{ $c->status_persetujuan }}
-                </span>
+                {{-- KANAN: Status + Tombol --}}
+                <div class="flex items-center gap-3 shrink-0">
+                    <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest {{ $statusStyle }}">
+                        {{ $c->status_persetujuan }}
+                    </span>
 
-                {{-- Tombol approve/tolak: hanya admin (id_divisi == 2) dan status masih pending --}}
-                @if(auth()->user()->id_divisi == 2 && $c->status_persetujuan == 'Menunggu')
-                <form action="{{ route('cuti.approve', $c->id) }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                        class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">
-                        <i class="fas fa-check mr-1"></i> Setujui
-                    </button>
-                </form>
-                <form action="{{ route('cuti.tolak', $c->id) }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                        class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">
-                        <i class="fas fa-xmark mr-1"></i> Tolak
-                    </button>
-                </form>
-                @endif
+                    @if(auth()->user()->id_divisi == 2 && $c->status_persetujuan == 'Menunggu')
+                        <form action="{{ route('cuti.approve', $c->id) }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-1">
+                                <i class="fas fa-check"></i> Setujui
+                            </button>
+                        </form>
+                        <form action="{{ route('cuti.tolak', $c->id) }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-1">
+                                <i class="fas fa-xmark"></i> Tolak
+                            </button>
+                        </form>
+                    @endif
+                </div>
+
             </div>
-        </div>
         @empty
-        <div class="text-center py-10 opacity-30">
-            <i class="fas fa-calendar-xmark text-4xl mb-3"></i>
-            <p class="text-xs font-black uppercase tracking-widest">Belum ada data cuti</p>
-        </div>
+            <div class="text-center py-16 opacity-30">
+                <i class="fas fa-calendar-xmark text-5xl mb-4"></i>
+                <p class="text-xs font-black uppercase tracking-widest">Belum ada data cuti</p>
+            </div>
         @endforelse
     </div>
 
@@ -113,7 +139,9 @@
     <div id="modalAjukanCuti" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
         <div onclick="document.getElementById('modalAjukanCuti').classList.add('hidden')"
             class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+
         <div class="relative bg-white rounded-[40px] shadow-2xl border border-slate-100 p-8 w-full max-w-lg z-10">
+            {{-- Header modal --}}
             <div class="flex items-center justify-between mb-7">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-slate-900 rounded-2xl flex items-center justify-center text-orange-500">
@@ -130,8 +158,10 @@
                 </button>
             </div>
 
-            <form action="{{ route('cuti.store') }}" method="POST" class="flex flex-col gap-5">
+            <form action="{{ route('cuti.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-5">
                 @csrf
+
+                {{-- Tanggal --}}
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Tanggal Mulai</label>
@@ -144,13 +174,34 @@
                             class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-black text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors">
                     </div>
                 </div>
+
+                {{-- Jenis Pengajuan --}}
                 <div>
-                    <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Alasan Cuti</label>
+                    <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Jenis Pengajuan</label>
+                    <select name="jenis_pengajuan" required
+                        class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-black text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors">
+                        <option value="Keperluan">Keperluan (kuota tidak berkurang)</option>
+                        <option value="Cuti">Cuti (kuota berkurang)</option>
+                    </select>
+                </div>
+
+                {{-- Alasan --}}
+                <div>
+                    <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Alasan</label>
                     <textarea name="alasan" rows="3" required maxlength="255"
                         placeholder="Contoh: Keperluan keluarga, pernikahan, dll."
-                        class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-black text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors resize-none"></textarea>
+                        class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors resize-none"></textarea>
                 </div>
-                <div class="flex gap-3">
+
+                {{-- Upload Bukti --}}
+                <div>
+                    <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Upload Bukti <span class="text-slate-300">(Opsional)</span></label>
+                    <input type="file" name="bukti" accept=".jpg,.jpeg,.png,.pdf"
+                        class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors">
+                </div>
+
+                {{-- Tombol --}}
+                <div class="flex gap-3 pt-1">
                     <button type="button"
                         onclick="document.getElementById('modalAjukanCuti').classList.add('hidden')"
                         class="flex-1 bg-white border border-slate-200 text-slate-600 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-all">

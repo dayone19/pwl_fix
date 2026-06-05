@@ -441,7 +441,7 @@ function downloadTemplateTanggal() {
                         <option value="Izin">Izin</option>
                         <option value="Sakit">Sakit</option>
                         <option value="Alpha">Alpha</option>
-                        <opytion value="Cuti">Cuti</option>
+                        <opttion value="Cuti">Cuti</option>
                     </select>
                 </div>
                 <div class="flex gap-3">

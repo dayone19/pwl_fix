@@ -207,42 +207,70 @@
 
     {{-- Form Hitung Gaji Hanya Muncul untuk FINANCE (ID = 3) --}}
     @if(auth()->user()->id_divisi == 3)
-        <div class="bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm">
-            <h3 class="text-[12px] font-black text-slate-900 uppercase tracking-widest  mb-4 flex items-center gap-2">
-                <i class="fas fa-plus-circle text-orange-600"></i> Generate Draf Penggajian Otomatis
-            </h3>
-            <form action="{{ route('payroll.generate') }}" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                @csrf
-                <div>
-                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Pilih Personel Karyawan</label>
-                    <select name="nip" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs font-bold text-slate-700 focus:outline-none focus:border-orange-500 transition-all" required>
-                        <option value="" disabled selected>-- Pilih Karyawan --</option>
-                        @foreach($karyawan as $k)
-                            <option value="{{ $k->nip }}">{{ $k->nama }} (NIP. {{ $k->nip }})</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Pilih Rekap Bulan & Tahun</label>
-                    <select name="bulan" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs font-bold text-slate-700 focus:outline-none focus:border-orange-500 transition-all" required>
-                        <option value="" disabled selected>-- Pilih Periode --</option>
-                        @php $tahunSekarang = date('Y'); @endphp
-                        @for($m = 1; $m <= 12; $m++)
-                            @php 
-                                $value = sprintf('%02d-%s', $m, $tahunSekarang); 
-                            @endphp
-                            <option value="{{ $value }}">{{ date('F', mktime(0, 0, 0, $m, 1)) }} {{ $tahunSekarang }}</option>
-                        @endfor
-                    </select>
-                </div>
-                <div>
-                    <button type="submit" class="w-full px-5 py-3.5 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition shadow-md">
-                        <i class="fas fa-cog mr-2"></i> Hitung & Buat Draf
-                    </button>
-                </div>
-            </form>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.min.css">
+
+<div class="bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm">
+    <h3 class="text-[12px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
+        <i class="fas fa-plus-circle text-orange-600"></i> Generate Draf Penggajian Otomatis
+    </h3>
+    <form action="{{ route('payroll.generate') }}" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+        @csrf
+        <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Pilih Personel Karyawan</label>
+            <select name="nip" id="select-karyawan" required>
+                <option value="">-- Pilih Karyawan --</option>
+                @foreach($karyawan as $k)
+                    <option value="{{ $k->nip }}">{{ $k->nama }} (NIP. {{ $k->nip }})</option>
+                @endforeach
+            </select>
         </div>
-    @endif
+        <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Pilih Rekap Bulan & Tahun</label>
+            <select name="bulan" id="select-bulan" required>
+                <option value="">-- Pilih Periode --</option>
+                @php $tahunSekarang = date('Y'); @endphp
+                @for($m = 1; $m <= 12; $m++)
+                    @php $value = sprintf('%02d-%s', $m, $tahunSekarang); @endphp
+                    <option value="{{ $value }}">{{ date('F', mktime(0, 0, 0, $m, 1)) }} {{ $tahunSekarang }}</option>
+                @endfor
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="w-full px-5 py-3.5 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition shadow-md">
+                <i class="fas fa-cog mr-2"></i> Hitung & Buat Draf
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+.ts-wrapper .ts-control {
+    background: #f8fafc; border: 1px solid #e2e8f0;
+    border-radius: 1rem; padding: 10px 16px;
+    font-size: 12px; font-weight: 700; color: #334155;
+    box-shadow: none; min-height: 48px;
+}
+.ts-wrapper.focus .ts-control {
+    border-color: #ea580c;
+    box-shadow: 0 0 0 2px rgba(234,88,12,0.15);
+}
+.ts-dropdown {
+    border-radius: 1rem; border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    font-size: 12px; font-weight: 600; margin-top: 6px;
+}
+.ts-dropdown .option { padding: 10px 16px; color: #334155; }
+.ts-dropdown .option:hover, .ts-dropdown .option.active {
+    background: #fff7ed; color: #9a3412;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<script>
+    new TomSelect('#select-karyawan', { maxOptions: 200 });
+    new TomSelect('#select-bulan', {});
+</script>
+@endif
 
     {{-- Tabel Kendali Transaksi Penggajian --}}
     <div class="bg-white rounded-[32px] border border-slate-200 shadow-sm overflow-hidden w-full max-w-full">
@@ -342,8 +370,33 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 text-center text-xs font-bold text-slate-600 uppercase">
-                            {{ $gaji->bulan }}
-                        </td>
+                        @php
+                            $raw = $gaji->bulan;
+                            $tampil = $raw; // fallback default
+
+                            try {
+                                // Format "05-2026" atau "6-2026"
+                                if (preg_match('/^\d{1,2}-\d{4}$/', $raw)) {
+                                    [$bln, $thn] = explode('-', $raw);
+                                    $tampil = \Carbon\Carbon::createFromDate($thn, $bln, 1)
+                                                ->locale('id')->translatedFormat('F Y');
+
+                                // Format "May-26" atau "Jun-26"
+                                } elseif (preg_match('/^[A-Za-z]+-\d{2}$/', $raw)) {
+                                    $tampil = \Carbon\Carbon::createFromFormat('M-y', $raw)
+                                                ->locale('id')->translatedFormat('F Y');
+
+                                // Format "Juni 2026" atau "May 2026" — sudah nama bulan
+                                } elseif (preg_match('/^[A-Za-z]+ \d{4}$/', $raw)) {
+                                    $tampil = \Carbon\Carbon::parse('01 ' . $raw)
+                                                ->locale('id')->translatedFormat('F Y');
+                                }
+                            } catch (\Exception $e) {
+                                $tampil = $raw;
+                            }
+                        @endphp
+                        {{ $tampil }}
+                    </td>
                         <td class="px-6 py-4 text-right text-xs font-bold text-slate-700">
                             Rp {{ number_format($gapokRow, 0, ',', '.') }}
                         </td>
@@ -609,4 +662,20 @@
     });
 </script>
 @endif
+
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<script>
+    // Generate form
+    if (document.getElementById('select-karyawan')) {
+        new TomSelect('#select-karyawan', { maxOptions: 200 });
+    }
+    if (document.getElementById('select-bulan')) {
+        new TomSelect('#select-bulan', {});
+    }
+
+    // Filter tabel
+    if (document.getElementById('filter-bulan')) {
+        new TomSelect('#filter-bulan', {});
+    }
+</script>
 @endsection

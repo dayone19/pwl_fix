@@ -31,11 +31,12 @@ public function index()
         : $riwayatCuti;
 
     $totalCutiDiambil = $cutiSaya
-        ->where('status_persetujuan', 'Disetujui')
-        ->sum(function ($c) {
-            return \Carbon\Carbon::parse($c->tanggal_mulai)
-                ->diffInDays(\Carbon\Carbon::parse($c->tanggal_selesai)) + 1;
-        });
+    ->where('status_persetujuan', 'Disetujui')
+    ->where('jenis_pengajuan', 'Cuti')
+    ->sum(function ($c) {
+        return \Carbon\Carbon::parse($c->tanggal_mulai)
+            ->diffInDays(\Carbon\Carbon::parse($c->tanggal_selesai)) + 1;
+    });
 
     $sisaCuti = 12 - $totalCutiDiambil;
 
@@ -45,10 +46,23 @@ public function index()
 public function store(Request $request)
 {
     $request->validate([
-        'tanggal_mulai'   => 'required|date',
-        'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-        'alasan'          => 'required|string|max:255',
-    ]);
+    'tanggal_mulai'   => 'required|date',
+    'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+    'alasan'          => 'required|string|max:255',
+    'jenis_pengajuan' => 'required|in:Keperluan,Cuti',
+    'bukti' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+]);
+
+$namaFile = null;
+
+if ($request->hasFile('bukti')) {
+    $namaFile = time().'_'.$request->file('bukti')->getClientOriginalName();
+
+    $request->file('bukti')->move(
+        public_path('uploads/bukti_cuti'),
+        $namaFile
+    );
+}
 
     // Cek pengajuan cuti yang bentrok
     $adaCutiBentrok = Cuti::where('id_pegawai', auth()->id())
@@ -110,7 +124,9 @@ public function store(Request $request)
         'tanggal_mulai'      => $request->tanggal_mulai,
         'tanggal_selesai'    => $request->tanggal_selesai,
         'alasan'             => $request->alasan,
-        'status_persetujuan' => 'Menunggu',
+        'status_persetujuan' => 'Menunggu', 
+        'jenis_pengajuan' => $request->jenis_pengajuan,
+        'bukti' => $namaFile,
     ]);
 
     return back()->with(
@@ -126,7 +142,7 @@ public function approve($id)
     $cuti = Cuti::findOrFail($id);
 
     if ($cuti->status_persetujuan === 'Disetujui') {
-        return back()->with('warning', 'Cuti ini sudah disetujui sebelumnya.');
+        return back()->with('warning', 'Pengajuan ini sudah disetujui sebelumnya.');
     }
 
     $cuti->update([
@@ -137,16 +153,40 @@ public function approve($id)
     $pengguna = \App\Models\Pengguna::find($cuti->id_pegawai);
 
     if ($pengguna && $pengguna->nip) {
-        $periode = \Carbon\CarbonPeriod::create($cuti->tanggal_mulai, $cuti->tanggal_selesai);
+
+        // Tentukan status absensi
+        $statusAbsensi =
+            $cuti->jenis_pengajuan === 'Keperluan'
+                ? 'Izin'
+                : 'Cuti';
+
+        $periode = CarbonPeriod::create(
+            $cuti->tanggal_mulai,
+            $cuti->tanggal_selesai
+        );
+
         foreach ($periode as $tanggal) {
+
             Absensi::updateOrCreate(
-                ['nip'     => $pengguna->nip, 'tanggal' => $tanggal->format('Y-m-d')],
-                ['status_kehadiran' => 'Cuti', 'jam_masuk' => null, 'jam_keluar' => null, 'menit_terlambat' => 0]
+                [
+                    'nip'     => $pengguna->nip,
+                    'tanggal' => $tanggal->format('Y-m-d')
+                ],
+                [
+                    'status_kehadiran' => $statusAbsensi,
+                    'jam_masuk'        => null,
+                    'jam_keluar'       => null,
+                    'menit_terlambat'  => 0
+                ]
             );
+
         }
     }
 
-    return back()->with('success', 'Cuti disetujui dan absensi telah diperbarui.');
+    return back()->with(
+        'success',
+        'Pengajuan berhasil disetujui dan absensi diperbarui.'
+    );
 }
 
 public function tolak($id)
