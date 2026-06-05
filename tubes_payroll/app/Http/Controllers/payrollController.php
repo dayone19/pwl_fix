@@ -9,6 +9,7 @@ use App\Models\Pekerjaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class PayrollController extends Controller
 {
@@ -21,11 +22,10 @@ class PayrollController extends Controller
         
         $user = Pengguna::with(['divisi'])->find($userId);
 
-        $bulanSekarang = date('m'); 
-        $periodeSekarang = date('F Y'); 
-
+        // FIX: Query berdasarkan periode_mulai, bukan kolom bulan yang formatnya tidak konsisten
         $bulanTerbaru = Penggajian::where('id_pegawai', $userId)
-                                    ->where('bulan', $bulanSekarang)
+                                    ->whereMonth('periode_mulai', date('m'))
+                                    ->whereYear('periode_mulai', date('Y'))
                                     ->first();
                                     
         $bulanLalu = Penggajian::where('id_pegawai', $userId)
@@ -106,10 +106,10 @@ class PayrollController extends Controller
             'bulan' => 'required|string', 
         ]);
 
-        $periodeInput  = $request->bulan;
+        $periodeInput  = $request->bulan;       // Format dari form: "05-2026"
         $pecahPeriode  = explode('-', $periodeInput);
-        $bulanInput    = $pecahPeriode[0]; 
-        $tahunSekarang = $pecahPeriode[1]; 
+        $bulanInput    = $pecahPeriode[0];       // "05"
+        $tahunSekarang = $pecahPeriode[1];       // "2026"
 
         $periodeDipilih = strtotime($tahunSekarang . '-' . $bulanInput . '-01');
         $periodeSaatIni = strtotime(date('Y-m-01'));
@@ -123,14 +123,19 @@ class PayrollController extends Controller
             return redirect()->back()->with('error', 'Karyawan tidak ditemukan.');
         }
 
+        // FIX: Format bulan yang konsisten — selalu simpan sebagai "Mei 2026", "Juni 2026", dst.
+        $bulanFormatted = Carbon::createFromDate($tahunSekarang, $bulanInput, 1)
+                            ->locale('id')
+                            ->translatedFormat('F Y');
+
         $cekDraft = Penggajian::where('nip', $request->nip)
-            ->where('bulan', $periodeInput)
+            ->where('bulan', $bulanFormatted)
             ->exists();
         
         if ($cekDraft) {
             return redirect()->back()->with(
                 'error', 
-                'Gagal! Payroll untuk karyawan dengan NIP ' . $request->nip . ' pada periode ' . $periodeInput . ' sudah pernah dibuat.'
+                'Gagal! Payroll untuk karyawan dengan NIP ' . $request->nip . ' pada periode ' . $bulanFormatted . ' sudah pernah dibuat.'
             );
         }
 
@@ -152,7 +157,7 @@ class PayrollController extends Controller
                 'bonus'           => 0,
                 'gaji_bersih'     => 0,
                 'status_bayar'    => 'Draft',
-                'bulan'           => $periodeInput, 
+                'bulan'           => $bulanFormatted, // FIX: format konsisten
             ]);
 
             return redirect()->back()->with('success', 'Draf payroll anak PKL berhasil dibuat dengan nominal Rp 0.');
@@ -260,7 +265,7 @@ class PayrollController extends Controller
             'bonus'           => $bonusTarget,
             'gaji_bersih'     => $gajiBersih,
             'status_bayar'    => 'Draft',
-            'bulan'           => $periodeInput, 
+            'bulan'           => $bulanFormatted, // FIX: format konsisten "Mei 2026"
         ]);
 
         return redirect()->back()->with('success', 'Draf payroll berhasil dibuat murni menggunakan NIP!');
@@ -429,21 +434,21 @@ class PayrollController extends Controller
      * HRD: Log riwayat pembayaran gaji seluruh karyawan
      */
     public function logPembayaran(Request $request)
-{
-    $bulan = $request->bulan ?? date('m');
-    $tahun = $request->tahun ?? date('Y');
+    {
+        $bulan = $request->bulan ?? date('m');
+        $tahun = $request->tahun ?? date('Y');
 
-    $log = Penggajian::with('pegawai')
-        ->where('status_bayar', 'Dibayar')
-        ->whereNotNull('dibayar_pada')
-        ->whereMonth('dibayar_pada', $bulan)
-        ->whereYear('dibayar_pada', $tahun)
-        ->orderBy('dibayar_pada', 'desc')
-        ->paginate(15)
-        ->withQueryString(); 
+        $log = Penggajian::with('pegawai')
+            ->where('status_bayar', 'Dibayar')
+            ->whereNotNull('dibayar_pada')
+            ->whereMonth('dibayar_pada', $bulan)
+            ->whereYear('dibayar_pada', $tahun)
+            ->orderBy('dibayar_pada', 'desc')
+            ->paginate(15)
+            ->withQueryString(); 
 
-    return view('halaman.log_pembayaran', compact('log', 'bulan', 'tahun'));
-}
+        return view('halaman.log_pembayaran', compact('log', 'bulan', 'tahun'));
+    }
 
     /**
      * Rumus kalkulasi tarif progresif PPh21 Pasal 17
