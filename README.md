@@ -35,7 +35,7 @@ HRD bertugas mengurus data dasar karyawan.
 ### 📌 Yang dilakukan HRD:
 -  Kelola data karyawan  
 -  Kelola jabatan  
--  Kelola departemen  
+-  Kelola divisi  
 -  Kelola absensi  
 -  Kelola lembur  
 -  Kelola bonus
