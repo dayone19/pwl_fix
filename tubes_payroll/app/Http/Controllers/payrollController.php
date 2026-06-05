@@ -9,6 +9,7 @@ use App\Models\Pekerjaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\StatistikBulanan;
 
 class PayrollController extends Controller
 {
@@ -360,6 +361,33 @@ class PayrollController extends Controller
             'dibayar_pada' => $statusBaru === 'Dibayar' ? now() : null,
         ]);
 
+        if ($statusBaru === 'Dibayar') {
+
+            $bulan = date('n', strtotime($gaji->periode_mulai));
+            $tahun = date('Y', strtotime($gaji->periode_mulai));
+
+            StatistikBulanan::updateOrCreate(
+                [
+                    'bulan' => $bulan,
+                    'tahun' => $tahun
+                ],
+                [
+                    'total_pegawai' => Penggajian::where('status_bayar', 'Dibayar')
+                        ->whereMonth('periode_mulai', $bulan)
+                        ->whereYear('periode_mulai', $tahun)
+                        ->distinct('id_pegawai')
+                        ->count('id_pegawai'),
+
+                    'total_biaya' => Penggajian::where('status_bayar', 'Dibayar')
+                        ->whereMonth('periode_mulai', $bulan)
+                        ->whereYear('periode_mulai', $tahun)
+                        ->sum('gaji_bersih'),
+
+                    'status' => 'Dibayar'
+                ]
+            );
+        }
+
         return redirect()->back()->with('success', "Berkas payroll berhasil diperbarui menjadi: $statusBaru.");
     }
 
@@ -400,9 +428,82 @@ class PayrollController extends Controller
             $updateData['dibayar_pada'] = now();
         }
 
+        if ($request->action === 'approve_all') {
+
+            $data = Penggajian::where('status_bayar', 'Terbit')->get();
+
+            $jumlah = Penggajian::where('status_bayar', 'Terbit')
+                ->update([
+                    'status_bayar' => 'Dibayar',
+                    'dibayar_oleh' => auth()->user()->nama,
+                    'dibayar_pada' => now(),
+                ]);
+
+            foreach ($data as $gaji) {
+
+                $bulan = date('n', strtotime($gaji->periode_mulai));
+                $tahun = date('Y', strtotime($gaji->periode_mulai));
+
+                StatistikBulanan::updateOrCreate(
+                    [
+                        'bulan' => $bulan,
+                        'tahun' => $tahun
+                    ],
+                    [
+                        'total_pegawai' => Penggajian::where('status_bayar', 'Dibayar')
+                            ->whereMonth('periode_mulai', $bulan)
+                            ->whereYear('periode_mulai', $tahun)
+                            ->distinct('id_pegawai')
+                            ->count('id_pegawai'),
+
+                        'total_biaya' => Penggajian::where('status_bayar', 'Dibayar')
+                            ->whereMonth('periode_mulai', $bulan)
+                            ->whereYear('periode_mulai', $tahun)
+                            ->sum('gaji_bersih'),
+
+                        'status' => 'Dibayar'
+                    ]
+                );
+            }
+
+            return back()->with('success', "$jumlah data payroll berhasil disetujui.");
+        }
+
         $jumlah = Penggajian::whereIn('id', $request->ids)
             ->where('status_bayar', 'Terbit')
             ->update($updateData);
+
+        if ($statusBaru === 'Dibayar') {
+
+            $data = Penggajian::whereIn('id', $request->ids)->get();
+
+            foreach ($data as $gaji) {
+
+                $bulan = date('n', strtotime($gaji->periode_mulai));
+                $tahun = date('Y', strtotime($gaji->periode_mulai));
+
+                StatistikBulanan::updateOrCreate(
+                    [
+                        'bulan' => $bulan,
+                        'tahun' => $tahun
+                    ],
+                    [
+                        'total_pegawai' => Penggajian::where('status_bayar', 'Dibayar')
+                            ->whereMonth('periode_mulai', $bulan)
+                            ->whereYear('periode_mulai', $tahun)
+                            ->distinct('id_pegawai')
+                            ->count('id_pegawai'),
+
+                        'total_biaya' => Penggajian::where('status_bayar', 'Dibayar')
+                            ->whereMonth('periode_mulai', $bulan)
+                            ->whereYear('periode_mulai', $tahun)
+                            ->sum('gaji_bersih'),
+
+                        'status' => 'Dibayar'
+                    ]
+                );
+            }
+        }
 
         return back()->with(
             'success',
@@ -421,6 +522,30 @@ class PayrollController extends Controller
             'dibayar_oleh' => auth()->user()->nama,
             'dibayar_pada' => now(),
         ]);
+
+        $bulan = date('n', strtotime($gaji->periode_mulai));
+        $tahun = date('Y', strtotime($gaji->periode_mulai));
+
+        StatistikBulanan::updateOrCreate(
+            [
+                'bulan' => $bulan,
+                'tahun' => $tahun
+            ],
+            [
+                'total_pegawai' => Penggajian::where('status_bayar', 'Dibayar')
+                    ->whereMonth('periode_mulai', $bulan)
+                    ->whereYear('periode_mulai', $tahun)
+                    ->distinct('id_pegawai')
+                    ->count('id_pegawai'),
+
+                'total_biaya' => Penggajian::where('status_bayar', 'Dibayar')
+                    ->whereMonth('periode_mulai', $bulan)
+                    ->whereYear('periode_mulai', $tahun)
+                    ->sum('gaji_bersih'),
+
+                'status' => 'Dibayar'
+            ]
+        );
 
         return back()->with('success', 'Gaji berhasil dibayarkan');
     }
