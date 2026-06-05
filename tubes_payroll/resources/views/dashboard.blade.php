@@ -41,7 +41,7 @@
         }
     </style>
 
-    {{-- HEADER SECTION --}}
+    <!-- HEADER SECTION -->
     <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div class="flex items-start gap-5">
             <div class="relative">
@@ -73,7 +73,7 @@
         </div>
     </header>
 
-    {{-- NOTIFIKASI WAJIB GANTI PASSWORD --}}
+    <!-- NOTIFIKASI WAJIB GANTI PASSWORD -->
     @php
         $harusGanti = Auth::user()->harus_ganti_password;
         $batas      = Auth::user()->batas_ganti_password;
@@ -109,7 +109,7 @@
     </div>
     @endif
 
-    {{-- WIDGETS --}}
+    <!-- WIDGETS -->
     @php
         $divisi = Str::upper(Auth::user()->divisi?->nama_divisi);
         
@@ -123,10 +123,10 @@
 
     <div class="grid grid-cols-1 {{ $gridConfig }} gap-6 mb-12">
 
-        {{-- LOGIKA DASHBOARD: TEKNIS --}}
+        <!-- LOGIKA DASHBOARD: TEKNIS -->
         @if(!in_array($divisi, ['MANAJEMEN', 'HRD', 'FINANCE']))
 
-            {{-- 1. Track Cuti --}}
+            <!-- 1. Track Cuti -->
             <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
                 <div>
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Track Kuota Cuti</p>
@@ -139,7 +139,7 @@
                 <i class="fas fa-calendar-alt absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
             </div>
 
-            {{-- 2. Track Status Gaji --}}
+            <!-- 2. Track Status Gaji -->
             <div class="mesh-bg-workshop p-8 rounded-[45px] text-white shadow-2xl relative overflow-hidden group">
                 <div class="relative z-10">
                     <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-6 flex items-center gap-2">
@@ -153,24 +153,24 @@
                 <i class="fas fa-check-double absolute -bottom-6 -right-6 text-[100px] text-white/10 rotate-12 group-hover:scale-110 transition-transform"></i>
             </div>
 
-        {{-- LOGIKA DASHBOARD: HRD --}}
+        <!-- LOGIKA DASHBOARD: HRD -->
         @elseif($divisi == 'HRD')
 
-            {{-- Kartu 1: Pegawai Aktif --}}
+            <!-- Kartu 1: Pegawai Aktif -->
             <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Pegawai Aktif</p>
                 <h2 class="text-4xl font-black text-slate-900 tracking-tighter leading-none">{{ $totalPegawai }}</h2>
                 <i class="fas fa-users absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
             </div>
 
-            {{-- Kartu 2: Pengajuan Cuti --}}
+            <!-- Kartu 2: Pengajuan Cuti -->
             <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Pengajuan Cuti</p>
                 <h2 class="text-4xl font-black text-orange-500 tracking-tighter leading-none">{{ $jumlahCutiPending ?? 0 }}</h2>
                 <i class="fas fa-envelope-open-text absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
             </div>
 
-            {{-- Kartu 3: Track Kuota Cuti --}}
+            <!-- Kartu 3: Track Kuota Cuti -->
             <div class="bg-white p-8 rounded-[45px] shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
                 <div>
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Track Kuota Cuti</p>
@@ -183,21 +183,21 @@
                 <i class="fas fa-calendar-alt absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
             </div>
 
-            {{-- Kartu 4: Status Pembayaran Gaji (KLIKABLE → Log Pembayaran) --}}
+            <!-- Kartu 4: Status Pembayaran Gaji (KLIKABLE → Log Pembayaran) -->
          <a href="{{ route('payroll.log') }}" class="block hover:scale-[1.01] transition-transform">
-    <div class="mesh-bg-workshop p-8 rounded-[45px] text-white shadow-2xl relative overflow-hidden group h-full flex flex-col justify-between">
-        <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-4 flex items-center gap-2">
-            <i class="fas fa-file-invoice-dollar"></i> Status Gaji
-        </p>
-        <h2 class="text-4xl font-black tracking-tighter leading-none">{{ $sudahDibayar }} / {{ $sudahDibayar + $belumDibayar }}</h2>
-        <p class="text-[9px] font-black text-white/40 uppercase tracking-widest mt-auto pt-4 flex items-center gap-1">
-            <i class="fas fa-arrow-right text-[8px]"></i> Lihat Log Pembayaran
-        </p>
-        <i class="fas fa-money-check-alt absolute -bottom-6 -right-6 text-[100px] text-white/10 rotate-12"></i>
-    </div>
-</a>
+            <div class="mesh-bg-workshop p-8 rounded-[45px] text-white shadow-2xl relative overflow-hidden group h-full flex flex-col justify-between">
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-4 flex items-center gap-2">
+                    <i class="fas fa-file-invoice-dollar"></i> Status Gaji
+                </p>
+                <h2 class="text-4xl font-black tracking-tighter leading-none">{{ $sudahDibayar }} / {{ $sudahDibayar + $belumDibayar }}</h2>
+                <p class="text-[9px] font-black text-white/40 uppercase tracking-widest mt-auto pt-4 flex items-center gap-1">
+                    <i class="fas fa-arrow-right text-[8px]"></i> Lihat Log Pembayaran
+                </p>
+                <i class="fas fa-money-check-alt absolute -bottom-6 -right-6 text-[100px] text-white/10 rotate-12"></i>
+            </div>
+        </a>
 
-        {{-- LOGIKA DASHBOARD: FINANCE --}}
+        <!-- LOGIKA DASHBOARD: FINANCE -->
         @elseif($divisi == 'FINANCE')
 
             <div class="mesh-bg-workshop p-8 rounded-[45px] text-white shadow-2xl relative overflow-hidden group">
@@ -218,7 +218,7 @@
                 <i class="fas fa-calendar-check absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
             </div>
 
-        {{-- LOGIKA DASHBOARD: MANAJEMEN --}}
+        <!-- LOGIKA DASHBOARD: MANAJEMEN -->
         @elseif($divisi == 'MANAJEMEN')
 
             <div class="mesh-bg-workshop p-8 rounded-[45px] text-white shadow-2xl relative overflow-hidden group">
@@ -249,6 +249,7 @@
 
     </div>
 
+    <!-- ANALYSIS SECTION -->   
     @if(in_array($user->role, ['manager', 'hrd', 'akuntan']))
     <div class="bg-white rounded-[55px] p-10 border border-slate-100 shadow-sm mb-10">
         <h3 class="text-xl font-black text-slate-900 uppercase tracking-tighter mb-8">Analisis Tren Gaji</h3>
@@ -273,21 +274,21 @@
     </div>
     @endif
 
-    {{-- WORKSHOP INFO & REMINDER BOX --}}
+    <!-- WORKSHOP INFO & REMNDER BOX -->
 <div class="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm relative overflow-hidden flex flex-col justify-between">
-    {{-- Decorative Accent --}}
+    <!-- Decorative Accent -->
     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl pointer-events-none"></div>
     
     <div>
-        {{-- Header --}}
+        <!--  Header --> 
         <div class="flex items-center gap-2 mb-6">
             <div class="w-1.5 h-4 bg-orange-500 rounded-full"></div>
             <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Workshop Info</h3>
         </div>
 
-        {{-- Content Grid --}}
+        <!-- Content Grid -->
         <div class="grid grid-cols-2 gap-4 items-center">
-            {{-- Counter --}}
+            <!-- Counter -->
             <div class="flex items-center gap-3">
                 <div class="bg-blue-50 p-3 rounded-2xl text-blue-600 flex items-center justify-center">
                     <i class="fas fa-users text-lg"></i>
@@ -298,7 +299,7 @@
                 </div>
             </div>
 
-            {{-- Status --}}
+            <!-- Status -->
             <div class="text-right border-l border-slate-100 pl-4">
                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-600">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -309,7 +310,7 @@
 
         <hr class="my-5 border-slate-100">
 
-        {{-- Conditional Notice --}}
+        <!-- Conditional Notice -->
         @if(in_array($user->role, ['manager', 'hrd', 'akuntan']))
             <div class="bg-orange-50/60 rounded-2xl p-4 border border-orange-100/50">
                 <p class="text-xs font-bold text-orange-600 uppercase tracking-wide flex items-center gap-2 mb-2">
@@ -332,7 +333,6 @@
         @endif
     </div>
 
-    {{-- Subtle Background Icon --}}
     <i class="fas fa-tools absolute -bottom-4 -right-4 text-6xl text-slate-100 -rotate-12 pointer-events-none"></i>
 </div>
 
@@ -340,7 +340,7 @@
     </div>
 
     @if($divisi == 'MANAJEMEN')
-    {{-- CHART SCRIPT --}}
+    <!-- CHART SCRIPT -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('mainChart').getContext('2d');

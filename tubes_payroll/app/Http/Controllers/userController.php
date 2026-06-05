@@ -81,10 +81,10 @@ class userController extends Controller
     public function destroy($nip)
     {
         DB::transaction(function () use ($nip) {
-            // Hapus detail profil
+            // Hapus dari profil_pegawai
             DB::table('profil_pegawai')->where('nip', $nip)->delete();
             
-            // hapus akun penggunanya
+            // hapus dari pengguna
             $user = pengguna::where('nip', $nip)->firstOrFail();
             $user->delete();
         });
@@ -92,24 +92,24 @@ class userController extends Controller
         return redirect()->back()->with('success', 'User dan Profil terkait telah dihapus!');
     }
 
-public function formGantiPassword()
-{
-    return view('halaman.ganti_password');
-}
+    public function formGantiPassword()
+    {
+        return view('halaman.ganti_password');
+    }
 
-public function prosesGantiPassword(Request $request)
-{
-    $request->validate([
-       'password_baru' => ['required', 'min:8', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'confirmed'],
-    ]);
-
-    pengguna::where('nip', Auth::user()->nip)
-        ->update([
-            'kata_sandi'           => Hash::make($request->password_baru),
-            'harus_ganti_password' => 0,
-            'batas_ganti_password' => null,
+    public function prosesGantiPassword(Request $request)
+    {
+        $request->validate([
+        'password_baru' => ['required', 'min:8', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'confirmed'],
         ]);
 
-    return redirect()->route('dashboard')->with('success', 'Password berhasil diperbarui!');
-}
+        pengguna::where('nip', Auth::user()->nip)
+            ->update([
+                'kata_sandi'           => Hash::make($request->password_baru),
+                'harus_ganti_password' => 0,
+                'batas_ganti_password' => null,
+            ]);
+
+        return redirect()->route('dashboard')->with('success', 'Password berhasil diperbarui!');
+    }
 }

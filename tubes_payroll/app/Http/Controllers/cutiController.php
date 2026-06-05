@@ -27,7 +27,7 @@ public function index()
 
     // Hitung kuota hanya untuk karyawan yang login
     $cutiSaya = $isHrd
-        ? collect() // HRD tidak perlu hitung kuota diri sendiri di sini
+        ? collect() 
         : $riwayatCuti;
 
     $totalCutiDiambil = $cutiSaya
@@ -50,7 +50,7 @@ public function store(Request $request)
         'alasan'          => 'required|string|max:255',
     ]);
 
-    // Cek apakah ada pengajuan cuti yang bentrok
+    // Cek pengajuan cuti yang bentrok
     $adaCutiBentrok = Cuti::where('id_pegawai', auth()->id())
         ->whereIn('status_persetujuan', ['Menunggu', 'Disetujui'])
         ->where(function ($query) use ($request) {
@@ -85,7 +85,6 @@ public function store(Request $request)
                 ->diffInDays(Carbon::parse($cuti->tanggal_selesai)) + 1;
         });
 
-    // Jika kuota sudah habis
     if ($totalCutiDiambil >= 12) {
         return back()->with(
             'error',
@@ -99,7 +98,6 @@ public function store(Request $request)
 
     $sisaCuti = 12 - $totalCutiDiambil;
 
-    // Jika pengajuan melebihi sisa kuota
     if ($durasiPengajuan > $sisaCuti) {
         return back()->with(
             'error',
@@ -136,7 +134,6 @@ public function approve($id)
         'disetujui_oleh_id'  => auth()->id(),
     ]);
 
-    // Cari NIP lewat tabel pengguna (bukan profil_pegawai)
     $pengguna = \App\Models\Pengguna::find($cuti->id_pegawai);
 
     if ($pengguna && $pengguna->nip) {
@@ -157,7 +154,7 @@ public function tolak($id)
     abort_if(auth()->user()->id_divisi != 2, 403);
 
     $cuti = Cuti::findOrFail($id);
-    $cuti->update(['status_persetujuan' => 'Ditolak']); // ← huruf kapital
+    $cuti->update(['status_persetujuan' => 'Ditolak']); 
 
     return back()->with('success', 'Pengajuan cuti telah ditolak.');
 }

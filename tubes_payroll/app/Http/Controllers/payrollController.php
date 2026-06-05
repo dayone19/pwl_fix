@@ -12,9 +12,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class PayrollController extends Controller
 {
-    /**
-     * INDIVIDU: Menampilkan data payroll/slip gaji milik masing-masing karyawan yang login
-     */
+    
+     // INDIVIDU: Menampilkan data payroll/slip gaji milik masing-masing karyawan yang login
     public function dataPayroll()
     {
         $userId = auth()->id(); 
@@ -35,9 +34,9 @@ class PayrollController extends Controller
         return view('halaman.payroll', compact('bulanTerbaru', 'bulanLalu', 'user'));
     }
 
-    /**
-     * FINANCE & MANAGEMENT: Dashboard utama kelola manajemen gaji seluruh karyawan (Meja Kerja)
-     */
+
+    // FINANCE & MANAGEMENT: Dashboard utama kelola manajemen gaji seluruh karyawan (Meja Kerja)
+
     public function manage(Request $request)
     {
         $query = Penggajian::with('pegawai');
@@ -96,9 +95,9 @@ class PayrollController extends Controller
         ]);
     }
 
-    /**
-     * FINANCE: Otomatisasi generate draf hitungan payroll awal (Status: Draft)
-     */
+
+    //FINANCE: Otomatisasi generate draf hitungan payroll awal (Status: Draft)
+
     public function generateGaji(Request $request)
     {
         $request->validate([
@@ -266,9 +265,9 @@ class PayrollController extends Controller
         return redirect()->back()->with('success', 'Draf payroll berhasil dibuat murni menggunakan NIP!');
     }
 
-    /**
-     * FINANCE: Update komponen draf selama proses pengerjaan (sebelum submit final)
-     */
+
+    //FINANCE: Update komponen draf selama proses pengerjaan (sebelum submit final)
+
     public function updateDraft(Request $request, $id)
     {
         $request->validate([
@@ -301,9 +300,8 @@ class PayrollController extends Controller
         return back()->with('success', 'Draft payroll berhasil diperbarui.');
     }
 
-    /**
-     * FINANCE: Menghapus data draf payroll milik karyawan berdasarkan ID Gaji yang Unik
-     */
+    // FINANCE: Menghapus data draf payroll milik karyawan berdasarkan ID Gaji yang Unik
+
     public function destroyDraft($id)
     {
         $gaji = Penggajian::find($id);
@@ -321,9 +319,8 @@ class PayrollController extends Controller
         return back()->with('success', 'Draft berhasil dihapus.');
     }
 
-    /**
-     * FINANCE: Mengirim draf ke pihak Manajemen (Status: Draft -> Terbit)
-     */
+     // FINANCE: Mengirim draf ke pihak Manajemen (Status: Draft -> Terbit)
+
     public function submitGaji(Request $request, $id)
     {
         $payroll = Penggajian::find($id);
@@ -337,9 +334,8 @@ class PayrollController extends Controller
         return redirect()->back()->with('success', 'Draf payroll berhasil diajukan ke Manajer!');
     }
 
-    /**
-     * MANAGEMENT: Menolak atau Menyetujui Berkas Gaji Satuan (Status: Terbit -> Dibayar / Ditolak)
-     */
+    // MANAGEMENT: Menolak atau Menyetujui Berkas Gaji Satuan (Status: Terbit -> Dibayar / Ditolak)
+
     public function keputusanManajemen(Request $request, $id)
     {
         $request->validate([
@@ -362,10 +358,8 @@ class PayrollController extends Controller
 
         return redirect()->back()->with('success', "Berkas payroll berhasil diperbarui menjadi: $statusBaru.");
     }
-
-    /**
-     * MANAGEMENT: Menyetujui banyak data sekaligus (Mass Approval & Selected Approval)
-     */
+    
+    // MANAGEMENT: Menyetujui banyak data sekaligus (Mass Approval & Selected Approval)
     public function massAction(Request $request)
     {
         if ($request->action === 'approve_all') {
@@ -409,10 +403,8 @@ class PayrollController extends Controller
             "$jumlah data payroll berhasil " . ($request->action === 'approve' ? 'disetujui' : 'ditolak') . '.'
         );
     }
-
-    /**
-     * FINANCE: Menandai gaji sudah dibayarkan (Status: Terbit -> Dibayar)
-     */
+    
+    //FINANCE: Menandai gaji sudah dibayarkan (Status: Terbit -> Dibayar)
     public function bayarGaji($id)
     {
         $gaji = Penggajian::findOrFail($id);
@@ -425,9 +417,8 @@ class PayrollController extends Controller
         return back()->with('success', 'Gaji berhasil dibayarkan');
     }
 
-    /**
-     * HRD: Log riwayat pembayaran gaji seluruh karyawan
-     */
+    // HRD: Log riwayat pembayaran gaji seluruh karyawan
+
     public function logPembayaran(Request $request)
 {
     $bulan = $request->bulan ?? date('m');
@@ -445,9 +436,7 @@ class PayrollController extends Controller
     return view('halaman.log_pembayaran', compact('log', 'bulan', 'tahun'));
 }
 
-    /**
-     * Rumus kalkulasi tarif progresif PPh21 Pasal 17
-     */
+    // Rumus kalkulasi tarif progresif PPh21 Pasal 17
     private function hitungPph21Progresif($penghasilanSetahun)
     {
         $pajakTotal = 0;

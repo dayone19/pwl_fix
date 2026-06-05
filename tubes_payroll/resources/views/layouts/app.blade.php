@@ -15,7 +15,7 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
 
-        /* --- SIDEBAR & ANIMASI --- */
+        /* Sidebar & Animasi */
         @keyframes spin-slow {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -28,7 +28,7 @@
 
         #sidebar { 
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background-color: #020617; /* bg-slate-950 */
+            background-color: #020617; 
             background-image: radial-gradient(at 0% 100%, hsla(25,95%,35%,0.15) 0, transparent 50%);
         }
 
@@ -137,7 +137,7 @@
             </div>
 
             <nav class="flex-1 space-y-8 overflow-y-auto no-scrollbar nav-mask pb-12">
-                {{-- SECTION: MONITORING --}}
+                <!-- SECTION: MONITORING  -->
                 <div>
                     <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
                         <i class="fas fa-gauge-high text-[8px]"></i> Monitoring
@@ -152,13 +152,13 @@
                     </ul>
                 </div>
 
-                {{-- SECTION: WORKSHOP AREA --}}
+                <!-- SECTION: WORKSHOP AREA -->
                 <div>
                     <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
                         <i class="fas fa-toolbox text-[8px]"></i> Workshop Area
                     </p>
                     <ul class="space-y-2">
-                        {{-- DATA MEKANIK & ABSENSI: MANAJEMEN & HRD --}}
+                        <!-- DATA MEKANIK & PEKERJAAN: MANAJEMEN, HRD & TEKNIS -->
                         @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['MANAJEMEN', 'HRD']))
                         <li>
                             <a href="{{ route('karyawan.index') }}" 
@@ -173,7 +173,7 @@
                         </li>
                         @endif
 
-                        {{-- PEKERJAAN KHUSUS DIVISI TEKNIS --}}
+                        <!-- PEKERJAAN KHUSUS DIVISI TEKNIS -->
                         @if(Str::upper(Auth::user()->divisi?->nama_divisi) == 'TEKNIS')
                         <li>
                             <a href="{{ route('pekerjaan.index') }}" 
@@ -183,7 +183,7 @@
                         </li>
                         @endif
 
-                        {{-- PAYROLL & INSENTIF & CUTI: Semua Divisi --}}
+                        <!-- PAYROLL & INSENTIF & CUTI: Semua Divisi -->
                         <li>
                             <a href="{{ route('payroll.index') }}" class="{{ request()->routeIs('payroll.index') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
                                 <i class="fas fa-file-invoice-dollar w-5 group-hover:text-orange-400"></i> Payroll & Insentif
@@ -202,7 +202,7 @@
                             </a>
                         </li>
                         
-                        {{-- KELOLA GAJI: MANAJEMEN & FINANCE --}}
+                        <!-- KELOLA GAJI: MANAJEMEN & FINANCE -->
                         @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['MANAJEMEN', 'FINANCE']))
                         <li>
                             <a href="{{ route('payroll.manage') }}" class="{{ request()->routeIs('payroll.manage') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
@@ -213,7 +213,7 @@
                     </ul>
                 </div>
 
-                {{-- SECTION: SYSTEM: MANAJEMEN & HRD --}}
+                <!-- SECTION: SYSTEM: MANAJEMEN & HRD -->
                 @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['MANAJEMEN', 'HRD']))
                 <div class ="gap-3">
                     <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
@@ -229,7 +229,6 @@
                           @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['HRD']))  
                             <a href="{{ route('access-requests.index') }}"class="{{ request()->routeIs('access-requests.*') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
                                 <i class="fas fa-user-shield w-5 group-hover:text-orange-400"></i>Permintaan Akses
-                            {{-- Badge jumlah pending --}}
                             @php $pendingCount = \App\Models\AccessRequest::where('status','pending')->count(); @endphp
                             @if($pendingCount > 0)
                             <span class="ml-auto bg-orange-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full min-w-[20px] text-center">{{ $pendingCount }}</span>
