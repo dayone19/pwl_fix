@@ -13,6 +13,7 @@ use App\Http\Controllers\pekerjaanController;
 use App\Http\Controllers\LandingController;
 
 
+
 // Landing
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -35,6 +36,8 @@ Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetFo
     ->name('password.reset.form');
 Route::post('/reset-password/{token}', [ForgotPasswordController::class, 'resetPassword'])
     ->name('password.reset.submit');
+Route::get('/ganti-password', [userController::class, 'formGantiPassword'])->name('password.form');
+Route::post('/ganti-password', [userController::class, 'prosesGantiPassword'])->name('password.update');
 
 // Edit Karyawan
 Route::get('/karyawan/{nip}/edit', [KaryawanController::class, 'edit'])
@@ -86,6 +89,8 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     ->name('payroll.bayar');
     Route::get('/payroll/slip/{id}',[PayrollController::class, 'downloadSlip'])
     ->name('payroll.slip');
+    Route::get('/payroll/log-pembayaran', [PayrollController::class, 'logPembayaran'])
+    ->name('payroll.log');
 
     // Cuti
     Route::get('/cuti',           [CutiController::class, 'index'])->name('cuti.index');

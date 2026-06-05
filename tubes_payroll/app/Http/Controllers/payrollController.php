@@ -19,18 +19,15 @@ class PayrollController extends Controller
     {
         $userId = auth()->id(); 
         
-        // Mengambil data pengguna beserta relasi departemennya
         $user = Pengguna::with(['divisi'])->find($userId);
 
         $bulanSekarang = date('m'); 
         $periodeSekarang = date('F Y'); 
 
-        // Menampilkan draf/slip bulan terbaru milik pengguna tersebut berdasarkan id_pegawai
         $bulanTerbaru = Penggajian::where('id_pegawai', $userId)
                                     ->where('bulan', $bulanSekarang)
                                     ->first();
                                     
-        // Riwayat seluruh penggajian bulan-bulan lalu milik karyawan terkait
         $bulanLalu = Penggajian::where('id_pegawai', $userId)
                                 ->orderBy('id', 'desc')
                                 ->get();
@@ -45,29 +42,24 @@ class PayrollController extends Controller
     {
         $query = Penggajian::with('pegawai');
 
-        // Filter Nama
         if ($request->filled('nama')) {
             $query->whereHas('pegawai', function ($q) use ($request) {
                 $q->where('nama_lengkap', 'like', '%' . $request->nama . '%');
             });
         }
 
-        // Filter NIP
         if ($request->filled('nip')) {
             $query->where('nip', 'like', '%' . $request->nip . '%');
         }
 
-        // Filter Tanggal
         if ($request->filled('tanggal')) {
             $query->whereDate('periode_mulai', $request->tanggal);
         }
 
-        // Filter Bulan
         if ($request->filled('bulan')) {
             $query->whereMonth('periode_mulai', $request->bulan);
         }
 
-        // Filter Tahun
         if ($request->filled('tahun')) {
             $query->whereYear('periode_mulai', $request->tahun);
         }
@@ -82,8 +74,8 @@ class PayrollController extends Controller
         $totalPengeluaran = Penggajian::where('status_bayar', 'Dibayar')
             ->sum('gaji_bersih');
 
-        $draft = Penggajian::where('status_bayar', 'Draft')->count();
-        $terbit = Penggajian::where('status_bayar', 'Terbit')->count();
+        $draft   = Penggajian::where('status_bayar', 'Draft')->count();
+        $terbit  = Penggajian::where('status_bayar', 'Terbit')->count();
         $dibayar = Penggajian::where('status_bayar', 'Dibayar')->count();
 
         $totalPayroll = $draft + $terbit + $dibayar;
@@ -97,7 +89,6 @@ class PayrollController extends Controller
             'karyawan'         => $karyawan,
             'totalPengeluaran' => $totalPengeluaran,
             'totalPegawai'     => $karyawan->count(),
-
             'draft'            => $draft,
             'terbit'           => $terbit,
             'dibayar'          => $dibayar,
@@ -115,9 +106,7 @@ class PayrollController extends Controller
             'bulan' => 'required|string', 
         ]);
 
-        $periodeInput = $request->bulan; // Menerima format "MM-YYYY" (Contoh: "05-2026")
-        
-        // Memecah string rekap untuk memisahkan bulan dan tahun agar format SQL datetime valid
+        $periodeInput  = $request->bulan;
         $pecahPeriode  = explode('-', $periodeInput);
         $bulanInput    = $pecahPeriode[0]; 
         $tahunSekarang = $pecahPeriode[1]; 
@@ -126,74 +115,57 @@ class PayrollController extends Controller
         $periodeSaatIni = strtotime(date('Y-m-01'));
 
         if ($periodeDipilih < $periodeSaatIni) {
-            return back()->with(
-                'error',
-                'Tidak dapat membuat draft payroll untuk periode yang sudah lewat.'
-            );
+            return back()->with('error', 'Tidak dapat membuat draft payroll untuk periode yang sudah lewat.');
         }
 
-        // 1. Ambil data pengguna murni berdasarkan NIP
         $karyawan = DB::table('pengguna')->where('nip', $request->nip)->first();
         if (!$karyawan) {
             return redirect()->back()->with('error', 'Karyawan tidak ditemukan.');
         }
 
-        //validasi tambahan tidak boleh melakukan draft 2x di karyawan dan bulan yg sama
         $cekDraft = Penggajian::where('nip', $request->nip)
-        ->where('bulan', $periodeInput)
-        ->exists();
+            ->where('bulan', $periodeInput)
+            ->exists();
         
         if ($cekDraft) {
             return redirect()->back()->with(
                 'error', 
-                'Gagal! Payroll untuk karyawan dengan NIP ' . $request->nip . ' pada periode ' . $periodeInput . '   sudah pernah dibuat.'
+                'Gagal! Payroll untuk karyawan dengan NIP ' . $request->nip . ' pada periode ' . $periodeInput . ' sudah pernah dibuat.'
             );
         }
 
-        // 2. Tarik data dari tabel profil_pegawai menggunakan NIP
-        $profil = DB::table('profil_pegawai')->where('nip', $karyawan->nip)->first();
+        $profil      = DB::table('profil_pegawai')->where('nip', $karyawan->nip)->first();
         $statusKerja = $profil ? $profil->status_kerja : 'Tetap';
 
-        $periodeMulai = $tahunSekarang . '-' . $bulanInput . '-01';
+        $periodeMulai   = $tahunSekarang . '-' . $bulanInput . '-01';
         $periodeSelesai = date('Y-m-t', strtotime($periodeMulai));
 
-        // JIKA STATUSNYA PKL, LANGSUNG SET SEMUA NOMINAL KE 0 DAN SIMPAN
         if (strtoupper($statusKerja) === 'PKL') {
             Penggajian::create([
-                'id_pegawai'       => $karyawan->id,
-                'nip'              => $karyawan->nip,
-                'gaji_pokok'       => 0,
-                'periode_mulai'    => $periodeMulai,
-                'periode_selesai'  => $periodeSelesai,
-                'total_tunjangan'  => 0,
-                'total_potongan'   => 0,
-                'bonus'            => 0,
-                'gaji_bersih'      => 0,
-                'status_bayar'     => 'Draft',
-                'bulan'            => $periodeInput, 
+                'id_pegawai'      => $karyawan->id,
+                'nip'             => $karyawan->nip,
+                'gaji_pokok'      => 0,
+                'periode_mulai'   => $periodeMulai,
+                'periode_selesai' => $periodeSelesai,
+                'total_tunjangan' => 0,
+                'total_potongan'  => 0,
+                'bonus'           => 0,
+                'gaji_bersih'     => 0,
+                'status_bayar'    => 'Draft',
+                'bulan'           => $periodeInput, 
             ]);
 
             return redirect()->back()->with('success', 'Draf payroll anak PKL berhasil dibuat dengan nominal Rp 0.');
         }
 
-        // 3. ALUR BERANTAI JABATAN & GAJI:
-        // a. Ambil id_jabatan dari tabel profil_pegawai
-        $idJabatan = $profil ? $profil->id_jabatan : null;
-
-        // b. Cari ke tabel jabatan berdasarkan id_jabatan untuk mengambil id_gaji
-        $jabatan = DB::table('jabatan')->where('id', $idJabatan)->first();
-        $idGaji = $jabatan ? $jabatan->id_gaji : null;
-
-        // c. Cari ke master tabel gaji berdasarkan id_gaji untuk mendapatkan nilai pokok
+        $idJabatan  = $profil ? $profil->id_jabatan : null;
+        $jabatan    = DB::table('jabatan')->where('id', $idJabatan)->first();
+        $idGaji     = $jabatan ? $jabatan->id_gaji : null;
         $gajiMaster = DB::table('gaji')->where('id', $idGaji)->first();
-        $gapok = $gajiMaster ? $gajiMaster->gaji : 0;
+        $gapok      = $gajiMaster ? $gajiMaster->gaji : 0;
 
-        // 4. Hitung otomatis tunjangan (15% dari Gaji Pokok master jabatan)
         $tunjangan = 0.15 * $gapok;
 
-        // ==========================================
-        // HITUNG LOG ABSENSI MENTAH BULANAN
-        // ==========================================
         $alpha = DB::table('absensi')
             ->where('nip', $karyawan->nip)
             ->whereMonth('tanggal', $bulanInput)
@@ -215,27 +187,21 @@ class PayrollController extends Controller
             ->where('status_kehadiran', 'Hadir')
             ->count();
 
-        // ==========================================
-        // KALKULASI DEBIT / KREDIT PAYROLL
-        // ==========================================
-        
-        // Potongan harian alpha
-        $potonganAlpha = ($gapok / 30) * $alpha;
-
-        $dendaPerTelat = (strtoupper($statusKerja) === 'TETAP') ? 50000 : 15000;
+        $potonganAlpha     = ($gapok / 30) * $alpha;
+        $dendaPerTelat     = (strtoupper($statusKerja) === 'TETAP') ? 50000 : 15000;
         $potonganTerlambat = $dendaPerTelat * $telat;
 
         $bonusTarget = 0;
         if ($hariHadir >= 5) {
-            $kelipatan = floor($hariHadir / 5);
+            $kelipatan   = floor($hariHadir / 5);
             $bonusTarget = $kelipatan * 35000;
         }
 
         if ($karyawan->id_divisi == 4) {
             try {
                 $idPenggunaMasingMasing = $karyawan->id_pengguna ?? ($karyawan->id ?? null);
-                $nipKaryawan = $karyawan->nip ?? null;
-                $idTeknisi = null;
+                $nipKaryawan            = $karyawan->nip ?? null;
+                $idTeknisi              = null;
 
                 $profilPegawai = DB::table('profil_pegawai')
                     ->where('nip', $nipKaryawan)
@@ -251,22 +217,17 @@ class PayrollController extends Controller
                         ->whereRaw("DATE_FORMAT(selesai_pada, '%Y-%m') = ?", [sprintf('%04d-%02d', $tahunSekarang, $bulanInput)])
                         ->count();
 
-                    $targetHarian = 5;
-                    $bonusPerPekerjaan = 20000;
                     $bonusTeknisi = 0;
-
-                    if ($jumlahSelesai >= $targetHarian) {
-                        $kelipatan = floor($jumlahSelesai / $targetHarian);
-                        $bonusTeknisi = $kelipatan * $bonusPerPekerjaan;
+                    if ($jumlahSelesai >= 5) {
+                        $bonusTeknisi = floor($jumlahSelesai / 5) * 20000;
                     }
 
                     $bonusTarget = $bonusTeknisi; 
                 }
 
             } catch (\Exception $e) {
-                // Jika ada kendala format, paksa hitung total tanpa filter tanggal sebagai data emergency
                 $idTeknisiEmergency = $karyawan->id ?? $karyawan->id_pengguna;
-                $jumlahSelesai = DB::table('terima_kerjaan')
+                $jumlahSelesai      = DB::table('terima_kerjaan')
                     ->where('teknisi_id', $idTeknisiEmergency)
                     ->where('status', 'done')
                     ->count();
@@ -278,44 +239,28 @@ class PayrollController extends Controller
         }
 
         $pendapatanKotorSebulan = $gapok + $tunjangan + $bonusTarget;
-
         $pendapatanKotorSetahun = $pendapatanKotorSebulan * 12;
+        $biayaJabatan           = min($pendapatanKotorSebulan * 0.05, 500000) * 12;
+        $penghasilanNeto        = $pendapatanKotorSetahun - $biayaJabatan;
+        $ptkp                   = 54000000;
+        $pkp                    = max(0, $penghasilanNeto - $ptkp);
+        $pph21Setahun           = $this->hitungPph21Progresif($pkp);
+        $potonganPph21          = round($pph21Setahun / 12);
+        $totalPotongan          = $potonganAlpha + $potonganTerlambat + $potonganPph21;
+        $gajiBersih             = ($gapok + $tunjangan + $bonusTarget) - $totalPotongan;
 
-        // Biaya jabatan (5% max 500rb/bulan)
-        $biayaJabatan = min($pendapatanKotorSebulan * 0.05, 500000) * 12;
-
-        // Penghasilan neto
-        $penghasilanNeto = $pendapatanKotorSetahun - $biayaJabatan;
-
-        // PTKP (TK/0)
-        $ptkp = 54000000;
-
-        // PKP
-        $pkp = max(0, $penghasilanNeto - $ptkp);
-
-        // Pajak progresif
-        $pph21Setahun = $this->hitungPph21Progresif($pkp);
-        $potonganPph21 = round($pph21Setahun / 12);
-
-        // Akumulasi total potongan
-        $totalPotongan = $potonganAlpha + $potonganTerlambat + $potonganPph21;
-
-        // Hitung akhir Gaji Bersih
-        $gajiBersih = ($gapok + $tunjangan + $bonusTarget) - $totalPotongan;
-
-        // 5. Masukkan ke database penggajian
         Penggajian::create([
-            'id_pegawai'       => $karyawan->id,
-            'nip'              => $karyawan->nip,
-            'gaji_pokok'       => $gapok,
-            'periode_mulai'    => $periodeMulai,
-            'periode_selesai'  => $periodeSelesai,
-            'total_tunjangan'  => $tunjangan,
-            'total_potongan'   => $totalPotongan,
-            'bonus'            => $bonusTarget,
-            'gaji_bersih'      => $gajiBersih,
-            'status_bayar'     => 'Draft',
-            'bulan'            => $periodeInput, 
+            'id_pegawai'      => $karyawan->id,
+            'nip'             => $karyawan->nip,
+            'gaji_pokok'      => $gapok,
+            'periode_mulai'   => $periodeMulai,
+            'periode_selesai' => $periodeSelesai,
+            'total_tunjangan' => $tunjangan,
+            'total_potongan'  => $totalPotongan,
+            'bonus'           => $bonusTarget,
+            'gaji_bersih'     => $gajiBersih,
+            'status_bayar'    => 'Draft',
+            'bulan'           => $periodeInput, 
         ]);
 
         return redirect()->back()->with('success', 'Draf payroll berhasil dibuat murni menggunakan NIP!');
@@ -344,8 +289,7 @@ class PayrollController extends Controller
 
         $gapok = $gaji->gaji_pokok;
 
-        $gajiBersihBaru =
-            ($gapok + $request->total_tunjangan + $request->bonus) - $request->total_potongan;
+        $gajiBersihBaru = ($gapok + $request->total_tunjangan + $request->bonus) - $request->total_potongan;
 
         $gaji->update([
             'total_tunjangan' => $request->total_tunjangan,
@@ -388,9 +332,7 @@ class PayrollController extends Controller
             return redirect()->back()->with('error', 'Data draf payroll dengan NIP tersebut tidak ditemukan.');
         }
 
-        $payroll->update([
-            'status_bayar' => 'Terbit'
-        ]);
+        $payroll->update(['status_bayar' => 'Terbit']);
 
         return redirect()->back()->with('success', 'Draf payroll berhasil diajukan ke Manajer!');
     }
@@ -411,7 +353,12 @@ class PayrollController extends Controller
         }
 
         $statusBaru = ($request->aksi === 'approve') ? 'Dibayar' : 'Ditolak';
-        $gaji->update(['status_bayar' => $statusBaru]);
+
+        $gaji->update([
+            'status_bayar' => $statusBaru,
+            'dibayar_oleh' => $statusBaru === 'Dibayar' ? auth()->user()->nama : null,
+            'dibayar_pada' => $statusBaru === 'Dibayar' ? now() : null,
+        ]);
 
         return redirect()->back()->with('success', "Berkas payroll berhasil diperbarui menjadi: $statusBaru.");
     }
@@ -421,72 +368,82 @@ class PayrollController extends Controller
      */
     public function massAction(Request $request)
     {
-        // MASS APPROVE
         if ($request->action === 'approve_all') {
-
             $jumlah = Penggajian::where('status_bayar', 'Terbit')
                 ->update([
-                    'status_bayar' => 'Dibayar'
+                    'status_bayar' => 'Dibayar',
+                    'dibayar_oleh' => auth()->user()->nama,
+                    'dibayar_pada' => now(),
                 ]);
 
-            return back()->with(
-                'success',
-                "$jumlah data payroll berhasil disetujui."
-            );
+            return back()->with('success', "$jumlah data payroll berhasil disetujui.");
         }
 
-        // MASS REJECT
         if ($request->action === 'reject_all') {
-
             $jumlah = Penggajian::where('status_bayar', 'Terbit')
-                ->update([
-                    'status_bayar' => 'Ditolak'
-                ]);
+                ->update(['status_bayar' => 'Ditolak']);
 
-            return back()->with(
-                'success',
-                "$jumlah data payroll berhasil ditolak."
-            );
+            return back()->with('success', "$jumlah data payroll berhasil ditolak.");
         }
 
-        // SELECTED ACTION
         $request->validate([
             'action' => 'required|in:approve,reject',
-            'ids' => 'required|array',
-            'ids.*' => 'exists:penggajian,id'
+            'ids'    => 'required|array',
+            'ids.*'  => 'exists:penggajian,id',
         ]);
 
-        $statusBaru = $request->action === 'approve'
-            ? 'Dibayar'
-            : 'Ditolak';
+        $statusBaru = $request->action === 'approve' ? 'Dibayar' : 'Ditolak';
+
+        $updateData = ['status_bayar' => $statusBaru];
+        if ($statusBaru === 'Dibayar') {
+            $updateData['dibayar_oleh'] = auth()->user()->nama;
+            $updateData['dibayar_pada'] = now();
+        }
 
         $jumlah = Penggajian::whereIn('id', $request->ids)
             ->where('status_bayar', 'Terbit')
-            ->update([
-                'status_bayar' => $statusBaru
-            ]);
+            ->update($updateData);
 
         return back()->with(
             'success',
-            "$jumlah data payroll berhasil " .
-            ($request->action === 'approve'
-                ? 'disetujui'
-                : 'ditolak')
-            . '.'
+            "$jumlah data payroll berhasil " . ($request->action === 'approve' ? 'disetujui' : 'ditolak') . '.'
         );
     }
 
-    // FINANCE: Menandai gaji sudah dibayarkan (Status: Terbit -> Dibayar)
+    /**
+     * FINANCE: Menandai gaji sudah dibayarkan (Status: Terbit -> Dibayar)
+     */
     public function bayarGaji($id)
     {
         $gaji = Penggajian::findOrFail($id);
-
         $gaji->update([
-            'status_bayar' => 'Dibayar'
+            'status_bayar' => 'Dibayar',
+            'dibayar_oleh' => auth()->user()->nama,
+            'dibayar_pada' => now(),
         ]);
 
         return back()->with('success', 'Gaji berhasil dibayarkan');
     }
+
+    /**
+     * HRD: Log riwayat pembayaran gaji seluruh karyawan
+     */
+    public function logPembayaran(Request $request)
+{
+    $bulan = $request->bulan ?? date('m');
+    $tahun = $request->tahun ?? date('Y');
+
+    $log = Penggajian::with('pegawai')
+        ->where('status_bayar', 'Dibayar')
+        ->whereNotNull('dibayar_pada')
+        ->whereMonth('dibayar_pada', $bulan)
+        ->whereYear('dibayar_pada', $tahun)
+        ->orderBy('dibayar_pada', 'desc')
+        ->paginate(15)
+        ->withQueryString(); 
+
+    return view('halaman.log_pembayaran', compact('log', 'bulan', 'tahun'));
+}
 
     /**
      * Rumus kalkulasi tarif progresif PPh21 Pasal 17
@@ -494,28 +451,24 @@ class PayrollController extends Controller
     private function hitungPph21Progresif($penghasilanSetahun)
     {
         $pajakTotal = 0;
-        $sisa = $penghasilanSetahun;
+        $sisa       = $penghasilanSetahun;
 
-        // Lapisan 1: 0 - 60 juta (5%)
-        $lapisan1 = min($sisa, 60000000);
+        $lapisan1    = min($sisa, 60000000);
         $pajakTotal += $lapisan1 * 0.05;
-        $sisa -= $lapisan1;
+        $sisa       -= $lapisan1;
 
-        // Lapisan 2: 60 - 250 juta (15%)
         if ($sisa > 0) {
-            $lapisan2 = min($sisa, 190000000); // 250jt - 60jt
+            $lapisan2    = min($sisa, 190000000);
             $pajakTotal += $lapisan2 * 0.15;
-            $sisa -= $lapisan2;
+            $sisa       -= $lapisan2;
         }
 
-        // Lapisan 3: 250 - 500 juta (25%)
         if ($sisa > 0) {
-            $lapisan3 = min($sisa, 250000000); // 500jt - 250jt
+            $lapisan3    = min($sisa, 250000000);
             $pajakTotal += $lapisan3 * 0.25;
-            $sisa -= $lapisan3;
+            $sisa       -= $lapisan3;
         }
 
-        // Lapisan 4: > 500 juta (30%)
         if ($sisa > 0) {
             $pajakTotal += $sisa * 0.30;
         }
@@ -527,7 +480,6 @@ class PayrollController extends Controller
     {
         $pay = Penggajian::with(['pegawai.jabatan'])->findOrFail($id);
 
-        // VALIDASI
         if ($pay->nip !== auth()->user()->nip) {
             abort(403, 'Akses ditolak');
         }
@@ -535,10 +487,7 @@ class PayrollController extends Controller
         $bulan = date('m', strtotime($pay->periode_mulai));
         $tahun = date('Y', strtotime($pay->periode_mulai));
 
-        $profil = DB::table('profil_pegawai')
-            ->where('nip', $pay->nip)
-            ->first();
-
+        $profil      = DB::table('profil_pegawai')->where('nip', $pay->nip)->first();
         $statusKerja = $profil ? $profil->status_kerja : 'Tetap';
 
         $alpha = DB::table('absensi')
@@ -555,33 +504,16 @@ class PayrollController extends Controller
             ->where('status_kehadiran', 'Terlambat')
             ->count();
 
-        $potonganAlpha = ($pay->gaji_pokok / 30) * $alpha;
-
-        $dendaPerTelat = ($statusKerja === 'Tetap')
-            ? 50000
-            : 15000;
-
+        $potonganAlpha     = ($pay->gaji_pokok / 30) * $alpha;
+        $dendaPerTelat     = ($statusKerja === 'Tetap') ? 50000 : 15000;
         $potonganTerlambat = $dendaPerTelat * $telat;
-
-        $potonganPph21 =
-            $pay->total_potongan
-            - $potonganAlpha
-            - $potonganTerlambat;
+        $potonganPph21     = $pay->total_potongan - $potonganAlpha - $potonganTerlambat;
 
         $pdf = Pdf::loadView(
             'ekspor_pdf.slip_gaji_pdf',
-            compact(
-                'pay',
-                'potonganAlpha',
-                'potonganTerlambat',
-                'potonganPph21',
-                'alpha',
-                'telat'
-            )
+            compact('pay', 'potonganAlpha', 'potonganTerlambat', 'potonganPph21', 'alpha', 'telat')
         );
 
-        return $pdf->download(
-            'Slip-Gaji-' . $pay->bulan . '.pdf'
-        );
+        return $pdf->download('Slip-Gaji-' . $pay->bulan . '.pdf');
     }
 }

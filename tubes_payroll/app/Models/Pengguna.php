@@ -16,8 +16,14 @@ class Pengguna extends Authenticatable
         'apakah_aktif',
         'login_attempts',
         'lockout_time',
-        'update_at'
+        'update_at',
+        'harus_ganti_password', 
+        'batas_ganti_password'
     ];
+
+    protected $casts = [
+    'batas_ganti_password' => 'datetime',
+];
 
     public function getAuthPassword()
     {

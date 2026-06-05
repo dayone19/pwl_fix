@@ -75,13 +75,15 @@ class KaryawanController extends Controller
 
             // 5. Simpan Akun ke tabel 'pengguna'
             DB::table('pengguna')->insert([
-                'nip'          => $request->nip,
-                'id_divisi'    => $request->id_divisi,
-                'nama'         => $request->nama_lengkap,
-                'email'        => $request->email,
-                'kata_sandi'   => Hash::make($request->kata_sandi ?? $request->nip),
-                'foto'         => $namaFoto,
-                'apakah_aktif' => 1,
+                'nip'                    => $request->nip,
+                'id_divisi'              => $request->id_divisi,
+                'nama'                   => $request->nama_lengkap,
+                'email'                  => $request->email,
+                'kata_sandi'             => Hash::make($request->kata_sandi ?? $request->nip),
+                'foto'                   => $namaFoto,
+                'apakah_aktif'           => 1,
+                'harus_ganti_password'   => 1,                          // ← TAMBAH
+                'batas_ganti_password'   => now()->addDays(3),          // ← TAMBAH
             ]);
 
             // 6. Simpan Profil ke tabel 'profil_pegawai'

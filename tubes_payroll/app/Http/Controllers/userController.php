@@ -7,6 +7,7 @@ use App\Models\pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class userController extends Controller
 {
@@ -30,25 +31,27 @@ class userController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'nip'        => 'required|string|unique:pengguna,nip',
-            'nama'       => 'required|string|max:255',
-            'kata_sandi' => 'required|string|min:8',
-            'role'       => 'required',
-            'foto'       => 'nullable|string' 
-        ]);
+{
+    $request->validate([
+        'nip'        => 'required|string|unique:pengguna,nip',
+        'nama'       => 'required|string|max:255',
+        'kata_sandi' => 'required|string|min:8',
+        'role'       => 'required',
+        'foto'       => 'nullable|string' 
+    ]);
 
-        pengguna::create([
-            'nip'        => $request->nip,
-            'nama'       => $request->nama,
-            'kata_sandi' => Hash::make($request->kata_sandi),
-            'role'       => $request->role,
-            'foto'       => $request->foto ?? 'default.jpg',
-        ]);
+    pengguna::create([
+        'nip'                  => $request->nip,
+        'nama'                 => $request->nama,
+        'kata_sandi'           => Hash::make($request->kata_sandi),
+        'role'                 => $request->role,
+        'foto'                 => $request->foto ?? 'default.jpg',
+        'harus_ganti_password' => 1,               // ← TAMBAH
+        'batas_ganti_password' => now()->addDays(3), // ← TAMBAH
+    ]);
 
-        return redirect()->back()->with('success', 'User ' . $request->nama . ' berhasil ditambahkan!');
-    }
+    return redirect()->back()->with('success', 'User ' . $request->nama . ' berhasil ditambahkan!');
+}
 
     public function update(Request $request, $nip) 
     {
@@ -88,4 +91,25 @@ class userController extends Controller
 
         return redirect()->back()->with('success', 'User dan Profil terkait telah dihapus!');
     }
+
+public function formGantiPassword()
+{
+    return view('halaman.ganti_password');
+}
+
+public function prosesGantiPassword(Request $request)
+{
+    $request->validate([
+       'password_baru' => ['required', 'min:8', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'confirmed'],
+    ]);
+
+    pengguna::where('nip', Auth::user()->nip)
+        ->update([
+            'kata_sandi'           => Hash::make($request->password_baru),
+            'harus_ganti_password' => 0,
+            'batas_ganti_password' => null,
+        ]);
+
+    return redirect()->route('dashboard')->with('success', 'Password berhasil diperbarui!');
+}
 }

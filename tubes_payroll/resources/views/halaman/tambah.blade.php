@@ -11,7 +11,7 @@
         <div class="w-16 h-16 border-[6px] border-orange-100 border-t-orange-600 rounded-full animate-spin"></div>
 
         <div class="text-center">
-            <h2 class="text-sm font-black uppercase tracking-widest text-slate-900 ">
+            <h2 class="text-sm font-black uppercase tracking-widest text-slate-900">
                 Loading PayTato
             </h2>
 
@@ -82,416 +82,418 @@
     @endif
 
 
- <form action="{{ isset($pegawai)
-        ? route('karyawan.update', $pegawai->nip)
-        : route('karyawan.store') }}"
-      method="POST"
-      enctype="multipart/form-data">
+    <form action="{{ isset($pegawai)
+            ? route('karyawan.update', $pegawai->nip)
+            : route('karyawan.store') }}"
+          method="POST"
+          enctype="multipart/form-data">
 
-    @csrf
+        @csrf
 
-    @if(isset($pegawai))
-        @method('PUT')
-    @endif
-<!-- ================================= -->
-<!-- STEP 1 -->
-<!-- ================================= -->
+        @if(isset($pegawai))
+            @method('PUT')
+        @endif
 
-<div id="step1">
+        <!-- ================================= -->
+        <!-- STEP 1 -->
+        <!-- ================================= -->
 
-    <div class="bg-white rounded-[40px] shadow-sm border border-slate-100 overflow-hidden">
+        <div id="step1">
 
-        <div class="p-10">
+            <div class="bg-white rounded-[40px] shadow-sm border border-slate-100 overflow-hidden">
 
-            <h3 class="text-[10px] font-black text-orange-600 uppercase tracking-[0.3em]  mb-8 flex items-center gap-2">
-                <i class="fas fa-lock"></i>
-                Step 01: Informasi Akun & Akses
-            </h3>
+                <div class="p-10">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <h3 class="text-[10px] font-black text-orange-600 uppercase tracking-[0.3em] mb-8 flex items-center gap-2">
+                        <i class="fas fa-lock"></i>
+                        Step 01: Informasi Akun & Akses
+                    </h3>
 
-                <!-- NIP -->
-                <div class="space-y-2">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        NIP (Nomor Induk Pegawai)
-                    </label>
+                        <!-- NIP -->
+                        <div class="space-y-2">
 
-                    <input type="text"
-                           id="nipInput"
-                           name="nip"
-                           class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 outline-none"
-                           placeholder="Contoh: 123456">
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                NIP (Nomor Induk Pegawai)
+                            </label>
 
-                    <p id="nipStatus"
-                       class="text-[9px] font-bold uppercase tracking-widest ml-4 hidden">
+                            <input type="text"
+                                   id="nipInput"
+                                   name="nip"
+                                   class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 outline-none"
+                                   placeholder="Contoh: 123456">
 
-                        <span id="nipIcon">⚠️</span>
-                        <span id="nipText">Minimal 6 Digit</span>
+                            <p id="nipStatus"
+                               class="text-[9px] font-bold uppercase tracking-widest ml-4 hidden">
+                                <span id="nipIcon">⚠️</span>
+                                <span id="nipText">Minimal 6 Digit</span>
+                            </p>
 
-                    </p>
+                        </div>
 
-                </div>
-
-
-                <!-- PASSWORD -->
-                <div class="space-y-2">
-
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Kata Sandi
-                    </label>
-
-                    <input type="password"
-                           id="passwordInput"
-                           name="kata_sandi"
-                           class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 outline-none"
-                           placeholder="Masukkan kata sandi">
-
-                    <div id="passwordFeedback"
-                         class="mt-3 ml-2 opacity-0 transition-all duration-300 hidden">
-
-                        <ul id="passwordError" class="space-y-1">
-
-                            <li id="reqLen"
-                                class="text-[11px] text-red-500 flex items-center gap-2 ">
-                                <span>•</span>
-                                Minimal 8 karakter
-                            </li>
-
-                            <li id="reqUpper"
-                                class="text-[11px] text-red-500 flex items-center gap-2 ">
-                                <span>•</span>
-                                Minimal 1 huruf besar
-                            </li>
-
-                            <li id="reqNum"
-                                class="text-[11px] text-red-500 flex items-center gap-2 ">
-                                <span>•</span>
-                                Minimal 1 angka
-                            </li>
-
-                        </ul>
-
-                        <p id="pwValidText"
-                           class="hidden text-[11px] font-bold text-green-500 ">
-
-                            ✓ Password Valid
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- EMAIL -->
-                <div class="space-y-2">
-
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Alamat Email
-                    </label>
-
-                    <input type="email"
-                           id="emailInput"
-                           name="email"
-                           class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 outline-none"
-                           placeholder="Contoh: example@gmail.com">
-
-                    <p id="emailStatus"
-                       class="text-[9px] font-bold uppercase tracking-widest ml-4 hidden">
-
-                        <span id="statusIcon">⚠️</span>
-                        <span id="statusText">Wajib menggunakan @gmail.com</span>
-
-                    </p>
-
-                </div>
-
-
-                <!-- FOTO -->
-                <div class="space-y-2">
-
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Foto Profil Resmi
-                    </label>
-
-                    <input type="file"
-                           id="fotoInput"
-                           name="foto"
-                           accept="image/*"
-                           class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100 cursor-pointer">
-
-                    <p id="fotoStatus"
-                       class="text-[11px] font-bold uppercase tracking-widest ml-4 hidden">
-
-                        <span id="fotoIcon"></span>
-                        <span id="fotoText"></span>
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- NEXT BUTTON -->
-            <div class="mt-10 flex justify-end">
-
-                <button type="button"
-                        id="nextStepBtn"
-                        class="bg-slate-900 text-white px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-orange-600 transition-all  flex items-center gap-3">
-
-                    Lanjut Ke Profil
-                    <i class="fas fa-chevron-right"></i>
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<!-- ================================= -->
-<!-- STEP 2 -->
-<!-- ================================= -->
-
-<div id="step2" class="hidden">
-
-    <div class="bg-white rounded-[40px] shadow-sm border border-slate-100 overflow-hidden">
-
-        <div class="p-10">
-
-            <h3 class="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em]  mb-8 flex items-center gap-2">
-                <i class="fas fa-user-gear"></i>
-                Step 02: Detail Profil & Pegawai
-            </h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-                <!-- NAMA -->
-                <div class="space-y-2">
-
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Nama Lengkap Sesuai KTP
-                    </label>
-
-                    <input type="text"
-                           name="nama_lengkap"
-                           class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-black text-slate-900 uppercase "
-                           placeholder="Contoh : Antono Antini">
-
-                </div>
-
-
-                <!-- JK -->
-                <div class="space-y-2">
-
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Jenis Kelamin
-                    </label>
-
-                    <select name="jenis_kelamin"
-                            class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-black text-slate-900 ">
-
-                        <option value="">PILIH...</option>
-                        <option value="L">LAKI-LAKI</option>
-                        <option value="P">PEREMPUAN</option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- DIVISI -->
-                <div class="space-y-2">
-
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Divisi / Departemen
-                    </label>
-
-                    <select name="id_divisi"
-                            class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 ">
-
-                        <option value="">-- Pilih Divisi --</option>
-
-                        @foreach($list_divisi as $divisi)
-                            <option value="{{ $divisi->id }}">
-                                {{ $divisi->nama_divisi }}
-                            </option>
-                        @endforeach
-
-                    </select>
-
-                </div>
-
-
-                <!-- JABATAN -->
-                <div class="space-y-2">
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Jabatan
-                    </label>
-                    
-                    <select name="id_jabatan" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 " required>
-                        <option value="" disabled selected>
-                            -- Pilih Jabatan --
-                        </option>
                         
-                        @foreach($list_jabatan as $jabatan)
-                        <option value="{{ $jabatan->id }}">
-                            {{ $jabatan->nama_jabatan }}
-                        </option>
-                        @endforeach
-                    </select>
-                </div>
+                        <!-- EMAIL -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Alamat Email
+                            </label>
+
+                            <input type="email"
+                                   id="emailInput"
+                                   name="email"
+                                   class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 outline-none"
+                                   placeholder="Contoh: example@gmail.com">
+
+                            <p id="emailStatus"
+                               class="text-[9px] font-bold uppercase tracking-widest ml-4 hidden">
+                                <span id="statusIcon">⚠️</span>
+                                <span id="statusText">Wajib menggunakan @gmail.com</span>
+                            </p>
+
+                        </div>
+                       
+                        <!-- PASSWORD -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Kata Sandi
+                            </label>
+
+                            <div class="relative">
+                                <input type="password"
+                                    id="passwordInput"
+                                    name="kata_sandi"
+                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 pr-14 text-sm font-bold text-slate-800 outline-none"
+                                    placeholder="Masukkan kata sandi">
+                                <button type="button"
+                                        id="togglePassword"
+                                        class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-600 transition-colors">
+                                    <i id="eyeIcon" class="fas fa-eye text-sm"></i>
+                                </button>
+                            </div>
+
+                            <div id="passwordFeedback"
+                                 class="mt-3 ml-2 opacity-0 transition-all duration-300 hidden">
+
+                                <ul id="passwordError" class="space-y-1">
+
+                                    <li id="reqLen"
+                                        class="text-[11px] text-red-500 flex items-center gap-2">
+                                        <span>•</span>
+                                        Minimal 8 karakter
+                                    </li>
+
+                                    <li id="reqUpper"
+                                        class="text-[11px] text-red-500 flex items-center gap-2">
+                                        <span>•</span>
+                                        Minimal 1 huruf besar
+                                    </li>
+
+                                    <li id="reqNum"
+                                        class="text-[11px] text-red-500 flex items-center gap-2">
+                                        <span>•</span>
+                                        Minimal 1 angka
+                                    </li>
+
+                                </ul>
+
+                                <p id="pwValidText"
+                                   class="hidden text-[11px] font-bold text-green-500">
+                                    ✓ Password Valid
+                                </p>
+
+                            </div>
+
+                        </div>
 
 
-                <!-- TELEPON -->
-                <div class="space-y-2">
+                        <!-- FOTO -->
+                        <div class="space-y-2">
 
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Nomor Telepon
-                    </label>
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Foto Profil Resmi
+                            </label>
 
-                    <!-- NOMOR TELEPON -->
-                    <input type="text" id="phoneInput" name="nomor_telepon" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 transition-all" placeholder="Contoh : 08123456789">
-                    
-                    <p id="phoneStatus" class="text-[9px] font-bold uppercase tracking-widest ml-4 hidden">
-                        <span id="phoneIcon">⚠️</span>
-                        <span id="phoneText">Nomor telepon tidak valid</span>
-                    </p>
-                </div>
+                            <input type="file"
+                                   id="fotoInput"
+                                   name="foto"
+                                   accept="image/*"
+                                   class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100 cursor-pointer">
 
+                            <p id="fotoStatus"
+                               class="text-[11px] font-bold uppercase tracking-widest ml-4 hidden">
+                                <span id="fotoIcon"></span>
+                                <span id="fotoText"></span>
+                            </p>
 
-                <!-- NIK -->
-                <div class="space-y-2">
+                        </div>
 
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Nomor NIK
-                    </label>
-
-                    <!-- NIK -->
-                    <input type="text" id="nikInput" name="nik" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 transition-all" placeholder="Contoh : 1234567890123456">
-                    
-                    <p id="nikStatus" class="text-[9px] font-bold uppercase tracking-widest ml-4 hidden">
-                        <span id="nikIcon">⚠️</span>
-                        <span id="nikText">NIK harus 16 digit angka</span>
-                    </p>
-                </div>
+                    </div>
 
 
-                <!-- AGAMA -->
-                <div class="space-y-2">
+                    <!-- NEXT BUTTON -->
+                    <div class="mt-10 flex justify-end">
 
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Agama
-                    </label>
-
-                    <input type="text"
-                           name="agama"
-                           class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800"
-                           placeholder="Islam / Kristen">
-
-                </div>
-
-
-                <!-- TTL -->
-                <div class="space-y-2">
-
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Tempat & Tanggal Lahir
-                    </label>
-
-                    <div class="flex gap-2 bg-slate-50 rounded-2xl p-2">
-
-                        <input type="text"
-                               name="tempat_lahir"
-                               class="flex-[2] bg-transparent border-none px-4 py-2 text-sm font-bold text-slate-800 uppercase "
-                               placeholder="BINJAI">
-
-                        <div class="w-px h-8 bg-slate-200 my-auto"></div>
-
-                        <input type="date"
-                               name="tanggal_lahir"
-                               class="flex-1 bg-transparent border-none px-4 py-2 text-sm font-bold text-slate-800">
+                        <button type="button"
+                                id="nextStepBtn"
+                                class="bg-slate-900 text-white px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-orange-600 transition-all flex items-center gap-3">
+                            Lanjut Ke Profil
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
 
                     </div>
 
                 </div>
 
-
-                <!-- PENDIDIKAN -->
-                <div class="space-y-2">
-
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Pendidikan Terakhir
-                    </label>
-
-                    <input type="text"
-                           name="pendidikan"
-                           class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800"
-                           placeholder="SMK Otomotif">
-
-                </div>
-
-
-                <!-- STATUS -->
-                <div class="space-y-2">
-
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
-                        Status Kerja
-                    </label>
-
-                    <select name="status_kerja"
-                            class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 ">
-
-                        <option value="">-- Pilih Status --</option>
-
-                        <option value="Tetap">Tetap</option>
-                        <option value="Kontrak">Kontrak</option>
-                        <option value="Magang">Magang</option>
-                        <option value="PKL">PKL</option>
-
-                    </select>
-
-                </div>
-
             </div>
 
+        </div>
 
-            <!-- BUTTON -->
-            <div class="mt-10 flex justify-between gap-4">
 
-                <button type="button"
-                        id="backStepBtn"
-                        class="bg-slate-100 text-slate-500 px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all  flex items-center gap-3">
 
-                    <i class="fas fa-chevron-left"></i>
-                    Kembali
+        <!-- ================================= -->
+        <!-- STEP 2 -->
+        <!-- ================================= -->
 
-                </button>
+        <div id="step2" class="hidden">
 
-                <button type="submit"
-                        class="flex-1 bg-orange-600 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-slate-900 transition-all  flex items-center justify-center gap-3">
+            <div class="bg-white rounded-[40px] shadow-sm border border-slate-100 overflow-hidden">
 
-                    <i class="fas fa-save"></i>
-                    {{ isset($pegawai)
-                        ? 'Update Data Pegawai'
-                        : 'Simpan Data Pegawai Baru' }}
+                <div class="p-10">
 
-                </button>
+                    <h3 class="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] mb-8 flex items-center gap-2">
+                        <i class="fas fa-user-gear"></i>
+                        Step 02: Detail Profil & Pegawai
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                        <!-- NAMA -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Nama Lengkap Sesuai KTP
+                            </label>
+
+                            <input type="text"
+                                   name="nama_lengkap"
+                                   class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-black text-slate-900 uppercase"
+                                   placeholder="Contoh : Antono Antini">
+
+                        </div>
+
+
+                        <!-- JK -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Jenis Kelamin
+                            </label>
+
+                            <select name="jenis_kelamin"
+                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-black text-slate-900">
+                                <option value="">PILIH...</option>
+                                <option value="L">LAKI-LAKI</option>
+                                <option value="P">PEREMPUAN</option>
+                            </select>
+
+                        </div>
+
+
+                        <!-- DIVISI -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Divisi / Departemen
+                            </label>
+
+                            <select id="divisiSelect"
+                                    name="id_divisi"
+                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800">
+                                <option value="">-- Pilih Divisi --</option>
+                                @foreach($list_divisi as $divisi)
+                                    <option value="{{ $divisi->id }}">
+                                        {{ $divisi->nama_divisi }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                        </div>
+
+
+                        <!-- JABATAN -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Jabatan
+                            </label>
+
+                            <select id="jabatanSelect"
+                                    name="id_jabatan"
+                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800"
+                                    required>
+                                <option value="" disabled selected>-- Pilih Divisi Dulu --</option>
+                            </select>
+
+                        </div>
+
+
+                        <!-- TELEPON -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Nomor Telepon
+                            </label>
+
+                            <input type="text"
+                                   id="phoneInput"
+                                   name="nomor_telepon"
+                                   class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 transition-all"
+                                   placeholder="Contoh : 08123456789">
+
+                            <p id="phoneStatus" class="text-[9px] font-bold uppercase tracking-widest ml-4 hidden">
+                                <span id="phoneIcon">⚠️</span>
+                                <span id="phoneText">Nomor telepon tidak valid</span>
+                            </p>
+
+                        </div>
+
+
+                        <!-- NIK -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Nomor NIK
+                            </label>
+
+                            <input type="text"
+                                   id="nikInput"
+                                   name="nik"
+                                   class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 transition-all"
+                                   placeholder="Contoh : 1234567890123456">
+
+                            <p id="nikStatus" class="text-[9px] font-bold uppercase tracking-widest ml-4 hidden">
+                                <span id="nikIcon">⚠️</span>
+                                <span id="nikText">NIK harus 16 digit angka</span>
+                            </p>
+
+                        </div>
+
+
+                        <!-- AGAMA -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Agama
+                            </label>
+
+                            <select name="agama"
+                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800">
+                                <option value="">-- Pilih Agama --</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Kristen">Kristen</option>
+                                <option value="Katolik">Katolik</option>
+                                <option value="Hindu">Hindu</option>
+                                <option value="Buddha">Buddha</option>
+                                <option value="Konghucu">Konghucu</option>
+                            </select>
+
+                        </div>
+
+
+                        <!-- TTL -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Tempat & Tanggal Lahir
+                            </label>
+
+                            <div class="flex gap-2 bg-slate-50 rounded-2xl p-2">
+
+                                <input type="text"
+                                       name="tempat_lahir"
+                                       class="flex-[2] bg-transparent border-none px-4 py-2 text-sm font-bold text-slate-800 uppercase"
+                                       placeholder="BINJAI">
+
+                                <div class="w-px h-8 bg-slate-200 my-auto"></div>
+
+                                <input type="date"
+                                       name="tanggal_lahir"
+                                       class="flex-1 bg-transparent border-none px-4 py-2 text-sm font-bold text-slate-800">
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PENDIDIKAN -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Pendidikan Terakhir
+                            </label>
+
+                            <input type="text"
+                                   name="pendidikan"
+                                   class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800"
+                                   placeholder="SMK Otomotif">
+
+                        </div>
+
+
+                        <!-- STATUS KERJA -->
+                        <div class="space-y-2">
+
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                                Status Kerja
+                            </label>
+
+                            <select name="status_kerja"
+                                    class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-slate-800">
+                                <option value="">-- Pilih Status --</option>
+                                <option value="Tetap">Tetap</option>
+                                <option value="Kontrak">Kontrak</option>
+                                <option value="Magang">Magang</option>
+                                <option value="PKL">PKL</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BUTTON -->
+                    <div class="mt-10 flex justify-between gap-4">
+
+                        <button type="button"
+                                id="backStepBtn"
+                                class="bg-slate-100 text-slate-500 px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-3">
+                            <i class="fas fa-chevron-left"></i>
+                            Kembali
+                        </button>
+
+                        <button type="submit"
+                                class="flex-1 bg-orange-600 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-slate-900 transition-all flex items-center justify-center gap-3">
+                            <i class="fas fa-save"></i>
+                            {{ isset($pegawai)
+                                ? 'Update Data Pegawai'
+                                : 'Simpan Data Pegawai Baru' }}
+                        </button>
+
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+    </form>
 
 </div>
+
 <script>
 
 window.onload = function () {
@@ -500,83 +502,131 @@ window.onload = function () {
     // ELEMENT STEP
     // =========================
 
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-
-    const progressBar = document.getElementById('progressBar');
-
-    const nextStepBtn = document.getElementById('nextStepBtn');
-    const backStepBtn = document.getElementById('backStepBtn');
+    const step1        = document.getElementById('step1');
+    const step2        = document.getElementById('step2');
+    const progressBar  = document.getElementById('progressBar');
+    const nextStepBtn  = document.getElementById('nextStepBtn');
+    const backStepBtn  = document.getElementById('backStepBtn');
 
 
     // =========================
     // EMAIL
     // =========================
 
-    const emailInput = document.getElementById('emailInput');
+    const emailInput  = document.getElementById('emailInput');
     const emailStatus = document.getElementById('emailStatus');
-    const statusText = document.getElementById('statusText');
-    const statusIcon = document.getElementById('statusIcon');
+    const statusText  = document.getElementById('statusText');
+    const statusIcon  = document.getElementById('statusIcon');
 
 
     // =========================
     // PASSWORD
     // =========================
 
-    const pwInput = document.getElementById('passwordInput');
-
-    const pwFeedback = document.getElementById('passwordFeedback');
+    const pwInput     = document.getElementById('passwordInput');
+    const pwFeedback  = document.getElementById('passwordFeedback');
     const pwErrorList = document.getElementById('passwordError');
-
     const pwValidText = document.getElementById('pwValidText');
+    const reqLen      = document.getElementById('reqLen');
+    const reqUpper    = document.getElementById('reqUpper');
+    const reqNum      = document.getElementById('reqNum');
 
-    const reqLen = document.getElementById('reqLen');
-    const reqUpper = document.getElementById('reqUpper');
-    const reqNum = document.getElementById('reqNum');
+
+    // =========================
+    // TOGGLE PASSWORD
+    // =========================
+
+    const togglePassword = document.getElementById('togglePassword');
+    const eyeIcon        = document.getElementById('eyeIcon');
+
+    togglePassword.addEventListener('click', function () {
+        const isHidden = pwInput.type === 'password';
+        pwInput.type   = isHidden ? 'text' : 'password';
+        eyeIcon.classList.toggle('fa-eye',       !isHidden);
+        eyeIcon.classList.toggle('fa-eye-slash',  isHidden);
+    });
 
 
     // =========================
     // NIP
     // =========================
 
-    const nipInput = document.getElementById('nipInput');
-
+    const nipInput  = document.getElementById('nipInput');
     const nipStatus = document.getElementById('nipStatus');
-    const nipText = document.getElementById('nipText');
-    const nipIcon = document.getElementById('nipIcon');
+    const nipText   = document.getElementById('nipText');
+    const nipIcon   = document.getElementById('nipIcon');
 
 
     // =========================
     // FOTO
     // =========================
 
-    const fotoInput = document.getElementById('fotoInput');
-
+    const fotoInput  = document.getElementById('fotoInput');
     const fotoStatus = document.getElementById('fotoStatus');
-    const fotoText = document.getElementById('fotoText');
-    const fotoIcon = document.getElementById('fotoIcon');
+    const fotoText   = document.getElementById('fotoText');
+    const fotoIcon   = document.getElementById('fotoIcon');
 
 
     // =========================
     // PHONE
     // =========================
 
-    const phoneInput = document.getElementById('phoneInput');
-
+    const phoneInput  = document.getElementById('phoneInput');
     const phoneStatus = document.getElementById('phoneStatus');
-    const phoneText = document.getElementById('phoneText');
-    const phoneIcon = document.getElementById('phoneIcon');
+    const phoneText   = document.getElementById('phoneText');
+    const phoneIcon   = document.getElementById('phoneIcon');
 
 
     // =========================
     // NIK
     // =========================
 
-    const nikInput = document.getElementById('nikInput');
-
+    const nikInput  = document.getElementById('nikInput');
     const nikStatus = document.getElementById('nikStatus');
-    const nikText = document.getElementById('nikText');
-    const nikIcon = document.getElementById('nikIcon');
+    const nikText   = document.getElementById('nikText');
+    const nikIcon   = document.getElementById('nikIcon');
+
+
+    // =========================
+    // DIVISI & JABATAN FILTER
+    // =========================
+
+    const divisiSelect  = document.getElementById('divisiSelect');
+    const jabatanSelect = document.getElementById('jabatanSelect');
+
+    const jabatanData = @json($list_jabatan);
+
+    const jabatanDivisiMap = {
+        1:  [1],  // Manager           → MANAJEMEN
+        2:  [2],  // HR                → HRD
+        3:  [3],  // Accountant        → FINANCE
+        4:  [4],  // Foreman           → TEKNIS
+        5:  [4],  // Heavy Repair      → TEKNIS
+        6:  [4],  // General Repair    → TEKNIS
+        7:  [4],  // Electrical Repair → TEKNIS
+        8:  [4],  // Diagnostic Repair → TEKNIS
+        9:  [4],  // Body Repair       → TEKNIS
+        10: [3],  // Payroll Officer   → FINANCE
+        11: [4],  // Admin Service     → TEKNIS
+    };
+
+    divisiSelect.addEventListener('change', function () {
+        const selectedDivisi = parseInt(this.value);
+
+        jabatanSelect.innerHTML = '<option value="" disabled selected>-- Pilih Jabatan --</option>';
+
+        if (!selectedDivisi) return;
+
+        jabatanData.forEach(function (jabatan) {
+            const allowedDivisi = jabatanDivisiMap[jabatan.id] || [];
+            if (allowedDivisi.includes(selectedDivisi)) {
+                const opt       = document.createElement('option');
+                opt.value       = jabatan.id;
+                opt.textContent = jabatan.nama_jabatan;
+                jabatanSelect.appendChild(opt);
+            }
+        });
+    });
 
 
     // =========================
@@ -584,14 +634,8 @@ window.onload = function () {
     // =========================
 
     function updateStatus(el, isValid) {
-
-        el.style.color = isValid
-            ? "#22c55e"
-            : "#ef4444";
-
-        el.querySelector('span').innerText = isValid
-            ? '✓'
-            : '•';
+        el.style.color = isValid ? "#22c55e" : "#ef4444";
+        el.querySelector('span').innerText = isValid ? '✓' : '•';
     }
 
 
@@ -609,31 +653,22 @@ window.onload = function () {
             pwFeedback.classList.add('opacity-100');
         }, 10);
 
-        const isLenOk = val.length >= 8;
+        const isLenOk   = val.length >= 8;
         const isUpperOk = /[A-Z]/.test(val);
-        const isNumOk = /[0-9]/.test(val);
+        const isNumOk   = /[0-9]/.test(val);
 
-        updateStatus(reqLen, isLenOk);
+        updateStatus(reqLen,   isLenOk);
         updateStatus(reqUpper, isUpperOk);
-        updateStatus(reqNum, isNumOk);
+        updateStatus(reqNum,   isNumOk);
 
         if (isLenOk && isUpperOk && isNumOk) {
-
             pwErrorList.classList.add('hidden');
-
             pwValidText.classList.remove('hidden');
-
-            pwInput.style.boxShadow =
-                "0 0 0 2px #22c55e";
-
+            pwInput.style.boxShadow = "0 0 0 2px #22c55e";
         } else {
-
             pwErrorList.classList.remove('hidden');
-
             pwValidText.classList.add('hidden');
-
-            pwInput.style.boxShadow =
-                "0 0 0 2px #ef4444";
+            pwInput.style.boxShadow = "0 0 0 2px #ef4444";
         }
     }
 
@@ -648,32 +683,16 @@ window.onload = function () {
 
         emailStatus.classList.remove('hidden');
 
-        if (
-            value.endsWith('@gmail.com') &&
-            value.length > 10
-        ) {
-
-            emailStatus.style.color = "#22c55e";
-
-            statusText.innerText =
-                "Format Email Valid";
-
-            statusIcon.innerText = "✓";
-
-            emailInput.style.boxShadow =
-                "0 0 0 2px #22c55e";
-
+        if (value.endsWith('@gmail.com') && value.length > 10) {
+            emailStatus.style.color    = "#22c55e";
+            statusText.innerText       = "Format Email Valid";
+            statusIcon.innerText       = "✓";
+            emailInput.style.boxShadow = "0 0 0 2px #22c55e";
         } else {
-
-            emailStatus.style.color = "#ef4444";
-
-            statusText.innerText =
-                "Wajib menggunakan @gmail.com";
-
-            statusIcon.innerText = "⚠️";
-
-            emailInput.style.boxShadow =
-                "0 0 0 2px #ef4444";
+            emailStatus.style.color    = "#ef4444";
+            statusText.innerText       = "Wajib menggunakan @gmail.com";
+            statusIcon.innerText       = "⚠️";
+            emailInput.style.boxShadow = "0 0 0 2px #ef4444";
         }
     }
 
@@ -684,38 +703,21 @@ window.onload = function () {
 
     function validasiNip() {
 
-        const value = nipInput.value.trim();
+        const value      = nipInput.value.trim();
+        const onlyNumber = /^[0-9]+$/.test(value);
 
         nipStatus.classList.remove('hidden');
 
-        const onlyNumber =
-            /^[0-9]+$/.test(value);
-
-        if (
-            onlyNumber &&
-            value.length >= 6
-        ) {
-
-            nipStatus.style.color = "#22c55e";
-
-            nipText.innerText = "NIP Valid";
-
-            nipIcon.innerText = "✓";
-
-            nipInput.style.boxShadow =
-                "0 0 0 2px #22c55e";
-
+        if (onlyNumber && value.length >= 6) {
+            nipStatus.style.color    = "#22c55e";
+            nipText.innerText        = "NIP Valid";
+            nipIcon.innerText        = "✓";
+            nipInput.style.boxShadow = "0 0 0 2px #22c55e";
         } else {
-
-            nipStatus.style.color = "#ef4444";
-
-            nipText.innerText =
-                "NIP wajib angka & minimal 6 digit";
-
-            nipIcon.innerText = "⚠️";
-
-            nipInput.style.boxShadow =
-                "0 0 0 2px #ef4444";
+            nipStatus.style.color    = "#ef4444";
+            nipText.innerText        = "NIP wajib angka & minimal 6 digit";
+            nipIcon.innerText        = "⚠️";
+            nipInput.style.boxShadow = "0 0 0 2px #ef4444";
         }
     }
 
@@ -726,48 +728,23 @@ window.onload = function () {
 
     function validasiPhone() {
 
-        const value = phoneInput.value.trim();
+        const value       = phoneInput.value.trim();
+        const onlyNumber  = /^[0-9]+$/.test(value);
+        const validPrefix = value.startsWith('08') || value.startsWith('628');
+        const validLength = value.length >= 10 && value.length <= 15;
 
         phoneStatus.classList.remove('hidden');
 
-        const onlyNumber =
-            /^[0-9]+$/.test(value);
-
-        const validPrefix =
-            value.startsWith('08') ||
-            value.startsWith('628');
-
-        const validLength =
-            value.length >= 10 &&
-            value.length <= 15;
-
-        if (
-            onlyNumber &&
-            validPrefix &&
-            validLength
-        ) {
-
-            phoneStatus.style.color = "#22c55e";
-
-            phoneText.innerText =
-                "Nomor Telepon Valid";
-
-            phoneIcon.innerText = "✓";
-
-            phoneInput.style.boxShadow =
-                "0 0 0 2px #22c55e";
-
+        if (onlyNumber && validPrefix && validLength) {
+            phoneStatus.style.color    = "#22c55e";
+            phoneText.innerText        = "Nomor Telepon Valid";
+            phoneIcon.innerText        = "✓";
+            phoneInput.style.boxShadow = "0 0 0 2px #22c55e";
         } else {
-
-            phoneStatus.style.color = "#ef4444";
-
-            phoneText.innerText =
-                "Gunakan format 08xxxxxxxxxx";
-
-            phoneIcon.innerText = "⚠️";
-
-            phoneInput.style.boxShadow =
-                "0 0 0 2px #ef4444";
+            phoneStatus.style.color    = "#ef4444";
+            phoneText.innerText        = "Gunakan format 08xxxxxxxxxx";
+            phoneIcon.innerText        = "⚠️";
+            phoneInput.style.boxShadow = "0 0 0 2px #ef4444";
         }
     }
 
@@ -778,39 +755,21 @@ window.onload = function () {
 
     function validasiNik() {
 
-        const value = nikInput.value.trim();
+        const value      = nikInput.value.trim();
+        const onlyNumber = /^[0-9]+$/.test(value);
 
         nikStatus.classList.remove('hidden');
 
-        const onlyNumber =
-            /^[0-9]+$/.test(value);
-
-        if (
-            onlyNumber &&
-            value.length === 16
-        ) {
-
-            nikStatus.style.color = "#22c55e";
-
-            nikText.innerText =
-                "NIK Valid";
-
-            nikIcon.innerText = "✓";
-
-            nikInput.style.boxShadow =
-                "0 0 0 2px #22c55e";
-
+        if (onlyNumber && value.length === 16) {
+            nikStatus.style.color    = "#22c55e";
+            nikText.innerText        = "NIK Valid";
+            nikIcon.innerText        = "✓";
+            nikInput.style.boxShadow = "0 0 0 2px #22c55e";
         } else {
-
-            nikStatus.style.color = "#ef4444";
-
-            nikText.innerText =
-                "NIK harus 16 digit angka";
-
-            nikIcon.innerText = "⚠️";
-
-            nikInput.style.boxShadow =
-                "0 0 0 2px #ef4444";
+            nikStatus.style.color    = "#ef4444";
+            nikText.innerText        = "NIK harus 16 digit angka";
+            nikIcon.innerText        = "⚠️";
+            nikInput.style.boxShadow = "0 0 0 2px #ef4444";
         }
     }
 
@@ -827,28 +786,17 @@ window.onload = function () {
 
         fotoStatus.classList.remove('hidden');
 
-        const fileSizeMB =
-            file.size / (1024 * 1024);
+        const fileSizeMB = file.size / (1024 * 1024);
 
         if (fileSizeMB > 2) {
-
             fotoStatus.style.color = "#ef4444";
-
-            fotoIcon.innerText = "⚠️";
-
-            fotoText.innerText =
-                `Ukuran file ${fileSizeMB.toFixed(2)}MB (Maks 2MB)`;
-
-            this.value = "";
-
+            fotoIcon.innerText     = "⚠️";
+            fotoText.innerText     = `Ukuran file ${fileSizeMB.toFixed(2)}MB (Maks 2MB)`;
+            this.value             = "";
         } else {
-
             fotoStatus.style.color = "#22c55e";
-
-            fotoIcon.innerText = "✓";
-
-            fotoText.innerText =
-                "Ukuran file sesuai!";
+            fotoIcon.innerText     = "✓";
+            fotoText.innerText     = "Ukuran file sesuai!";
         }
     });
 
@@ -858,13 +806,9 @@ window.onload = function () {
     // =========================
 
     pwInput.addEventListener('input', validasiPassword);
-
     emailInput.addEventListener('input', validasiEmail);
-
     nipInput.addEventListener('input', validasiNip);
-
     phoneInput.addEventListener('input', validasiPhone);
-
     nikInput.addEventListener('input', validasiNik);
 
 
@@ -891,21 +835,13 @@ window.onload = function () {
             /[A-Z]/.test(pwInput.value) &&
             /[0-9]/.test(pwInput.value);
 
-        if (
-            !nipValid ||
-            !emailValid ||
-            !passwordValid
-        ) {
-
+        if (!nipValid || !emailValid || !passwordValid) {
             alert('Lengkapi data akun terlebih dahulu!');
-
             return;
         }
 
         step1.classList.add('hidden');
-
         step2.classList.remove('hidden');
-
         progressBar.style.width = '100%';
     });
 
@@ -915,11 +851,8 @@ window.onload = function () {
     // =========================
 
     backStepBtn.addEventListener('click', function () {
-
         step2.classList.add('hidden');
-
         step1.classList.remove('hidden');
-
         progressBar.style.width = '50%';
     });
 
@@ -937,10 +870,7 @@ window.onload = function () {
 
         const phoneValid =
             /^[0-9]+$/.test(phoneInput.value) &&
-            (
-                phoneInput.value.startsWith('08') ||
-                phoneInput.value.startsWith('628')
-            ) &&
+            (phoneInput.value.startsWith('08') || phoneInput.value.startsWith('628')) &&
             phoneInput.value.length >= 10 &&
             phoneInput.value.length <= 15;
 
@@ -948,16 +878,9 @@ window.onload = function () {
             /^[0-9]+$/.test(nikInput.value) &&
             nikInput.value.length === 16;
 
-        if (
-            !phoneValid ||
-            !nikValid
-        ) {
-
+        if (!phoneValid || !nikValid) {
             e.preventDefault();
-
-            alert(
-                'Periksa kembali data nomor telepon dan NIK!'
-            );
+            alert('Periksa kembali data nomor telepon dan NIK!');
         }
     });
 

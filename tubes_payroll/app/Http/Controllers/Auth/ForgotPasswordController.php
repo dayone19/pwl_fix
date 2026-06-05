@@ -162,8 +162,7 @@ class ForgotPasswordController extends Controller
     public function resetPassword(Request $request, $token)
     {
         $request->validate([
-            'password'              => ['required', 'string', 'min:8', 'confirmed'],
-            'password_confirmation' => ['required'],
+            'password' => ['required', 'string', 'min:8', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'confirmed'],
         ]);
 
         $ar = AccessRequest::where('token', $token)

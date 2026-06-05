@@ -20,7 +20,9 @@ class Penggajian extends Model
     'bonus',
     'gaji_bersih',
     'status_bayar',
-    'bulan'
+    'bulan',
+    'dibayar_oleh',
+    'dibayar_pada'
 ];
 
     public function pegawai()

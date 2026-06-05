@@ -139,7 +139,6 @@
                     <li id="rule-len"   class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 "><i class="fas fa-circle-dot w-3 text-[8px]"></i> Minimal 8 karakter</li>
                     <li id="rule-upper" class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 "><i class="fas fa-circle-dot w-3 text-[8px]"></i> Huruf kapital (A–Z)</li>
                     <li id="rule-num"   class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 "><i class="fas fa-circle-dot w-3 text-[8px]"></i> Angka (0–9)</li>
-                    <li id="rule-sym"   class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 "><i class="fas fa-circle-dot w-3 text-[8px]"></i> Simbol (!@#$...)</li>
                 </ul>
             </div>
 
@@ -192,44 +191,45 @@
 
     // ── Password strength ──────────────────────────────────────────────────────
     function checkStrength(val) {
-        const rules = {
-            len:   val.length >= 8,
-            upper: /[A-Z]/.test(val),
-            num:   /[0-9]/.test(val),
-            sym:   /[^A-Za-z0-9]/.test(val),
-        };
+    const rules = {
+        len:   val.length >= 8,
+        upper: /[A-Z]/.test(val),
+        num:   /[0-9]/.test(val),
+        // rule-sym dihapus
+    };
 
-        Object.entries(rules).forEach(([key, ok]) => {
-            const el = document.getElementById('rule-' + key);
-            if (ok) {
-                el.classList.add('rule-ok');
-                el.querySelector('i').className = 'fas fa-circle-check w-3 text-[8px]';
-            } else {
-                el.classList.remove('rule-ok');
-                el.querySelector('i').className = 'fas fa-circle-dot w-3 text-[8px]';
-            }
-        });
+    Object.entries(rules).forEach(([key, ok]) => {
+        const el = document.getElementById('rule-' + key);
+        if (!el) return;
+        if (ok) {
+            el.classList.add('rule-ok');
+            el.querySelector('i').className = 'fas fa-circle-check w-3 text-[8px]';
+        } else {
+            el.classList.remove('rule-ok');
+            el.querySelector('i').className = 'fas fa-circle-dot w-3 text-[8px]';
+        }
+    });
 
-        const score = Object.values(rules).filter(Boolean).length;
-        const bar   = document.getElementById('strengthBar');
-        const label = document.getElementById('strengthLabel');
+    const score = Object.values(rules).filter(Boolean).length;
+    const bar   = document.getElementById('strengthBar');
+    const label = document.getElementById('strengthLabel');
 
-        const config = [
-            { w: '0%',   color: 'bg-slate-200', text: 'Kekuatan password', cls: 'text-slate-300' },
-            { w: '25%',  color: 'bg-red-400',   text: 'Lemah',   cls: 'text-red-400' },
-            { w: '50%',  color: 'bg-orange-400', text: 'Cukup',   cls: 'text-orange-500' },
-            { w: '75%',  color: 'bg-yellow-400', text: 'Baik',    cls: 'text-yellow-500' },
-            { w: '100%', color: 'bg-green-500',  text: 'Kuat 🔥', cls: 'text-green-500' },
-        ];
+    // Sekarang max score = 3, sesuaikan config
+    const config = [
+        { w: '0%',    color: 'bg-slate-200',  text: 'Kekuatan password', cls: 'text-slate-300' },
+        { w: '33%',   color: 'bg-red-400',    text: 'Lemah',             cls: 'text-red-400' },
+        { w: '66%',   color: 'bg-orange-400', text: 'Cukup',             cls: 'text-orange-500' },
+        { w: '100%',  color: 'bg-green-500',  text: 'Kuat 🔥',           cls: 'text-green-500' },
+    ];
 
-        const c = config[score] || config[0];
-        bar.style.width = c.w;
-        bar.className   = 'h-full rounded-full transition-all duration-400 ' + c.color;
-        label.textContent = c.text;
-        label.className   = 'text-[9px] font-black uppercase tracking-widest mt-1 ml-1  ' + c.cls;
+    const c = config[score] || config[0];
+    bar.style.width = c.w;
+    bar.className   = 'h-full rounded-full transition-all duration-400 ' + c.color;
+    label.textContent = c.text;
+    label.className   = 'text-[9px] font-black uppercase tracking-widest mt-1 ml-1 ' + c.cls;
 
-        checkMatch();
-    }
+    checkMatch();
+}
 
     // ── Match check ───────────────────────────────────────────────────────────
     function checkMatch() {
