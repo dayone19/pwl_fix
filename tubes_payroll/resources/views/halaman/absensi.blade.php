@@ -57,6 +57,7 @@
             <form action="{{ url()->current() }}" method="GET"
                 class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl border border-slate-200/60 shadow-sm">
                 <div class="relative">
+                    
                     <select name="tanggal" onchange="this.form.submit()"
                         class="appearance-none bg-white border border-slate-200 text-slate-800 font-black  text-[11px] uppercase tracking-wide rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:border-orange-500 cursor-pointer transition-colors">
                         <option value="">Tanggal</option>
@@ -131,6 +132,34 @@
 
         {{-- TABEL --}}
         <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 p-6 overflow-hidden">
+            <div class="flex justify-end mb-4">
+                <form method="GET" action="{{ route('karyawan.index') }}" class="flex flex-wrap gap-2">
+                    <input
+                        type="text"
+                        name="nama"
+                        value="{{ request('nama') }}"
+                        placeholder="Nama"
+                        class="px-3 py-2 border border-slate-200 rounded-xl text-xs">
+
+                    <input
+                        type="text"
+                        name="nip"
+                        value="{{ request('nip') }}"
+                        placeholder="NIP"
+                        class="px-3 py-2 border border-slate-200 rounded-xl text-xs">
+
+                    <button
+                        type="submit"
+                        class="px-4 py-2 bg-orange-600 text-white rounded-xl text-xs font-bold">
+                        Cari
+                    </button>
+
+                    <a href="{{ route('karyawan.index') }}"
+                        class="px-4 py-2 bg-slate-200 rounded-xl text-xs font-bold">
+                        Reset
+                    </a>
+                </form>
+            </div>
             <table class="w-full text-left border-separate border-spacing-y-4">
                 <thead>
                     <tr class="bg-slate-900">

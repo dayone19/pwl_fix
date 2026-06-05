@@ -66,6 +66,34 @@
     <div id="tabel-container">
 
         <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 overflow-hidden p-6">
+            <div class="flex justify-end mb-4">
+                <form method="GET" action="{{ route('karyawan.index') }}" class="flex flex-wrap gap-2">
+                    <input
+                        type="text"
+                        name="nama"
+                        value="{{ request('nama') }}"
+                        placeholder="Nama"
+                        class="px-3 py-2 border border-slate-200 rounded-xl text-xs">
+
+                    <input
+                        type="text"
+                        name="nip"
+                        value="{{ request('nip') }}"
+                        placeholder="NIP"
+                        class="px-3 py-2 border border-slate-200 rounded-xl text-xs">
+
+                    <button
+                        type="submit"
+                        class="px-4 py-2 bg-orange-600 text-white rounded-xl text-xs font-bold">
+                        Cari
+                    </button>
+
+                    <a href="{{ route('karyawan.index') }}"
+                        class="px-4 py-2 bg-slate-200 rounded-xl text-xs font-bold">
+                        Reset
+                    </a>
+                </form>
+            </div>
             <table class="w-full text-left border-separate border-spacing-y-4">
                 <thead>
                     <tr class="bg-slate-900">

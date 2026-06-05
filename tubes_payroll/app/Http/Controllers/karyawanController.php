@@ -16,12 +16,37 @@ class KaryawanController extends Controller
         return Str::upper(Auth::user()->divisi?->nama_divisi) === 'HRD';
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $nama = $request->nama;
+        $nip  = $request->nip;
+
         $data_karyawan = DB::table('profil_pegawai')
             ->join('pengguna', 'profil_pegawai.nip', '=', 'pengguna.nip')
-            ->select('profil_pegawai.*', 'pengguna.foto', 'pengguna.email')
+            ->select(
+                'profil_pegawai.*',
+                'pengguna.foto',
+                'pengguna.email'
+            )
+
+            ->when($nama, function ($query) use ($nama) {
+                $query->where(
+                    'profil_pegawai.nama_lengkap',
+                    'like',
+                    "%{$nama}%"
+                );
+            })
+
+            ->when($nip, function ($query) use ($nip) {
+                $query->where(
+                    'profil_pegawai.nip',
+                    'like',
+                    "%{$nip}%"
+                );
+            })
+
             ->paginate(7)
+            ->withQueryString()
             ->onEachSide(1);
 
         return view('halaman.karyawan', compact('data_karyawan'));
