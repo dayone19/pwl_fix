@@ -14,18 +14,21 @@ class userController extends Controller
     public function index()
     {
         $data_karyawan = DB::table('pengguna')
-            ->leftJoin('profil_pegawai', 'pengguna.nip', '=', 'profil_pegawai.nip')
-            ->select(
-                'pengguna.nip', 
-                'pengguna.nama', 
-                'pengguna.email', 
-                'pengguna.id_divisi', 
-                'pengguna.foto',
-                'profil_pegawai.nama_lengkap',
-                'profil_pegawai.id as id_profil'
-            )
-            ->orderBy('pengguna.nip', 'asc')
-            ->paginate(7);
+    ->leftJoin('profil_pegawai', 'pengguna.nip', '=', 'profil_pegawai.nip')
+    ->leftJoin('jabatan', 'profil_pegawai.id_jabatan', '=', 'jabatan.id')
+    ->select(
+        'pengguna.nip',
+        'pengguna.nama',
+        'pengguna.email',
+        'pengguna.id_divisi',
+        'pengguna.foto',
+        'pengguna.apakah_aktif',
+        'profil_pegawai.nama_lengkap',
+        'profil_pegawai.id as id_profil',
+        'jabatan.nama_jabatan as jabatan'
+    )
+    ->orderBy('pengguna.nip', 'asc')
+    ->paginate(7);
 
         return view('halaman.users', compact('data_karyawan'));
     }

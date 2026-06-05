@@ -44,7 +44,7 @@
         </a>
 
         <div>
-            <h1 class="text-xl font-black text-slate-900 uppercase italic tracking-tighter">
+            <h1 class="text-xl font-black text-slate-900 uppercase tracking-tighter">
                 {{ isset($pegawai) ? 'Edit Data Pegawai' : 'Registrasi Teknisi Baru' }}
             </h1>
 

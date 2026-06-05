@@ -191,7 +191,7 @@
                         </li>
                         
                         <li>
-                            <a href="{{ route('absensi.pribadi') }}" class="{{ request()->routeIs('absensi.pribadi') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
+                            <a href="{{ route('pribadi.absensi') }}" class="{{ request()->routeIs('pribadi.absensi') ? 'sidebar-item-active' : '' }} flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl text-sm font-bold transition group">
                                 <i class="fas fa-business-time w-5 group-hover:text-orange-400"></i> Absensi Pribadi
                             </a>
                         </li>
