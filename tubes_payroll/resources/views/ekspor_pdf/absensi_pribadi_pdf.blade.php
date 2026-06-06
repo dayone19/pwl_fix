@@ -9,7 +9,7 @@
             color: #1e293b;
             font-size: 11px;
             line-height: 1.4;
-            /* Margin bawah diset 35px agar konten tabel tidak menabrak footer fixed */
+            
             margin: 10px 10px 35px 10px;
             padding: 0;
         }
@@ -17,7 +17,7 @@
         .title { font-size: 22px; font-weight: 900; text-transform: uppercase; margin: 0; color: #0f172a; }
         .subtitle { font-size: 12px; color: #f97316; font-weight: bold; text-transform: uppercase; margin: 4px 0 0 0; }
 
-        /* Kotak Identitas Karyawan */
+        
         .identity-box {
             width: 100%;
             border-collapse: collapse;
@@ -54,7 +54,7 @@
         .period-title { font-size: 9px; font-weight: 900; color: #94a3b8; text-transform: uppercase; margin: 0 0 2px 0; }
         .period-value { font-size: 11px; font-weight: 900; color: #1e293b; }
 
-        /* Struktur Tabel Elemen Keterangan/Legenda */
+        
         .legend-table {
             width: 100%;
             border-collapse: collapse;
@@ -75,7 +75,7 @@
             vertical-align: middle;
         }
         
-        /* Kotak Huruf Inisial Status */
+        
         .badge-box { 
             display: inline-table; 
             width: 18px; 
@@ -94,7 +94,7 @@
             text-align: center;
         }
 
-        /* Tabel Utama Data Absensi */
+        
         table.data-table { width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; }
         table.data-table th { background-color: #f8fafc; color: #94a3b8; font-size: 9px; font-weight: bold; text-transform: uppercase; padding: 12px 10px; border-bottom: 1px solid #e2e8f0; text-align: left; }
         table.data-table td { padding: 10px; border-bottom: 1px solid #f1f5f9; color: #334155; font-weight: bold; vertical-align: middle; }
@@ -102,7 +102,7 @@
         .td-jam { color: #0f172a; font-family: monospace; font-size: 11px; }
         .text-center { text-align: center; }
 
-        /* Badge Status di Kolom Tabel */
+        
         .status-badge { 
             display: inline-table; 
             width: 20px; 
@@ -116,7 +116,7 @@
             vertical-align: middle;
         }
 
-        /* Pewarnaan Tema Status */
+        
         .bg-hadir { background-color: #22c55e; }
         .bg-terlambat { background-color: #f97316; }
         .bg-izin { background-color: #3b82f6; }
@@ -125,7 +125,7 @@
         .bg-cuti { background-color: #14b8a6; }
         .bg-libur { background-color: #cbd5e1; color: #64748b; }
         
-        /* Kunci Footer Tetap Di Paling Bawah Halaman PDF */
+        
         .footer { 
             position: fixed;
             bottom: -15px; 

@@ -27,7 +27,7 @@
 @endpush
 
 @section('content')
-    {{-- HEADER --}}
+    
     <div class="flex flex-col md:flex-row md:items-start justify-between mb-10 gap-6">
         <div class="flex items-center gap-4">
             <div class="w-14 h-14 bg-slate-900 rounded-3xl flex items-center justify-center text-orange-500 shadow-2xl rotate-3">
@@ -111,7 +111,7 @@
         </div>
     </div>
 
-    {{-- FLASH MESSAGE --}}
+   
     @if(session('success'))
     <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest ">
         <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
@@ -130,10 +130,10 @@
 
     <div id="tabel-container">
 
-        {{-- TABEL --}}
+        
         <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 p-6 overflow-hidden">
             <div class="flex justify-end mb-4">
-                <form method="GET" action="{{ route('karyawan.index') }}" class="flex flex-wrap gap-2">
+                <form method="GET" action="{{ route('absensi.index') }}" class="flex flex-wrap gap-2">
                     <input
                         type="text"
                         name="nama"
@@ -154,7 +154,8 @@
                         Cari
                     </button>
 
-                    <a href="{{ route('karyawan.index') }}"
+                    <a href="{{ route('absensi.index') }}"
+                        onclick="window.location=this.href"
                         class="px-4 py-2 bg-slate-200 rounded-xl text-xs font-bold">
                         Reset
                     </a>
@@ -236,10 +237,10 @@
             </table>
         </div>
 
-        {{-- PAGINATION --}}
+       
         <div class="mt-10 flex justify-center items-center gap-4">
 
-            {{-- PREV --}}
+           
             @if ($dataAbsen->onFirstPage())
                 <span class="text-slate-300 text-[10px] font-black uppercase  cursor-not-allowed">Prev</span>
             @else
@@ -247,7 +248,7 @@
                     class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Prev</a>
             @endif
 
-            {{-- NOMOR HALAMAN --}}
+           
             <div class="flex items-center gap-2">
                 @php
                     $curr = $dataAbsen->currentPage();
@@ -278,9 +279,7 @@
                         class="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 text-slate-600 font-bold rounded-xl hover:border-orange-500 shadow-sm text-xs">{{ $last }}</a>
                 @endif
             </div>
-            {{-- END NOMOR HALAMAN --}}
-
-            {{-- NEXT --}}
+          
             @if ($dataAbsen->hasMorePages())
                 <a href="{{ $dataAbsen->appends(request()->query())->nextPageUrl() }}"
                     class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Next</a>
@@ -289,12 +288,10 @@
             @endif
 
         </div>
-        {{-- END PAGINATION --}}
+       
 
     </div>
-    {{-- END TABEL CONTAINER --}}
-
-    {{-- MODAL IMPORT ABSEN --}}
+   
     @if(auth()->user()->id_divisi == 2)
     <div id="modalAbsen" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
         <div onclick="document.getElementById('modalAbsen').classList.add('hidden')"
@@ -397,7 +394,7 @@ function downloadTemplateTanggal() {
     <script>document.getElementById('modalAbsen').classList.remove('hidden');</script>
     @endif
 
-    {{-- MODAL EDIT ABSENSI --}}
+    
     <div id="modalEdit" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
         <div onclick="document.getElementById('modalEdit').classList.add('hidden')"
             class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>

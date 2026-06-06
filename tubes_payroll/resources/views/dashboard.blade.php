@@ -206,7 +206,7 @@
                 <i class="fas fa-calendar-check absolute -right-4 -bottom-4 text-7xl text-slate-50"></i>
             </div>
 
-        {{-- LOGIKA DASHBOARD: MANAJEMEN --}}
+      
         @elseif($divisi == 'MANAJEMEN')
 
             <div class="mesh-bg-workshop p-8 rounded-[45px] text-white shadow-2xl relative overflow-hidden group">

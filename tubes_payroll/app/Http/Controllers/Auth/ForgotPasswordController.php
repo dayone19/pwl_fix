@@ -11,20 +11,20 @@ use Illuminate\Support\Str;
 
 class ForgotPasswordController extends Controller
 {
-    // ── Halaman form forgot password (publik) ─────────────────────────────────
+    
     public function index()
     {
         return view('auth.forgotpw');
     }
 
-    // ── Karyawan submit permintaan reset (AJAX dari forgotpw) ─────────────────
+    
     public function submit(Request $request)
     {
         $request->validate(['nip' => ['required', 'digits_between:6,20']]);
 
         $nip  = $request->nip;
 
-        // Pakai DB facade langsung ke tabel 'pengguna' (bukan 'users')
+        
         $user = DB::table('pengguna')->where('nip', $nip)->first();
 
         if (! $user) {
@@ -34,7 +34,7 @@ class ForgotPasswordController extends Controller
             ], 404);
         }
 
-        // Tolak jika sudah ada request aktif
+       
         $existing = AccessRequest::where('nip', $nip)
             ->whereIn('status', ['pending', 'disetujui'])
             ->first();
@@ -54,7 +54,7 @@ class ForgotPasswordController extends Controller
         ]);
     }
 
-    // ── Daftar permintaan akses (HRD & Manajemen) ────────────────────────────
+    
     public function requestList()
     {
         $this->authorizeHrd();
@@ -63,8 +63,7 @@ class ForgotPasswordController extends Controller
             ->latest()
             ->paginate(15);
 
-        // Siapkan JSON di controller — hindari anonymous function di dalam
-        // @json() pada Blade yang menyebabkan ParseError "Unclosed '['"
+       
         $requestsJson = $requests->getCollection()->map(function ($r) {
             $badge = $r->statusBadge();
             return [
@@ -88,7 +87,7 @@ class ForgotPasswordController extends Controller
         return view('auth.accessrequest', compact('requests', 'requestsJson'));
     }
 
-    // ── HRD: setujui permintaan ───────────────────────────────────────────────
+    
     public function approve(Request $request, $id)
     {
         $this->authorizeHrd();
@@ -119,7 +118,7 @@ class ForgotPasswordController extends Controller
         return back()->with('success_link', $resetLink)->with('success_nip', $ar->nip);
     }
 
-    // ── HRD: tolak permintaan ─────────────────────────────────────────────────
+    
     public function reject(Request $request, $id)
     {
         $this->authorizeHrd();
@@ -144,7 +143,6 @@ class ForgotPasswordController extends Controller
         return back()->with('success', 'Permintaan telah ditolak.');
     }
 
-    // ── Karyawan: form buat password baru via token ───────────────────────────
     public function resetForm($token)
     {
         $ar = AccessRequest::where('token', $token)
@@ -158,7 +156,6 @@ class ForgotPasswordController extends Controller
         return view('auth.resetpassword', compact('ar', 'token'));
     }
 
-    // ── Karyawan: simpan password baru ────────────────────────────────────────
     public function resetPassword(Request $request, $token)
     {
         $request->validate([
@@ -173,7 +170,7 @@ class ForgotPasswordController extends Controller
             return back()->withErrors(['token' => 'Link tidak valid atau sudah kadaluarsa.']);
         }
 
-        // Update langsung ke tabel 'pengguna'
+    
         DB::table('pengguna')->where('nip', $ar->nip)->update([
             'kata_sandi'     => Hash::make($request->password),
             'login_attempts' => 0,
@@ -190,7 +187,6 @@ class ForgotPasswordController extends Controller
         return redirect()->route('login')->with('success', 'Password berhasil diubah. Silakan login.');
     }
 
-    // ── Helper: pastikan hanya HRD/Manajemen yang bisa akses ─────────────────
     private function authorizeHrd()
     {
         $divisi = strtoupper(auth()->user()->divisi?->nama_divisi ?? '');

@@ -27,7 +27,7 @@
             vertical-align: top;
         }
 
-        /* ── Kartu Utama ── */
+        
         .container {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -35,12 +35,12 @@
             overflow: hidden;
         }
 
-        /* ── Header: Logo + Judul ── */
+        
         .header-row {
             border-bottom: 1px solid #f1f5f9;
         }
 
-        /* Badge logo */
+        
         .logo-badge {
             background: #0f172a;
             padding: 15px 20px;
@@ -83,7 +83,7 @@
             vertical-align: middle;
         }
 
-        /* Judul dokumen */
+        
         .doc-title {
             font-size: 30px;
             font-weight: 900;
@@ -101,7 +101,7 @@
             margin-top: 2px;
         }
 
-        /* ── Info Box Karyawan ── */
+        
         .info-box {
             background: #f8faff;
             border-radius: 18px;
@@ -129,7 +129,7 @@
         .info-cell { padding-right: 24px; }
         .info-bottom { padding-top: 14px; }
 
-        /* ── Kartu Finansial ── */
+        
         .fin-section { padding: 0 20px; }
         .fin-card { border-radius: 18px; overflow: hidden; }
         .fin-card-blue  { border: 1.5px solid #bfdbfe; }
@@ -160,7 +160,7 @@
         .fin-total-value-blue   { color: #2563eb; }
         .fin-total-value-orange { color: #ea580c; }
 
-        /* ── Banner Gaji Bersih ── */
+        
         .banner-total {
             margin: 20px;
             background: #f5f0ff;
@@ -171,7 +171,7 @@
         .banner-spell { font-size: 12px; color: #64748b; font-style: italic; margin-top: 4px; }
         .banner-amount { font-size: 25px; font-weight: 900; color: #6b21a8; text-align: right; vertical-align: middle; }
 
-        /* ── Footer: Note + Tanda Tangan ── */
+       
         .footer-row { padding: 20px 28px 28px; }
         .note-text { font-size: 11px; color: #94a3b8; max-width: 280px; line-height: 1.6; }
         .sig-date    { font-size: 12px; color: #64748b; text-align: right; margin-bottom: 4px; }
@@ -240,11 +240,11 @@
                 </tr>
             </table>
 
-            {{-- ══ INFO KARYAWAN ══ --}}
+           
             <div class="info-box">
                 <table class="table-layout">
                     <tr>
-                        {{-- Nama --}}
+                       
                         <td class="info-cell" style="width:50%;">
                             {{-- Ikon user --}}
                             <div class="info-icon-box">
@@ -258,7 +258,7 @@
                             <div class="info-label">Nama Karyawan</div>
                             <div class="info-value">{{ $pay->pegawai->nama_lengkap ?? 'Tidak Diketahui' }}</div>
                         </td>
-                        {{-- Jabatan --}}
+                       
                         <td class="info-cell info-divider" style="width:50%;">
                             <div class="info-icon-box">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -273,7 +273,7 @@
                         </td>
                     </tr>
                     <tr>
-                        {{-- NIP --}}
+                     
                         <td class="info-cell info-bottom" style="width:50%;">
                             <div class="info-icon-box">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -306,7 +306,7 @@
                 </table>
             </div>
 
-            {{-- ══ FINANSIAL: PENGHASILAN dan POTONGAN ══ --}}
+            
             <table class="table-layout fin-section" style="margin-top:0; padding-bottom:0;">
                 <tr>
                     {{-- Penghasilan --}}
@@ -346,7 +346,7 @@
 
                     <td style="width:4%;"></td>
 
-                    {{-- Potongan --}}
+                   
                     <td style="width:48%;">
                         <div class="fin-card fin-card-orange">
                             <div class="fin-head fin-head-orange">
@@ -395,7 +395,7 @@
                 </tr>
             </table>
 
-            {{-- ══ BANNER GAJI BERSIH ══ --}}
+           
             <div class="banner-total">
                 <table class="table-layout">
                     <tr>
@@ -414,7 +414,7 @@
                 </table>
             </div>
 
-            {{-- ══ FOOTER: Note + Tanda Tangan ══ --}}
+           
             <table class="table-layout footer-row">
                 <tr>
                     <td style="width:55%; vertical-align:bottom;">

@@ -110,11 +110,11 @@
     </div>
     @endif
 
-    <!-- untuk jabatan selain admin service -->
+    
     @if($divisi == 'TEKNIS' && $jabatan != 'ADMIN SERVICE')
     <div class="space-y-6">
 
-    <!-- statis atas -->
+   
         <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
             <div class="bg-white rounded-[30px] p-5 border border-slate-100 shadow-sm">
                 <p class="text-[10px] uppercase font-black tracking-widest text-slate-400 mb-2">Total</p>
@@ -153,7 +153,7 @@
 
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
                 
-            <!-- ini untuk nampilin 2 pekerjaan aja yg status=waiting. perPage: 2 itu -->
+           
                 <div class="space-y-4 bg-slate-50/50 p-4 rounded-[32px] border border-dashed border-slate-200"
                      x-data="{ page: 0, perPage: 2, total: {{ $pekerjaanList->where('status', 'waiting')->count() }} }">
                     <details class="w-full border border-slate-900 rounded-lg p-1 bg-white" open>
@@ -226,7 +226,7 @@
                     </details>
                 </div>
 
-                <!-- untuk status in progres -->
+                
                 <div class="space-y-4 bg-slate-50/50 p-4 rounded-[32px] border border-dashed border-slate-200">
                     <details class="w-full border border-slate-900 rounded-lg p-1 bg-white" open>
                         <summary class="flex justify-between items-center font-black uppercase tracking-widest text-xs text-slate-700 cursor-pointer p-2 select-none hover:bg-slate-50 transition rounded list-none">

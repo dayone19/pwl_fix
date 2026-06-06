@@ -9,7 +9,7 @@
     <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">Riwayat transaksi pembayaran oleh Finance</p>
 </header>
 
-{{-- FILTER BULAN & TAHUN --}}
+
 <form method="GET" action="{{ route('payroll.log') }}" class="flex flex-wrap gap-3 mb-8">
     <select name="bulan" class="text-[11px] font-black uppercase tracking-widest bg-white border border-slate-200 rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400">
         @foreach(range(1, 12) as $m)
@@ -50,29 +50,29 @@
                     : null;
             @endphp
             <tr class="hover:bg-slate-50 transition-colors">
-                {{-- Nama --}}
+                
                 <td class="px-8 py-5">
                     <p class="font-black text-slate-900 uppercase tracking-tight text-sm">
                         {{ $item->pegawai->nama_lengkap ?? '-' }}
                     </p>
                 </td>
-                {{-- NIP --}}
+              
                 <td class="px-6 py-5">
                     <span class="text-[11px] font-black text-slate-500 bg-slate-100 px-3 py-1 rounded-lg">
                         {{ $item->nip }}
                     </span>
                 </td>
-                {{-- Periode --}}
+              
                 <td class="px-6 py-5">
                     <p class="text-[11px] font-bold text-slate-600 uppercase">{{ $item->bulan }}</p>
                 </td>
-                {{-- Dibayar oleh --}}
+               
                 <td class="px-6 py-5">
                     <p class="text-[11px] font-black text-orange-600 uppercase">
                         {{ $item->dibayar_oleh ?? '-' }}
                     </p>
                 </td>
-                {{-- Waktu --}}
+             
                 <td class="px-6 py-5">
                     @if($dibayarPada)
                     <p class="text-[13px] font-black text-slate-900">
@@ -85,7 +85,7 @@
                     <span class="text-slate-300 text-xs">—</span>
                     @endif
                 </td>
-                {{-- Nominal --}}
+               
                 <td class="px-6 py-5">
                     <p class="font-black text-slate-900">
                         Rp {{ number_format($item->gaji_bersih, 0, ',', '.') }}
@@ -102,7 +102,7 @@
         </tbody>
     </table>
 
-    {{-- Pagination --}}
+    
     @if($log->hasPages())
     <div class="px-8 py-5 border-t border-slate-100">
         {{ $log->links() }}

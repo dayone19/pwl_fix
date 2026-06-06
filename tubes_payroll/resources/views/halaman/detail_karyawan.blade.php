@@ -6,7 +6,6 @@
 
 <div class="max-w-5xl mx-auto animate-pulse">
 
-    {{-- TOP --}}
     <div class="flex items-center gap-4 mb-8">
 
         <div class="w-10 h-10 skeleton rounded-xl"></div>
@@ -15,15 +14,14 @@
 
     </div>
 
-    {{-- CARD --}}
+   
     <div class="bg-slate-900 rounded-[50px] overflow-hidden">
 
-        {{-- COVER --}}
+       
         <div class="h-32 skeleton"></div>
 
         <div class="px-10 pb-12">
 
-            {{-- PROFILE --}}
             <div class="flex flex-col md:flex-row items-end gap-6 -mt-16 mb-10 relative z-10">
 
                 <div class="w-40 h-48 skeleton rounded-[35px] border-[6px] border-slate-800"></div>
@@ -46,10 +44,10 @@
 
             </div>
 
-            {{-- CONTENT --}}
+           
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
 
-                {{-- LEFT --}}
+            
                 <div class="space-y-6">
 
                     <div class="h-5 w-40 skeleton rounded-xl mb-6"></div>
@@ -68,7 +66,7 @@
 
                 </div>
 
-                {{-- RIGHT --}}
+             
                 <div class="space-y-6">
 
                     <div class="h-5 w-40 skeleton rounded-xl mb-6"></div>

@@ -36,7 +36,7 @@
 
 <div class="max-w-4xl mx-auto">
 
-    <!-- HEADER -->
+   
     <div class="flex items-center gap-4 mb-8">
         <a href="{{ route('users.index') }}"
            class="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-slate-400 hover:text-orange-600 transition-all shadow-sm">
@@ -55,7 +55,7 @@
     </div>
 
 
-    <!-- PROGRESS -->
+    
     <div class="flex gap-4 mb-6">
         <div class="flex-1 h-2 rounded-full overflow-hidden bg-slate-200">
             <div id="progressBar"
@@ -66,7 +66,7 @@
     </div>
 
 
-    <!-- ERROR -->
+    
     @if (session('error'))
         <div class="bg-red-600 text-white p-4 rounded-2xl mb-6 font-bold text-xs uppercase tracking-widest shadow-lg shadow-red-900/20 flex items-center gap-3">
             <i class="fas fa-exclamation-triangle text-lg"></i>
@@ -95,9 +95,7 @@
             @method('PUT')
         @endif
 
-        <!-- ================================= -->
-        <!-- STEP 1                            -->
-        <!-- ================================= -->
+        
 
         <div id="step1">
 
@@ -112,7 +110,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-                        <!-- NIP -->
+                      
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 NIP (Nomor Induk Pegawai)
@@ -134,7 +132,7 @@
                         </div>
 
 
-                        <!-- EMAIL -->
+                       
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Alamat Email
@@ -155,7 +153,7 @@
                         </div>
 
 
-                        <!-- PASSWORD -->
+                    
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Kata Sandi
@@ -199,7 +197,7 @@
                         </div>
 
 
-                        <!-- FOTO -->
+                       
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Foto Profil Resmi
@@ -233,7 +231,7 @@
                     </div>
 
 
-                    <!-- NEXT BUTTON -->
+                    
                     <div class="mt-10 flex justify-end">
                         <button type="button"
                                 id="nextStepBtn"
@@ -251,9 +249,7 @@
 
 
 
-        <!-- ================================= -->
-        <!-- STEP 2                            -->
-        <!-- ================================= -->
+      
 
         <div id="step2" class="hidden">
 
@@ -268,7 +264,6 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-                        <!-- NAMA -->
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Nama Lengkap Sesuai KTP
@@ -281,7 +276,6 @@
                         </div>
 
 
-                        <!-- JENIS KELAMIN -->
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Jenis Kelamin
@@ -295,7 +289,6 @@
                         </div>
 
 
-                        <!-- DIVISI -->
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Divisi / Departemen
@@ -314,7 +307,6 @@
                         </div>
 
 
-                        <!-- JABATAN -->
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Jabatan
@@ -328,7 +320,6 @@
                         </div>
 
 
-                        <!-- TELEPON -->
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Nomor Telepon
@@ -346,7 +337,6 @@
                         </div>
 
 
-                        <!-- NIK -->
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Nomor NIK
@@ -364,7 +354,7 @@
                         </div>
 
 
-                        <!-- AGAMA -->
+                       
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Agama
@@ -382,7 +372,7 @@
                         </div>
 
 
-                        <!-- TTL -->
+                       
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Tempat & Tanggal Lahir
@@ -402,7 +392,7 @@
                         </div>
 
 
-                        <!-- PENDIDIKAN -->
+                       
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Pendidikan Terakhir
@@ -415,7 +405,7 @@
                         </div>
 
 
-                        <!-- STATUS KERJA -->
+                      
                         <div class="space-y-2">
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">
                                 Status Kerja
@@ -435,7 +425,7 @@
                     </div>
 
 
-                    <!-- BUTTON -->
+                
                     <div class="mt-10 flex justify-between gap-4">
                         <button type="button"
                                 id="backStepBtn"
@@ -465,7 +455,7 @@
 
 window.onload = function () {
 
-    // Deteksi mode edit dari PHP
+    
     const isEditMode = {{ isset($pegawai) ? 'true' : 'false' }};
 
     // ===========================

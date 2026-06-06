@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- HEADER --}}
+    
     <div class="flex items-center gap-4 mb-10">
         <div class="w-14 h-14 bg-slate-900 rounded-3xl flex items-center justify-center text-orange-500 shadow-2xl rotate-3">
             <i class="fas fa-calendar-day text-2xl"></i>
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    {{-- FLASH --}}
+
     @foreach(['success','warning','error'] as $msg)
         @if(session($msg))
             <div class="mb-6 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest
@@ -23,7 +23,6 @@
         @endif
     @endforeach
 
-    {{-- KARTU STATISTIK --}}
     <div class="grid grid-cols-3 gap-6 mb-10">
         <div class="bg-slate-900 p-6 rounded-[35px] border-b-4 border-orange-500 shadow-xl">
             <p class="text-orange-500 text-[10px] font-black uppercase tracking-widest mb-2">Sisa Kuota Cuti</p>
@@ -42,7 +41,7 @@
         </button>
     </div>
 
-    {{-- RIWAYAT --}}
+    
     <h3 class="text-xl font-black text-slate-900 uppercase tracking-tighter mb-6">Riwayat Pengajuan</h3>
     <div class="space-y-4">
         @forelse($riwayatCuti as $c)
@@ -64,7 +63,7 @@
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Hari</p>
                 </div>
 
-                {{-- TENGAH: Info --}}
+               
                 <div class="flex-1 min-w-0">
                     {{-- Badge jenis + bukti --}}
                     <div class="flex items-center gap-2 mb-2">
@@ -80,12 +79,12 @@
                         @endif
                     </div>
 
-                    {{-- Alasan --}}
+                   
                     <p class="text-sm font-bold text-slate-800 leading-snug mb-1.5 truncate">
                         {{ $c->alasan }}
                     </p>
 
-                    {{-- Tanggal --}}
+                   
                     <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
                         {{ \Carbon\Carbon::parse($c->tanggal_mulai)->format('d M Y') }}
                         @if($c->tanggal_mulai !== $c->tanggal_selesai)
@@ -93,7 +92,7 @@
                         @endif
                     </p>
 
-                    {{-- Nama pegawai (hanya HRD) --}}
+                   
                     @if(auth()->user()->id_divisi == 2)
                         <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">
                             <i class="fas fa-user mr-1"></i>
@@ -102,7 +101,7 @@
                     @endif
                 </div>
 
-                {{-- KANAN: Status + Tombol --}}
+             
                 <div class="flex items-center gap-3 shrink-0">
                     <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest {{ $statusStyle }}">
                         {{ $c->status_persetujuan }}
@@ -135,7 +134,7 @@
         @endforelse
     </div>
 
-    {{-- MODAL AJUKAN CUTI --}}
+ 
     <div id="modalAjukanCuti" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
         <div onclick="document.getElementById('modalAjukanCuti').classList.add('hidden')"
             class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
@@ -161,7 +160,7 @@
             <form action="{{ route('cuti.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-5">
                 @csrf
 
-                {{-- Tanggal --}}
+               
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Tanggal Mulai</label>
@@ -175,7 +174,7 @@
                     </div>
                 </div>
 
-                {{-- Jenis Pengajuan --}}
+              
                 <div>
                     <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Jenis Pengajuan</label>
                     <select name="jenis_pengajuan" required
@@ -185,7 +184,6 @@
                     </select>
                 </div>
 
-                {{-- Alasan --}}
                 <div>
                     <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Alasan</label>
                     <textarea name="alasan" rows="3" required maxlength="255"
@@ -193,14 +191,13 @@
                         class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors resize-none"></textarea>
                 </div>
 
-                {{-- Upload Bukti --}}
                 <div>
                     <label class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Upload Bukti <span class="text-slate-300">(Opsional)</span></label>
                     <input type="file" name="bukti" accept=".jpg,.jpeg,.png,.pdf"
                         class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition-colors">
                 </div>
 
-                {{-- Tombol --}}
+            
                 <div class="flex gap-3 pt-1">
                     <button type="button"
                         onclick="document.getElementById('modalAjukanCuti').classList.add('hidden')"

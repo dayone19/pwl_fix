@@ -49,8 +49,8 @@ class userController extends Controller
         'kata_sandi'           => Hash::make($request->kata_sandi),
         'role'                 => $request->role,
         'foto'                 => $request->foto ?? 'default.jpg',
-        'harus_ganti_password' => 1,               // ← TAMBAH
-        'batas_ganti_password' => now()->addDays(3), // ← TAMBAH
+        'harus_ganti_password' => 1,             
+        'batas_ganti_password' => now()->addDays(3), 
     ]);
 
     return redirect()->back()->with('success', 'User ' . $request->nama . ' berhasil ditambahkan!');
@@ -58,7 +58,7 @@ class userController extends Controller
 
     public function update(Request $request, $nip) 
     {
-        // Cari user berdasarkan NIP
+        
         $user = pengguna::where('nip', $nip)->firstOrFail();
         
         $request->validate([
@@ -84,10 +84,10 @@ class userController extends Controller
     public function destroy($nip)
     {
         DB::transaction(function () use ($nip) {
-            // Hapus dari profil_pegawai
+           
             DB::table('profil_pegawai')->where('nip', $nip)->delete();
             
-            // hapus dari pengguna
+            
             $user = pengguna::where('nip', $nip)->firstOrFail();
             $user->delete();
         });

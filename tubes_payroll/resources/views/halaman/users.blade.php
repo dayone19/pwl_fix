@@ -61,7 +61,7 @@
         $isHRD = Str::upper(Auth::user()->divisi?->nama_divisi) === 'HRD';
     @endphp
 
-    {{-- HEADER SECTION --}}
+    
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
         <div>
             <div class="flex items-center gap-4">
@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        {{-- Tombol Tambah User: hanya HRD --}}
+        
         @if($isHRD)
             <a href="{{ route('karyawan.create') }}" class="bg-orange-600 hover:bg-slate-900 text-white px-8 py-4 rounded-2xl font-black transition-all shadow-xl shadow-orange-100 flex items-center gap-3 text-[10px] uppercase tracking-widest leading-none group inline-flex">
                 <i class="fas fa-user-plus group-hover:scale-110 transition-transform"></i> Tambah User
@@ -85,7 +85,7 @@
 
     <div id="tabel-container">
 
-        {{-- TABLE SECTION --}}
+        
         <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 overflow-hidden p-6">
             <table class="w-full text-left border-separate border-spacing-y-4">
                 <thead>
@@ -134,21 +134,26 @@
                         </td>
                         <td class="px-8 py-6 bg-slate-50 rounded-r-[35px] border-y border-r border-slate-100 text-right group-hover:bg-white group-hover:border-orange-200 transition-colors">
                             <div class="flex justify-end gap-3">
-                                {{-- Tombol detail: semua bisa lihat --}}
+                                
                                 <a href="{{ route('karyawan.show', $user->nip) }}" class="w-9 h-9 flex items-center justify-center bg-white text-slate-400 rounded-xl border border-slate-200 hover:text-orange-600 hover:shadow-md transition-all">
                                     <i class="fas fa-eye text-xs"></i>
                                 </a>
 
-                                {{-- Tombol edit & hapus: hanya HRD --}}
+                               
                                 @if($isHRD)
                                     <a href="{{ route('karyawan.edit', $user->nip) }}" class="w-9 h-9 flex items-center justify-center bg-white text-slate-400 rounded-xl border border-slate-200 hover:text-blue-600 hover:shadow-md transition-all">
                                         <i class="fas fa-pen text-xs"></i>
                                     </a>
-                                    <form action="{{ route('karyawan.destroy', $user->nip) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus karyawan ini?')">
+                                   
+                                    <form action="{{ route('users.destroy', $user->nip) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Yakin ingin menonaktifkan akun ini?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="w-9 h-9 flex items-center justify-center bg-white text-slate-400 rounded-xl border border-slate-200 hover:text-red-600 hover:shadow-md transition-all">
-                                            <i class="fas fa-trash text-xs"></i>
+
+                                        <button type="submit"
+                                                class="w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-red-600 hover:shadow-md transition-all">
+                                            <i class="fas fa-user-slash text-xs"></i>
                                         </button>
                                     </form>
                                 @endif
@@ -169,17 +174,16 @@
             </table>
         </div>
 
-        {{-- PAGINATION SECTION --}}
         <div class="mt-10 flex justify-center items-center gap-4">
 
-            {{-- PREV --}}
+            
             @if ($data_karyawan->onFirstPage())
                 <span class="text-slate-300 text-[10px] font-black uppercase  cursor-not-allowed">Prev</span>
             @else
                 <a href="{{ $data_karyawan->previousPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Prev</a>
             @endif
 
-            {{-- NOMOR HALAMAN --}}
+            
             <div class="flex items-center gap-2">
                 @php
                     $curr = $data_karyawan->currentPage();
@@ -211,9 +215,7 @@
                     <a href="{{ $data_karyawan->url($last) }}" class="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 text-slate-600 font-bold rounded-xl hover:border-orange-500 shadow-sm text-xs">{{ $last }}</a>
                 @endif
             </div>
-            {{-- END NOMOR HALAMAN --}}
-
-            {{-- NEXT --}}
+            
             @if ($data_karyawan->hasMorePages())
                 <a href="{{ $data_karyawan->nextPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Next</a>
             @else
@@ -221,9 +223,9 @@
             @endif
 
         </div>
-        {{-- END PAGINATION --}}
+       
 
     </div>
-    {{-- END TABEL CONTAINER --}}
+    
 
 @endsection

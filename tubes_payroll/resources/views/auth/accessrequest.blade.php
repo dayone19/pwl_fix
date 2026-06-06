@@ -152,9 +152,7 @@
 @endif
 
 
-{{-- ════════════════════════════════════════════════════════════
-     MODAL DETAIL
-════════════════════════════════════════════════════════════ --}}
+
 <div id="detailModal"
      class="fixed inset-0 z-[9999] flex items-center justify-center p-4 hidden"
      onclick="if(event.target===this) closeDetail()">
@@ -242,9 +240,7 @@
 </div>
 
 
-{{-- ════════════════════════════════════════════════════════════
-     DATA JSON untuk JS
-════════════════════════════════════════════════════════════ --}}
+// DATA JOIN UNTUK JS
 <script>
 const requestsData = @json($requestsJson);
 

@@ -177,43 +177,43 @@ class KaryawanController extends Controller
         return view('halaman.detail_karyawan', compact('p'));
     }
 
-    public function destroy($nip)
-    { 
-        abort_unless($this->isHRD(), 403);
+    // public function destroy($nip)
+    // { 
+    //     abort_unless($this->isHRD(), 403);
 
-        DB::beginTransaction();
+    //     DB::beginTransaction();
 
-        try {
+    //     try {
 
-            $pegawai = DB::table('profil_pegawai')
-                ->where('nip', $nip)
-                ->first();
+    //         $pegawai = DB::table('profil_pegawai')
+    //             ->where('nip', $nip)
+    //             ->first();
 
-            if (!$pegawai) {
-                return back()->with('error', 'Pegawai tidak ditemukan');
-            }
+    //         if (!$pegawai) {
+    //             return back()->with('error', 'Pegawai tidak ditemukan');
+    //         }
 
-            DB::table('pengguna')
-                ->where('nip', $nip)
-                ->update([
-                    'apakah_aktif' => 0
-                ]);
+    //         DB::table('pengguna')
+    //             ->where('nip', $nip)
+    //             ->update([
+    //                 'apakah_aktif' => 0
+    //             ]);
 
-            DB::commit();
+    //         DB::commit();
 
-            return redirect()->route('karyawan.index')
-                ->with('success', 'Akun berhasil dinonaktifkan');
+    //         return redirect()->route('karyawan.index')
+    //             ->with('success', 'Akun berhasil dinonaktifkan');
 
-        } catch (\Exception $e) {
+    //     } catch (\Exception $e) {
 
-            DB::rollBack();
+    //         DB::rollBack();
 
-            return back()->with(
-                'error',
-                'Gagal menonaktifkan akun: ' . $e->getMessage()
-            );
-        }
-    }
+    //         return back()->with(
+    //             'error',
+    //             'Gagal menonaktifkan akun: ' . $e->getMessage()
+    //         );
+    //     }
+    // }
 
     public function edit($nip)
     {

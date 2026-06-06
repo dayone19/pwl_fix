@@ -10,7 +10,7 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        /* Smooth Custom Floating Animations */
+        
         @keyframes subtleFloat {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-8px); }
@@ -38,7 +38,7 @@
 </head>
 <body class="bg-[#fafafa] text-slate-900 antialiased selection:bg-orange-500 selection:text-white">
 
-    <!-- NAVBAR SECTION -->
+    
     <nav class="fixed w-full z-50 bg-white/70 backdrop-blur-md border-b border-slate-100 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex justify-between items-center">
             <div class="flex items-center gap-3 group cursor-pointer">
@@ -65,7 +65,7 @@
         </div>
     </nav>
 
-<!-- HERO SECTION -->
+
     <section class="pt-40 pb-24 px-6 lg:px-12 max-w-7xl mx-auto overflow-hidden">
         <div class="grid lg:grid-cols-12 gap-16 items-center">
             
@@ -109,7 +109,7 @@
                             <span class="text-[9px] text-slate-600 font-mono tracking-widest uppercase">Paytato</span>
                         </div>
 
-            <!-- Date and Clock Card -->
+            
             <div class="bg-white/[0.02] border border-white/5 rounded-3xl p-6 space-y-4">
                 <div class="text-[9px] text-orange-500 font-black uppercase tracking-widest" id="time-label">Waktu Operasional Kerja</div>
                 
@@ -128,7 +128,7 @@
             </div>
 
             <div class="grid grid-cols-2 gap-4">
-                <!-- Box 1: Jumlah Karyawan Aktif -->
+               
                 <div class="bg-white/[0.01] border border-white/5 rounded-2xl p-4 flex flex-col justify-between h-24">
                     <span class="text-[9px] text-slate-500 uppercase font-bold tracking-wider">Karyawan Aktif</span>
                     <span class="text-2xl font-black text-white tracking-tight">
@@ -136,7 +136,7 @@
                     </span>
                 </div>
                 
-                <!-- Box 2: Jumlah Job Offer di Job Pool (Model Pekerjaan) -->
+                
                 <div class="bg-white/[0.01] border border-white/5 rounded-2xl p-4 flex flex-col justify-between h-24">
                     <span class="text-[9px] text-slate-500 uppercase font-bold tracking-wider">Job Pool</span>
                     <span class="text-2xl font-black text-orange-500 tracking-tight">
@@ -152,7 +152,6 @@
         </div>
     </section>
 
-    <!-- ROLES / DEPARTEMEN SECTION -->
     <section id="roles" class="py-28 px-6 lg:px-12 bg-white border-t border-slate-100">
         <div class="max-w-7xl mx-auto space-y-16">
             
@@ -166,7 +165,7 @@
             
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <!-- HRD -->
+                
                 <div class="bg-[#fafafa] p-8 rounded-3xl border border-slate-100 hover:border-orange-500/30 hover:bg-white hover:shadow-xl hover:shadow-slate-100 transition-all duration-300 group">
                     <div class="text-slate-400 group-hover:text-orange-600 mb-6 transition-colors duration-300">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -177,7 +176,7 @@
                     <p class="text-slate-500 text-xs leading-relaxed font-normal">Manajemen penuh data karyawan, absensi real-time, dan pengawasan kuota cuti struktural.</p>
                 </div>
 
-                <!-- Accountant -->
+               
                 <div class="bg-[#fafafa] p-8 rounded-3xl border border-slate-100 hover:border-orange-500/30 hover:bg-white hover:shadow-xl hover:shadow-slate-100 transition-all duration-300 group">
                     <div class="text-slate-400 group-hover:text-orange-600 mb-6 transition-colors duration-300">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -188,7 +187,7 @@
                     <p class="text-slate-500 text-xs leading-relaxed font-normal">Pemrosesan komponen gaji bersih, hitungan otomatis insentif tetap, serta potongan denda alpha.</p>
                 </div>
 
-                <!-- Manager -->
+                
                 <div class="bg-[#fafafa] p-8 rounded-3xl border border-slate-100 hover:border-orange-500/30 hover:bg-white hover:shadow-xl hover:shadow-slate-100 transition-all duration-300 group">
                     <div class="text-slate-400 group-hover:text-orange-600 mb-6 transition-colors duration-300">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -199,7 +198,7 @@
                     <p class="text-slate-500 text-xs leading-relaxed font-normal">Otorisasi persetujuan pencairan dana (*payroll approval*) dan analisis pengeluaran anggaran bulanan.</p>
                 </div>
 
-                <!-- Technician --> 
+                
                 <div class="bg-[#fafafa] p-8 rounded-3xl border border-slate-100 hover:border-orange-500/30 hover:bg-white hover:shadow-xl hover:shadow-slate-100 transition-all duration-300 group">
                     <div class="text-slate-400 group-hover:text-orange-600 mb-6 transition-colors duration-300">
                         <i class="fas fa-wrench text-2xl w-8 h-8 flex items-center justify-center transition group-hover:text-orange-400"></i>
@@ -212,7 +211,7 @@
         </div>
     </section>
 
-    <!-- CTA FOOTPRINT SECTION -->
+    
     <section class="py-24 px-6 lg:px-12 bg-[#fafafa]">
         <div class="max-w-5xl mx-auto relative group">
             
@@ -259,7 +258,7 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
+   
     <footer class="py-12 border-t border-slate-100 text-center bg-white">
         <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em]">&copy; 2026 PayTato. Professional Workshop System. Built for Precision.</p>
     </footer>

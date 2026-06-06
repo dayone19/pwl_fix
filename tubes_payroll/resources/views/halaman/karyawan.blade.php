@@ -6,7 +6,7 @@
 
 <div class="space-y-6 animate-pulse">
 
-    {{-- Header --}}
+   
     <div class="flex items-center gap-4">
         <div class="w-14 h-14 skeleton rounded-3xl"></div>
 
@@ -16,17 +16,17 @@
         </div>
     </div>
 
-    {{-- Table Skeleton --}}
+   
     <div class="bg-white rounded-[50px] border border-slate-100 p-6">
 
-        {{-- Head --}}
+      
         <div class="grid grid-cols-3 gap-4 mb-6">
             <div class="h-12 skeleton rounded-2xl"></div>
             <div class="h-12 skeleton rounded-2xl"></div>
             <div class="h-12 skeleton rounded-2xl"></div>
         </div>
 
-        {{-- Rows --}}
+      
         @for($i = 0; $i < 6; $i++)
         <div class="grid grid-cols-3 gap-4 mb-4">
             <div class="h-20 skeleton rounded-[30px]"></div>
@@ -37,7 +37,7 @@
 
     </div>
 
-    {{-- Pagination --}}
+    
     <div class="flex justify-center gap-3">
         <div class="w-10 h-10 skeleton rounded-xl"></div>
         <div class="w-10 h-10 skeleton rounded-xl"></div>
@@ -144,26 +144,13 @@
                                     <i class="fas fa-eye text-xs group-hover/btn:scale-110 transition-transform"></i>
                                 </a>
 
-                                {{-- Pengecekan Khusus untuk Fitur Tulis/Edit/Hapus (Hanya untuk HRD) --}}
+                                <!-- {{-- Pengecekan Khusus untuk Fitur Tulis/Edit/Hapus (Hanya untuk HRD) --}}
                                 @if(strtoupper(Auth::user()->id_divisi) == '2' || (isset($profilUserLog) && strtoupper($profilUserLog->nama_divisi) === 'HRD'))
                                     {{-- 2. Tombol Pen-nib (Edit): Hanya Muncul di HRD --}}
                                     <a href="{{ route('karyawan.edit', $p->nip) }}" class="edit-link w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-orange-600 hover:shadow-md transition-all">
                                         <i class="fas fa-pen-nib text-xs"></i>
                                     </a>
-
-                                    {{-- 3. Tombol Orang Silang (Nonaktifkan): Hanya Muncul di HRD --}}
-                                    <form action="{{ route('karyawan.destroy', $p->nip) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Yakin ingin menonaktifkan akun ini?')">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="submit"
-                                                class="w-10 h-10 flex items-center justify-center bg-white text-slate-400 rounded-2xl border border-slate-200 hover:text-red-600 hover:shadow-md transition-all">
-                                            <i class="fas fa-user-slash text-xs"></i>
-                                        </button>
-                                    </form>
-                                @endif
+                                @endif -->
                             </div>
                         </td>
                     </tr>
@@ -183,14 +170,14 @@
 
         <div class="mt-10 flex justify-center items-center gap-4">
 
-            {{-- PREV --}}
+         
             @if ($data_karyawan->onFirstPage())
                 <span class="text-slate-300 text-[10px] font-black uppercase  cursor-not-allowed">Prev</span>
             @else
                 <a href="{{ $data_karyawan->previousPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Prev</a>
             @endif
 
-            {{-- NOMOR HALAMAN --}}
+           
             <div class="flex items-center gap-2">
                 @php
                     $currentPage = $data_karyawan->currentPage();
@@ -222,9 +209,7 @@
                     <a href="{{ $data_karyawan->url($lastPage) }}" class="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 text-slate-600 font-bold rounded-xl hover:border-orange-500 shadow-sm text-xs">{{ $lastPage }}</a>
                 @endif
             </div>
-            {{-- END NOMOR HALAMAN --}}
-
-            {{-- NEXT --}}
+           
             @if ($data_karyawan->hasMorePages())
                 <a href="{{ $data_karyawan->nextPageUrl() }}" class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">Next</a>
             @else
@@ -232,10 +217,9 @@
             @endif
 
         </div>
-        {{-- END PAGINATION --}}
-
+        
     </div>
-    {{-- END TABEL CONTAINER --}}
+  
 
 <script>
 document.addEventListener('click', function(e) {
@@ -243,7 +227,7 @@ document.addEventListener('click', function(e) {
     const link = e.target.closest('#tabel-container a');
     if (!link) return;
 
-    // Tombol detail dan edit 
+    
     if (
         link.classList.contains('detail-link') ||
         link.classList.contains('edit-link')

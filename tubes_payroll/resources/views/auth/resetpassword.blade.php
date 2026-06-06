@@ -37,7 +37,7 @@
 
 <div class="w-full max-w-6xl bg-white rounded-[60px] shadow-2xl overflow-hidden grid md:grid-cols-2 min-h-[680px] border border-slate-100">
 
-    {{-- ── LEFT DARK PANEL ─────────────────────────────────────────────── --}}
+    
     <div class="bg-slate-950 p-12 text-white flex flex-col justify-between relative overflow-hidden">
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-orange-500/15 via-transparent to-transparent pointer-events-none"></div>
         <div class="absolute inset-0 oil-smudge"></div>
@@ -60,7 +60,7 @@
                 Kamu sudah diverifikasi oleh HRD. Sekarang buat password baru yang kuat dan mudah kamu ingat.
             </p>
 
-            {{-- NIP info box --}}
+         
             <div class="mt-10 bg-white/5 border border-white/10 rounded-3xl p-6">
                 <p class="text-[9px] font-black uppercase tracking-widest text-slate-500  mb-3">Akun yang Akan Direset</p>
                 <div class="flex items-center gap-4">
@@ -75,13 +75,13 @@
             </div>
         </div>
 
-        {{-- Bottom watermark --}}
+       
         <div class="absolute -bottom-20 -left-20 opacity-5 rotate-12">
             <i class="fas fa-lock text-[200px] text-white"></i>
         </div>
     </div>
 
-    {{-- ── RIGHT FORM PANEL ─────────────────────────────────────────────── --}}
+   
     <div class="p-8 md:p-14 flex flex-col justify-center overflow-y-auto bg-white">
 
         <div class="mb-8">
@@ -106,7 +106,7 @@
         <form method="POST" action="{{ route('password.reset.submit', $token) }}" id="resetForm" class="space-y-5">
             @csrf
 
-            {{-- Password baru --}}
+            
             <div>
                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest  ml-1">Password Baru</label>
                 <div class="relative mt-2">
@@ -125,13 +125,13 @@
                     </button>
                 </div>
 
-                {{-- Strength bar --}}
+              
                 <div class="mt-2 w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
                     <div id="strengthBar" class="h-full rounded-full w-0 bg-red-400"></div>
                 </div>
                 <p id="strengthLabel" class="text-[9px] font-black uppercase tracking-widest mt-1 ml-1 text-slate-300 ">Kekuatan password</p>
 
-                {{-- Rules checklist --}}
+               
                 <ul class="mt-3 space-y-1.5 ml-1">
                     <li id="rule-len"   class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 "><i class="fas fa-circle-dot w-3 text-[8px]"></i> Minimal 8 karakter</li>
                     <li id="rule-upper" class="rule-item text-[10px] font-bold text-slate-300 flex items-center gap-2 "><i class="fas fa-circle-dot w-3 text-[8px]"></i> Huruf kapital (A–Z)</li>
@@ -139,7 +139,7 @@
                 </ul>
             </div>
 
-            {{-- Konfirmasi password --}}
+            
             <div>
                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest  ml-1">Konfirmasi Password</label>
                 <div class="relative mt-2">
@@ -160,7 +160,7 @@
                 <p id="matchMsg" class="text-[10px] font-bold mt-1.5 ml-1  opacity-0 transition-opacity">&nbsp;</p>
             </div>
 
-            {{-- Token expiry info --}}
+            
             <div class="bg-orange-50 border border-orange-100 rounded-2xl p-4 flex gap-3 items-start">
                 <i class="fas fa-triangle-exclamation text-orange-500 mt-0.5 text-sm flex-shrink-0"></i>
                 <p class="text-[10px] text-orange-700 leading-relaxed ">

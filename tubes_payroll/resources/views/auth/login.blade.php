@@ -41,7 +41,7 @@
             <div class="absolute inset-0 oil-smudge"></div>
             
             <div class="relative z-10">
-                {{-- Logo Identity --}}
+                
                 <div class="flex items-center gap-2 mb-12">
                     <div class="bg-orange-600 p-2 rounded-xl text-white shadow-lg shadow-orange-900/50">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

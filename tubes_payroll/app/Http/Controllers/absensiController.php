@@ -214,7 +214,7 @@ class AbsensiController extends Controller
     $request->validate([
         'jam_masuk'        => 'nullable|date_format:H:i',
         'jam_keluar'       => 'nullable|date_format:H:i',
-        'status_kehadiran' => 'required|in:Hadir,Terlambat,Izin,Sakit,Alpha,Cuti', // ← tambah Cuti
+        'status_kehadiran' => 'required|in:Hadir,Terlambat,Izin,Sakit,Alpha,Cuti', 
     ]);
 
     $absensi = Absensi::findOrFail($id);
@@ -223,7 +223,7 @@ class AbsensiController extends Controller
     $status         = $request->status_kehadiran;
     $jamMasukInput  = $request->jam_masuk ? substr($request->jam_masuk, 0, 5) : null;
 
-    // status Cuti, jam tidak dihitung
+    
     if (!in_array($status, ['Cuti', 'Izin', 'Sakit', 'Alpha']) && $jamMasukInput) {
         [$jam, $menit] = explode(':', $jamMasukInput);
         $totalMenitMasuk = ((int)$jam * 60) + (int)$menit;

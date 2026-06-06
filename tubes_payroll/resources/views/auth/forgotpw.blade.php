@@ -14,7 +14,7 @@
             background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
         }
 
-        /* Step indicator line */
+        
         .step-line {
             height: 2px;
             background: #e2e8f0;
@@ -35,7 +35,7 @@
             to   { width: 100% }
         }
 
-        /* Pulse ring on icon */
+        
         .pulse-ring {
             animation: pulseRing 2s ease infinite;
         }
@@ -44,7 +44,7 @@
             50%      { box-shadow: 0 0 0 10px rgba(234,88,12,0); }
         }
 
-        /* Shake on error */
+        
         .shake {
             animation: shake 0.4s ease;
         }
@@ -56,7 +56,7 @@
             80%     { transform: translateX(4px); }
         }
 
-        /* Slide panels */
+        
         .panel {
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
@@ -79,14 +79,14 @@
             position: absolute !important;
         }
        
-        /* Hilangkan scrollbar */
+        
         ::-webkit-scrollbar {
             display: none;
         }
 
         html, body {
-            -ms-overflow-style: none;  /* IE & Edge lama */
-            scrollbar-width: none;     /* Firefox */
+            -ms-overflow-style: none;  
+            scrollbar-width: none;     
         }
     </style>
 </head>
@@ -94,12 +94,12 @@
 
     <div class="w-full max-w-6xl bg-white rounded-[60px] shadow-2xl overflow-hidden grid md:grid-cols-2 min-h-[700px] border border-slate-100">
 
-        {{-- ── LEFT DARK PANEL ── --}}
+       
         <div class="bg-slate-950 p-12 text-white flex flex-col justify-between relative overflow-hidden">
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-orange-500/15 via-transparent to-transparent pointer-events-none"></div>
             <div class="absolute inset-0 oil-smudge"></div>
 
-            {{-- Logo --}}
+            
             <div class="relative z-10">
                 <div class="flex items-center gap-2 mb-12">
                     <div class="bg-orange-600 p-2 rounded-xl text-white shadow-lg shadow-orange-900/50">
@@ -113,7 +113,7 @@
                     </span>
                 </div>
 
-                {{-- Dynamic left-panel copy per step --}}
+                
                 <div id="leftStep1">
                     <h1 class="text-5xl font-black leading-none tracking-tighter uppercase ">
                         Account<br><span class="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-orange-500 to-amber-500">Recovery.</span>
@@ -142,7 +142,7 @@
                 </div>
             </div>
 
-            {{-- Bottom watermark gear --}}
+           
             <div class="absolute -bottom-20 -left-20 opacity-5 transform rotate-12">
                 <svg class="w-80 h-80 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41l-0.36,2.54c-0.59,0.24-1.13,0.57-1.62,0.94L5.24,5.33c-0.22-0.07-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.84,9.48l2.03,1.58C4.82,11.36,4.8,11.68,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.07,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z"/>
@@ -150,7 +150,7 @@
             </div>
         </div>
 
-        {{-- ── RIGHT FORM PANEL ── --}}
+        
         <div class="p-8 md:p-16 flex flex-col justify-center overflow-y-auto bg-white">
 
             {{-- Page header --}}
@@ -160,7 +160,6 @@
                 <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2 leading-none">Verifikasi Identitas via HRD</p>
             </div>
 
-            {{-- ── Step indicator ── --}}
             <div class="flex items-center mb-10">
                 {{-- Step 1 --}}
                 <div class="flex flex-col items-center gap-1">
@@ -187,7 +186,6 @@
                 </div>
             </div>
 
-            {{-- ── PANELS wrapper ── --}}
             <div class="panels-wrap">
 
                 <div id="panel1" class="panel">
@@ -234,7 +232,7 @@
 
                 <div id="panel2" class="panel hidden-panel">
 
-                    {{-- NIP badge --}}
+                   
                     <div class="flex items-center gap-3 bg-slate-50 border border-slate-100 rounded-2xl px-5 py-3 mb-5">
                         <div class="bg-orange-100 p-2 rounded-xl">
                             <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -288,7 +286,7 @@
                 <div id="panel3" class="panel hidden-panel">
 
                     <div class="flex flex-col items-center text-center py-4">
-                        {{-- Animated checkmark circle --}}
+                        
                         <div class="relative mb-8">
                             <div class="pulse-ring w-24 h-24 rounded-full border-4 border-orange-500 flex items-center justify-center">
                                 <div class="w-20 h-20 rounded-full bg-orange-500 flex items-center justify-center">
@@ -310,7 +308,7 @@
                             HRD akan memproses dan menghubungimu melalui <span class="font-black  text-slate-600">saluran resmi internal</span>.
                         </p>
 
-                        {{-- Summary card --}}
+                        
                         <div class="mt-8 w-full bg-slate-50 border border-slate-100 rounded-[25px] p-6 text-left space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 ">NIP</span>
@@ -335,14 +333,14 @@
                     </div>
                 </div>
 
-            </div>{{-- end panels-wrap --}}
-        </div>{{-- end right panel --}}
+            </div>
+        </div>
     </div>
 
     <script>
         let currentStep = 1;
 
-        /* ── Helpers ── */
+        
         function showPanel(n) {
             [1,2,3].forEach(i => {
                 const p = document.getElementById('panel' + i);
@@ -395,7 +393,7 @@
             });
         }
 
-        /* ── Step 1 → 2 ── */
+        
         function goToStep1() {
             showPanel(1);
             currentStep = 1;
@@ -422,7 +420,7 @@
             currentStep = 2;
         }
 
-        /* ── Step 2 → 3 (submit) ── */
+        
         function submitRequest() {
     const nip = document.getElementById('nipInput').value.trim();
     const btn = document.getElementById('btnSubmit');
@@ -450,13 +448,13 @@
         showPanel(3);
     })
     .catch(err => {
-        // Tampilkan pesan error di bawah input NIP
+        
         const msg  = document.getElementById('nipMsg');
         msg.textContent = '• ' + err.message;
         msg.classList.replace('text-green-500', 'text-red-500');
         msg.classList.replace('opacity-0', 'opacity-100');
  
-        // Kembali ke step 1 supaya user bisa coba lagi
+        
         showPanel(1);
         btn.disabled    = false;
         btn.textContent = 'Send Recovery Request →';
@@ -485,7 +483,7 @@
             });
             */
 
-        /* ── NIP input — only digits ── */
+        
         document.getElementById('nipInput').addEventListener('input', function() {
             this.value = this.value.replace(/\D/g, '');
         });

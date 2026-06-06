@@ -4,7 +4,7 @@
 
 @push('loading')
 <div class="space-y-8 animate-pulse">
-    {{-- Header Skeleton --}}
+    
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="space-y-3">
             <div class="h-8 w-72 skeleton rounded-2xl"></div>
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    {{-- Panel Ringkasan Informasi Statistik Skeleton --}}
+    
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         @for($i = 0; $i < 3; $i++)
         <div class="bg-white p-6 rounded-[32px] border border-slate-200">
@@ -26,7 +26,6 @@
         @endfor
     </div>
 
-    {{-- Table Skeleton --}}
     <div class="bg-white rounded-[32px] border border-slate-200 overflow-hidden">
         <div class="p-6 border-b border-slate-100">
             <div class="h-4 w-56 skeleton rounded-xl"></div>
@@ -58,7 +57,7 @@
 @section('content')
 <div class="w-full min-w-0 space-y-8 px-1">
     
-    {{-- Header Utama --}}
+  
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h2 class="text-2xl font-black text-slate-900 uppercase  tracking-tighter">Pengelolaan Payroll</h2>
@@ -173,7 +172,6 @@
         </div>
     </div>
 
-    {{-- Panel Ringkasan Informasi Statistik --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm relative overflow-hidden group">
             <i class="fas fa-money-bill-wave absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-10 group-hover:text-orange-500 transition-all"></i>
@@ -205,7 +203,7 @@
         @endif
     </div>
 
-    {{-- Form Hitung Gaji Hanya Muncul untuk FINANCE (ID = 3) --}}
+   
     @if(auth()->user()->id_divisi == 3)
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.min.css">
 
@@ -444,9 +442,9 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex justify-center gap-2">
-                                {{-- KONDISI A: FINANCE (ID = 3) --}}
+                                
                                 @if(in_array($gaji->status_bayar, ['Draft', 'Ditolak']) && auth()->user()->id_divisi == 3)
-                                    {{-- Tombol Edit terbuka untuk status Draft & Ditolak --}}
+                                    
                                     <button
                                     onclick="bukaModalEdit('{{ $gaji->id }}', '{{ $gapokRow }}', '{{ $gaji->total_tunjangan }}', '{{ $gaji->bonus }}', '{{ $gaji->total_potongan }}')"
                                     title="Edit Komponen"
@@ -454,7 +452,7 @@
                                         <i class="fas fa-edit text-xs"></i>
                                     </button>
                                     
-                                    {{-- Tombol Submit Terbuka untuk Mengajukan Ulang Berkas Draft & Ditolak --}}
+                                   
                                     <form action="/payroll/submit/{{ $gaji->id }}" method="POST" class="inline">
                                         @csrf
                                         <button type="submit" title="Ajukan Ke Manajer" class="w-8 h-8 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-100 transition-all">
@@ -462,7 +460,7 @@
                                         </button>
                                     </form>
 
-                                    {{-- Tombol Hapus Hanya Tersedia Saat Benar-benar Berstatus Draft --}}
+                                
                                     @if($gaji->status_bayar === 'Draft')
                                     <form action="/payroll/delete/{{ $gaji->id }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus draf payroll karyawan ini?')">
                                         @csrf
@@ -474,7 +472,7 @@
                                     @endif
                                 @endif
 
-                                {{-- KONDISI B: MANAJEMEN (ID = 1) --}}
+                             
                                 @if($gaji->status_bayar === 'Terbit' && auth()->user()->id_divisi == 1)
                                     <form action="/payroll/aksi/{{ $gaji->id }}" method="POST" class="inline">
                                         @csrf
@@ -513,7 +511,7 @@
         </div>
     </div>
 
-        {{-- PAGINATION --}}
+       
             <div class="mt-10 flex justify-center items-center gap-4">
 
                 {{-- PREV --}}
@@ -526,7 +524,7 @@
                     </a>
                 @endif
 
-                {{-- NOMOR HALAMAN --}}
+               
                 <div class="flex items-center gap-2">
                     @php
                         $curr = $riwayatGaji->currentPage();
@@ -575,7 +573,7 @@
                     @endif
                 </div>
 
-                {{-- NEXT --}}
+           
                 @if ($riwayatGaji->hasMorePages())
                     <a href="{{ $riwayatGaji->appends(request()->query())->nextPageUrl() }}"
                         class="text-slate-600 text-[10px] font-black uppercase  hover:text-orange-600 transition-colors">
@@ -588,10 +586,10 @@
                 @endif
 
             </div>
-        {{-- END PAGINATION --}}
+       
 </div>
 
-{{-- POPUP MODAL EDIT DRAF --}}
+
 @if(auth()->user()->id_divisi == 3)
 <div id="modal-edit-draft" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden animate-fade-in">
     <div class="bg-white rounded-[32px] border border-slate-200 shadow-2xl p-6 w-full max-w-md mx-4">
@@ -682,7 +680,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script>
-    // Generate form
+    
     if (document.getElementById('select-karyawan')) {
         new TomSelect('#select-karyawan', { maxOptions: 200 });
     }
@@ -690,7 +688,7 @@
         new TomSelect('#select-bulan', {});
     }
 
-    // Filter tabel
+   
     if (document.getElementById('filter-bulan')) {
         new TomSelect('#filter-bulan', {});
     }

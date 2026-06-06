@@ -17,7 +17,7 @@
             font-size: 9px;
         }
 
-        /* HEADER SECTION */
+        
         .header-table {
             width: 100%;
             margin-bottom: 10px;
@@ -38,7 +38,6 @@
         }
         .brand-subtitle span { color: #f97316; }
 
-        /* STATS CARDS (Dinamis) */
         .stats-grid {
             width: 100%;
             margin-bottom: 15px;
@@ -64,7 +63,7 @@
             color: #0f172a;
         }
 
-        /* LEGEND */
+       
         .legend-container {
             margin-bottom: 12px;
             padding-left: 10px;
@@ -89,7 +88,7 @@
             margin-right: 4px;
         }
 
-        /* TABLE MATRIX */
+       
         .matrix-table {
             width: 100%;
             border-collapse: collapse;
@@ -111,7 +110,7 @@
             vertical-align: middle;
         }
 
-        /* KOLOM PROFIL & NO */
+        
         .td-no { font-weight: bold; color: #64748b; width: 25px; }
         .td-profile {
             text-align: left !important;
@@ -148,7 +147,7 @@
             color: #94a3b8;
         }
 
-        /* STATUS CIRCLE DOTS */
+        
         .status-dot {
             display: inline-block;
             width: 14px;
@@ -159,12 +158,12 @@
             font-weight: bold;
             font-size: 7px;
         }
-        .dot-H  { background-color: #dcfce7; color: #166534; } /* Hadir */
-        .dot-TL { background-color: #ffedd5; color: #9a3412; } /* Terlambat */
-        .dot-I  { background-color: #dbeafe; color: #1e40af; } /* Izin */
-        .dot-S  { background-color: #f3e8ff; color: #6b21a8; } /* Sakit */
-        .dot-A  { background-color: #fee2e2; color: #991b1b; } /* Alpha */
-        .dot-none { color: #cbd5e1; } /* Libur / Kosong */
+        .dot-H  { background-color: #dcfce7; color: #166534; } 
+        .dot-TL { background-color: #ffedd5; color: #9a3412; } 
+        .dot-I  { background-color: #dbeafe; color: #1e40af; } 
+        .dot-S  { background-color: #f3e8ff; color: #6b21a8; } 
+        .dot-A  { background-color: #fee2e2; color: #991b1b; } 
+        .dot-none { color: #cbd5e1; } 
         .dot-C  { background-color: #ccfbf1; color: #115e59; }
 
         .bg-H  { background-color: #22c55e; }
@@ -199,7 +198,7 @@
         <p class="brand-subtitle">Periode: <span>{{ $periodeCarbon->translatedFormat('F Y') }}</span></p>
     </div>
 
-    {{-- STATISTIK DINAMIS --}}
+    
     <table class="stats-grid">
         <tr>
             <td class="stat-card">
@@ -298,7 +297,7 @@ $char = $map[$absen->status_kehadiran] ?? '-';
         </tbody>
     </table>
 
-    {{-- FOOTER KETERANGAN DI PALING BAWAH --}}
+    
     <div class="footer-container">
         <div class="footer-note">
             <strong>Keterangan:</strong><br>

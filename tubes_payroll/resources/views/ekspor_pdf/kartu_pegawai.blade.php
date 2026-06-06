@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ID Card - {{ $pegawai->nama_lengkap ?? $pegawai->nama }}</title>
     <style>
-        /* Pengaturan Ukuran Kanvas Cetak PDF Pas Sesuai Dimensi Desain Canva */
+        
         @page {
             size: 260px 390px;
             margin: 0;
@@ -20,7 +20,7 @@
             font-family: 'Helvetica', 'Arial', sans-serif;
         }
 
-        /* Kontainer Utama Sisi Kartu Depan */
+       
         .card-container-front {
             width: 260px;
             height: 390px;
@@ -28,7 +28,7 @@
             overflow: hidden;
         }
 
-        /* Lapisan Gambar Latar Belakang Canva (Menghapus z-index negatif) */
+       
         .canva-bg-img {
             position: absolute;
             top: 0;
@@ -37,17 +37,17 @@
             height: 390px;
         }
 
-        /* Penempatan Pasfoto 3x4 (Dipastikan berada di lapisan atas) */
+        
         .avatar-placement {
             position: absolute;
-            top: 71px;        /* Jarak vertikal masuk ke bingkai */
-            left: 80px;       /* Jarak horizontal center otomatis */
-            width: 100px;     /* Lebar pasfoto */
-            height: 143px;    /* Tinggi pasfoto */
+            top: 71px;        
+            left: 80px;      
+            width: 100px;    
+            height: 143px;    
             overflow: hidden;
         }
 
-        /* Penempatan Lapisan Teks Nama Karyawan */
+        
         .name-placement {
             position: absolute;
             top: 237px;
@@ -72,7 +72,7 @@
             letter-spacing: 1px;
         }
 
-        /* Penempatan Lapisan Angka NIP */
+        
         .nip-placement {
             position: absolute;
             top: 330px;       
