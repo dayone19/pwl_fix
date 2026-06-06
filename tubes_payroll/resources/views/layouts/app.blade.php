@@ -242,16 +242,19 @@
             </nav>
 
             <div class="pt-6 border-t border-white/5 mt-auto">
-                <div class="bg-white/5 p-4 rounded-3xl border border-white/5 mb-4 group hover:bg-white/10 transition-all cursor-default">
+                <div class="relative mb-4" x-data="{ open:false }">
+                <div @click="open = !open"
+                    class="bg-white/5 p-4 rounded-3xl border border-white/5 group hover:bg-white/10 transition-all cursor-pointer">
                     <div class="flex items-center gap-3">
                         <div class="relative">
                             <div class="w-10 h-10 rounded-2xl overflow-hidden border border-orange-500/30">
-                                <img src="{{ asset('img/profil/' . (Auth::user()->foto ?? 'default.jpg')) }}" class="w-full h-full object-cover">
+                                <img src="{{ asset('img/profil/' . (Auth::user()->foto ?? 'default.jpg')) }}"
+                                    class="w-full h-full object-cover">
                             </div>
                             <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-[#020617] rounded-full"></div>
                         </div>
                         <div class="overflow-hidden">
-                            <p class="text-[10px] font-black text-white truncate uppercase  leading-none mb-1">
+                            <p class="text-[10px] font-black text-white truncate uppercase leading-none mb-1">
                                 {{ Auth::user()->nama }}
                             </p>
                             <p class="text-[9px] text-slate-500 truncate uppercase tracking-widest">
@@ -260,6 +263,24 @@
                         </div>
                     </div>
                 </div>
+                <div x-show="open"
+                    x-transition
+                    @click.away="open = false"
+                    class="absolute bottom-full left-0 mt-3 w-full bg-white rounded-3xl border border-slate-200 shadow-2xl overflow-hidden z-50">
+                    <a href="{{ route('password.form') }}"
+                        class="w-full flex items-center gap-3 px-4 py-3 text-left text-amber-700 hover:bg-amber-50 transition">
+                        <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                            <i class="fas fa-key text-amber-600"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold">Ganti Password</p>
+                            <p class="text-xs text-slate-400">
+                                Ubah kata sandi akun Anda
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
                 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                     @csrf

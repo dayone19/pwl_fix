@@ -15,10 +15,8 @@
             background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
         }
 
-        /* Strength bar animasi */
         #strengthBar { transition: width 0.4s ease, background-color 0.4s ease; }
 
-        /* Shake on error */
         .shake { animation: shake 0.4s ease; }
         @keyframes shake {
             0%,100% { transform: translateX(0); }
@@ -28,7 +26,6 @@
             80%     { transform: translateX(4px); }
         }
 
-        /* Checklist items */
         .rule-item { transition: color 0.2s, opacity 0.2s; }
         .rule-ok   { color: #22c55e !important; }
 
@@ -181,7 +178,6 @@
 </div>
 
 <script>
-    // ── Toggle show/hide password ──────────────────────────────────────────────
     function togglePass(id, btn) {
         const input = document.getElementById(id);
         const isHidden = input.type === 'password';
@@ -189,13 +185,11 @@
         btn.querySelector('i').className = isHidden ? 'fas fa-eye' : 'fas fa-eye-slash';
     }
 
-    // ── Password strength ──────────────────────────────────────────────────────
     function checkStrength(val) {
     const rules = {
         len:   val.length >= 8,
         upper: /[A-Z]/.test(val),
         num:   /[0-9]/.test(val),
-        // rule-sym dihapus
     };
 
     Object.entries(rules).forEach(([key, ok]) => {
@@ -213,8 +207,6 @@
     const score = Object.values(rules).filter(Boolean).length;
     const bar   = document.getElementById('strengthBar');
     const label = document.getElementById('strengthLabel');
-
-    // Sekarang max score = 3, sesuaikan config
     const config = [
         { w: '0%',    color: 'bg-slate-200',  text: 'Kekuatan password', cls: 'text-slate-300' },
         { w: '33%',   color: 'bg-red-400',    text: 'Lemah',             cls: 'text-red-400' },
@@ -231,7 +223,6 @@
     checkMatch();
 }
 
-    // ── Match check ───────────────────────────────────────────────────────────
     function checkMatch() {
         const pw  = document.getElementById('passwordInput').value;
         const cfm = document.getElementById('confirmInput').value;
@@ -247,7 +238,6 @@
         msg.style.opacity = 1;
     }
 
-    // ── Form submit guard ─────────────────────────────────────────────────────
     document.getElementById('resetForm').addEventListener('submit', function(e) {
         const pw  = document.getElementById('passwordInput').value;
         const cfm = document.getElementById('confirmInput').value;
