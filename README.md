@@ -138,10 +138,10 @@ Karyawan login ke sistem untuk:
 
   Bonus :
   -  Target harian teknis = 5 pekerjaan 
-  -  Jika melebihi target harian, walaupun menyelesaikan 1 saja, maka teknisi mendapatkan bonus harian.
+  -  Perhitungan = hanhya kelipatan 5 akan mendapat bonus
+  -  
 
-  Bonus 
--> Contoh :  Simulasi Perhitungan
+Contoh :  Simulasi Perhitungan
 Selesai = 4  
 Karena 4 < 5 → Bonus = Rp 0
 
