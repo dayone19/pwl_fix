@@ -82,6 +82,12 @@
                 </div>
             @endif
 
+            @if (session('success'))
+                <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-xl">
+                    <p class="text-xs font-bold text-green-600 uppercase">{{ session('success') }}</p>
+                </div>
+            @endif
+
             <form action="{{ route('login') }}" method="POST" class="space-y-6">
                 @csrf 
                 <div class="space-y-3">
