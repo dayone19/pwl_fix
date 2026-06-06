@@ -253,11 +253,22 @@ class AbsensiController extends Controller
             $query->whereRaw('DAY(tanggal) = ?', [$request->tanggal]);
         }
 
-        // Default bulan & tahun sekarang kalau tidak ada filter
         $bulan = $request->filled('bulan') ? $request->bulan : date('m');
         $tahun = $request->filled('tahun') ? $request->tahun : date('Y');
 
         $query->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+
+        if ($request->filled('nama')) {
+            $query->whereHas('profilPegawai', function ($q) use ($request) {
+                $q->where('nama_lengkap', 'like', '%' . $request->nama . '%');
+            });
+        }
+
+        if ($request->filled('nip')) {
+            $query->whereHas('profilPegawai', function ($q) use ($request) {
+                $q->where('nip', 'like', '%' . $request->nip . '%'); 
+            });
+        }
 
         return $query->orderBy('tanggal', 'desc');
     }
