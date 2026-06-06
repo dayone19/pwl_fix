@@ -139,7 +139,27 @@ Karyawan login ke sistem untuk:
   Bonus :
   -  Target harian teknis = 5 pekerjaan 
   -  Jika melebihi target harian, walaupun menyelesaikan 1 saja, maka teknisi mendapatkan bonus harian.
-    
+
+  Bonus 
+-> Contoh :  Simulasi Perhitungan
+Selesai = 4  
+Karena 4 < 5 → Bonus = Rp 0
+
+Selesai = 5  
+Kelipatan = floor(5/5) = 1
+Bonus = 1 × 20.000 = Rp 20.000
+
+Selesai = 10  
+Kelipatan = floor(10/5) = 2
+Bonus = 2 × 20.000 = Rp 40.000
+
+Selesai = 12  
+Kelipatan = floor(12/5) = 2
+Bonus = 2 × 20.000 = Rp 40.000
+
+Selesai = 15  
+Kelipatan = floor(15/5) = 3
+Bonus = 3 × 20.000 = Rp 60.000
 ---
 # 📌 ATURAN CUTI & PERHITUNGAN GAJI
 
@@ -176,27 +196,6 @@ Potongan Telat = Jumlah Telat × Tarif Telat
 Pajak Bulanan = Pajak Tahunan / 12  
 
 Tunjangan = Gaji Pokok x 15%
-
-Bonus 
--> Contoh :  Simulasi Perhitungan
-Selesai = 4  
-Karena 4 < 5 → Bonus = Rp 0
-
-Selesai = 5  
-Kelipatan = floor(5/5) = 1
-Bonus = 1 × 20.000 = Rp 20.000
-
-Selesai = 10  
-Kelipatan = floor(10/5) = 2
-Bonus = 2 × 20.000 = Rp 40.000
-
-Selesai = 12  
-Kelipatan = floor(12/5) = 2
-Bonus = 2 × 20.000 = Rp 40.000
-
-Selesai = 15  
-Kelipatan = floor(15/5) = 3
-Bonus = 3 × 20.000 = Rp 60.000
 
 Gaji Bersih = Gaji Bulanan − (Potongan Alpha + Potongan Telat + Pajak Bulanan)  
 
