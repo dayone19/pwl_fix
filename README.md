@@ -144,11 +144,12 @@ Karyawan login ke sistem untuk:
 # 📌 ATURAN CUTI & PERHITUNGAN GAJI
 
 ## 🏖️ Aturan Cuti
-Cuti tahunan ditetapkan sebanyak **12 hari kerja per tahun**. Cuti ini hanya berlaku untuk cuti biasa dan tidak termasuk dalam kategori cuti khusus.
+Cuti tahunan ditetapkan sebanyak **12 hari kerja per tahun**. Cuti ini hanya berlaku untuk cuti biasa.
 
-Adapun cuti khusus yang tidak mengurangi jatah cuti tahunan meliputi:
-- 🤰 Cuti melahirkan selama **3 bulan** (1,5 bulan sebelum dan 1,5 bulan setelah melahirkan)
-- 🤒 Cuti sakit berdasarkan **surat keterangan dokter**
+Terdapat 2 jenis cuti
+- Cuti keperluan, dan cuti bukan keperluan
+- kalau karyawan mengajukan cuti keperluan, kalau disetujui, kuota cuti tidak berkurang lalu statusnya menjadi izin
+- kalau cuti yang bukan termasuk keperluan, kalau ditolak maka tetap hadir, kalau diterima statusnya menjadi izin
 
 Jika karyawan mengambil cuti melebihi batas yang ditentukan, maka kelebihan tersebut akan dianggap sebagai **alpha (tidak masuk kerja)** dan akan mempengaruhi perhitungan gaji.
 
@@ -174,6 +175,29 @@ Potongan Telat = Jumlah Telat × Tarif Telat
 
 Pajak Bulanan = Pajak Tahunan / 12  
 
+Tunjangan = Gaji Pokok x 15%
+
+Bonus 
+-> Contoh :  Simulasi Perhitungan
+Selesai = 4  
+Karena 4 < 5 → Bonus = Rp 0
+
+Selesai = 5  
+Kelipatan = floor(5/5) = 1
+Bonus = 1 × 20.000 = Rp 20.000
+
+Selesai = 10  
+Kelipatan = floor(10/5) = 2
+Bonus = 2 × 20.000 = Rp 40.000
+
+Selesai = 12  
+Kelipatan = floor(12/5) = 2
+Bonus = 2 × 20.000 = Rp 40.000
+
+Selesai = 15  
+Kelipatan = floor(15/5) = 3
+Bonus = 3 × 20.000 = Rp 60.000
+
 Gaji Bersih = Gaji Bulanan − (Potongan Alpha + Potongan Telat + Pajak Bulanan)  
 
 Alur perhitungannya dimulai dari menghitung gaji harian berdasarkan gaji bulanan, kemudian menghitung jumlah ketidakhadiran (alpha) dan keterlambatan untuk mendapatkan total potongan. Setelah itu dihitung pajak bulanan berdasarkan penghasilan tahunan. Seluruh potongan tersebut kemudian dikurangkan dari gaji bulanan sehingga menghasilkan **gaji bersih** yang diterima karyawan.
@@ -196,12 +220,7 @@ Alur perhitungannya dimulai dari menghitung gaji harian berdasarkan gaji bulanan
 - Data absensi memengaruhi perhitungan gaji  
 - Absensi memengaruhi gaji jika batas izin/cuti sudah habis  
 
-### 3. 📆 Aturan Kenaikan Jabatan
--  Tidak boleh di tengah bulan  
--  Hanya di awal bulan  
--  Dilakukan setelah proses penggajian selesai  
-
-### 4. ✨ Tambahan Fitur
+### 3. ✨ Tambahan Fitur
 
 #### 📝 Pengajuan Cuti / Izin
 - Karyawan dapat mengajukan cuti ke HRD  
