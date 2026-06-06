@@ -52,7 +52,14 @@ class DashboardController extends Controller
                 ->diffInDays(Carbon::parse($cuti->tanggal_selesai)) + 1;
         });
 
-        // untuk statistik bulanan
+        $cutiPending = Cuti::where('id_pegawai', $user->id)
+        ->where('status_persetujuan', 'Menunggu')
+        ->get()
+        ->sum(function ($cuti) {
+            return Carbon::parse($cuti->tanggal_mulai)
+                ->diffInDays(Carbon::parse($cuti->tanggal_selesai)) + 1;
+        });
+
         $tahunDipilih = $request->input('tahun', date('Y'));
 
         $rawDatabaseData = DB::table('statistik_bulanan')
@@ -60,7 +67,6 @@ class DashboardController extends Controller
                     ->orderBy('bulan', 'asc')
                     ->get();
 
-        // array untuk 12 bulan/tahun
         $gajiBulanan = array_fill(1, 12, 0);   
         
         foreach ($rawDatabaseData as $data) {
@@ -78,11 +84,6 @@ class DashboardController extends Controller
             ->where('tahun', $tahunSekarang)
             ->value('total_biaya') ?? 0;
 
-        // tes
-        // $totalPayroll = StatistikBulanan::where('bulan', 5)
-        //     ->where('tahun', 2026)
-        //     ->value('total_biaya') ?? 0;
-
         return view('dashboard', compact(
             'user',
             'users', 
@@ -92,6 +93,7 @@ class DashboardController extends Controller
             'sudahDibayar',
             'belumDibayar',
             'cutiDiambil',
+            'cutiPending', 
             'tahunDipilih', 
             'chartData',
             'totalPayroll',

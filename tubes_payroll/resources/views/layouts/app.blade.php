@@ -214,7 +214,7 @@
                 </div>
 
                 <!-- SECTION: SYSTEM: MANAJEMEN & HRD -->
-                @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['MANAJEMEN', 'HRD']))
+                @if(in_array(Str::upper(Auth::user()->divisi?->nama_divisi), ['HRD']))
                 <div class ="gap-3">
                     <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-600 flex items-center gap-2">
                         <i class="fas fa-gears text-[8px]"></i> System
