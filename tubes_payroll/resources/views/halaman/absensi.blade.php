@@ -134,6 +134,10 @@
         <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 p-6 overflow-hidden">
             <div class="flex justify-end mb-4">
                 <form method="GET" action="{{ route('absensi.index') }}" class="flex flex-wrap gap-2">
+                <input type="hidden" name="tanggal" value="{{ request('tanggal') }}">
+                <input type="hidden" name="bulan" value="{{ request('bulan') }}">
+                <input type="hidden" name="tahun" value="{{ request('tahun') }}">
+                
                     <input
                         type="text"
                         name="nama"

@@ -55,7 +55,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::post('/cuti/{id}/approve', [CutiController::class, 'approve'])->name('cuti.approve');
     Route::post('/cuti/{id}/tolak',   [CutiController::class, 'tolak'])->name('cuti.tolak');
 
-    // Data Karyawan (Route Resource dipecah manual menggunakan parameter {nip})
+    // Data Karyawan 
     Route::get('/karyawan', [karyawanController::class, 'index'])->name('karyawan.index');
     Route::get('/karyawan/create', [karyawanController::class, 'create'])->name('karyawan.create');
     Route::post('/karyawan', [karyawanController::class, 'store'])->name('karyawan.store');
@@ -84,6 +84,8 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::post('/payroll/{id}/bayar', [payrollController::class, 'bayarGaji'])->name('payroll.bayar');
     Route::get('/payroll/slip/{id}',[payrollController::class, 'downloadSlip'])->name('payroll.slip');
     Route::get('/payroll/log-pembayaran', [payrollController::class, 'logPembayaran'])->name('payroll.log');
+    Route::get('/payroll/laporan/print', [payrollController::class, 'printLaporan'])
+    ->name('payroll.print');
 
     // Cuti
     Route::get('/cuti',           [CutiController::class, 'index'])->name('cuti.index');

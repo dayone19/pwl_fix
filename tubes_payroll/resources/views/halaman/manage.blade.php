@@ -67,9 +67,14 @@
             </p>
         </div>
         <div class="flex flex-wrap gap-3">
-            <button onclick="window.print()" class="px-5 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition">
-                <i class="fas fa-print mr-2"></i> Print Laporan
-            </button>
+            <form action="{{ route('payroll.print') }}" target="_blank"
+                class="px-5 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition">
+                <input type="hidden" name="bulan" value="{{ request('bulan') }}">
+                <input type="hidden" name="tahun" value="{{ request('tahun') }}">
+                <button type="submit">
+                    <i class="fas fa-print mr-2"></i> Print Laporan
+                </button>
+            </form>
             
             {{-- Tombol Mass Approve Hanya Muncul untuk MANAJEMEN (ID = 1) --}}
             @if(auth()->user()->id_divisi == 1)

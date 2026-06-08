@@ -83,16 +83,26 @@ class userController extends Controller
 
     public function destroy($nip)
     {
-        DB::transaction(function () use ($nip) {
-           
-            DB::table('profil_pegawai')->where('nip', $nip)->delete();
-            
-            
-            $user = pengguna::where('nip', $nip)->firstOrFail();
-            $user->delete();
-        });
+        try {
 
-        return redirect()->back()->with('success', 'User dan Profil terkait telah dihapus!');
+            $user = pengguna::where('nip', $nip)->firstOrFail();
+
+            $user->update([
+                'apakah_aktif' => 0
+            ]);
+
+            return redirect()->back()->with(
+                'success',
+                'Akun berhasil dinonaktifkan!'
+            );
+
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with(
+                'error',
+                'Gagal menonaktifkan akun: ' . $e->getMessage()
+            );
+        }
     }
 
     public function formGantiPassword()

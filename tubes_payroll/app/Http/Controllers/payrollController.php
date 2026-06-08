@@ -37,7 +37,6 @@ class PayrollController extends Controller
 
 
     // FINANCE & MANAGEMENT: Dashboard utama kelola manajemen gaji seluruh karyawan (Meja Kerja)
-
     public function manage(Request $request)
     {
         $query = Penggajian::with('pegawai');
@@ -69,9 +68,11 @@ class PayrollController extends Controller
             ->paginate(7)
             ->withQueryString();
 
-        $karyawan = Pengguna::whereHas('profilPegawai', function ($q) {
+        $karyawan = Pengguna::where('apakah_aktif', true)
+        ->whereHas('profilPegawai', function ($q) {
             $q->where('status_kerja', '!=', 'PKL');
-        })->get();
+        })
+        ->get();
 
         $totalPengeluaran = Penggajian::where('status_bayar', 'Dibayar')
             ->sum('gaji_bersih');
@@ -81,19 +82,19 @@ class PayrollController extends Controller
         $dibayar = Penggajian::where('status_bayar', 'Dibayar')->count();
 
         $bulanMap = [
-    1 => 'JAN',
-    2 => 'FEB',
-    3 => 'MAR',
-    4 => 'APR',
-    5 => 'MEI',
-    6 => 'JUN',
-    7 => 'JUL',
-    8 => 'AGU',
-    9 => 'SEP',
-    10 => 'OKT',
-    11 => 'NOV',
-    12 => 'DES',
-];
+            1 => 'JAN',
+            2 => 'FEB',
+            3 => 'MAR',
+            4 => 'APR',
+            5 => 'MEI',
+            6 => 'JUN',
+            7 => 'JUL',
+            8 => 'AGU',
+            9 => 'SEP',
+            10 => 'OKT',
+            11 => 'NOV',
+            12 => 'DES',
+        ];
 
         $periodeAktif = $bulanMap[date('n')] . '-' . date('y');
 
@@ -126,7 +127,6 @@ class PayrollController extends Controller
             'progressPayroll'  => $progressPayroll,
         ]);
     }
-
 
     //FINANCE: Otomatisasi generate draf hitungan payroll awal (Status: Draft)
         public function generateGaji(Request $request)
@@ -168,23 +168,30 @@ class PayrollController extends Controller
             return redirect()->back()->with('error', 'Karyawan tidak ditemukan.');
         }
 
-        // FIX: Format bulan yang konsisten — selalu simpan sebagai "Mei 2026", "Juni 2026", dst.
+        // pengecekan bulan membuat draft
         $bulanFormatted = Carbon::createFromDate($tahunSekarang, $bulanInput, 1)
                             ->locale('id')
                             ->translatedFormat('F Y');
 
         $cekDraft = Penggajian::where('nip', $request->nip)
-            ->where('bulan', $bulanFormatted)
+            ->whereMonth('periode_mulai', $bulanInput)
+            ->whereYear('periode_mulai', $tahunSekarang)
+            ->where('status_bayar', 'Draft')
             ->exists();
-        
+                
         if ($cekDraft) {
             return redirect()->back()->with(
                 'error', 
-                'Gagal! Payroll untuk karyawan dengan NIP ' . $request->nip . ' pada periode ' . $bulanFormatted . ' sudah pernah dibuat.'
+                'Gagal! Payroll untuk karyawan dengan NIP ' 
+                . $request->nip . ' pada periode ' 
+                . $bulanFormatted . ' sudah pernah dibuat.'
             );
         }
 
-        $profil      = DB::table('profil_pegawai')->where('nip', $karyawan->nip)->first();
+        $profil      = DB::table('profil_pegawai')
+        ->where('nip', $karyawan->nip)
+        ->first();
+
         $statusKerja = $profil ? $profil->status_kerja : 'Tetap';
 
         $periodeMulai   = $tahunSekarang . '-' . sprintf('%02d', $bulanInput) . '-01';
@@ -326,7 +333,6 @@ class PayrollController extends Controller
 
 
     //FINANCE: Update komponen draf selama proses pengerjaan (sebelum submit final)
-
     public function updateDraft(Request $request, $id)
     {
         $request->validate([
@@ -360,7 +366,6 @@ class PayrollController extends Controller
     }
 
     // FINANCE: Menghapus data draf payroll milik karyawan berdasarkan ID Gaji yang Unik
-
     public function destroyDraft($id)
     {
         $gaji = Penggajian::find($id);
@@ -379,7 +384,6 @@ class PayrollController extends Controller
     }
 
      // FINANCE: Mengirim draf ke pihak Manajemen (Status: Draft -> Terbit)
-
     public function submitGaji(Request $request, $id)
     {
         $payroll = Penggajian::find($id);
@@ -394,7 +398,6 @@ class PayrollController extends Controller
     }
 
     // MANAGEMENT: Menolak atau Menyetujui Berkas Gaji Satuan (Status: Terbit -> Dibayar / Ditolak)
-
     public function keputusanManajemen(Request $request, $id)
     {
         $request->validate([
@@ -601,7 +604,6 @@ class PayrollController extends Controller
     }
 
     // HRD: Log riwayat pembayaran gaji seluruh karyawan
-
     public function logPembayaran(Request $request)
     {
         $bulan = $request->bulan ?? date('m');
@@ -687,5 +689,36 @@ class PayrollController extends Controller
         );
 
         return $pdf->download('Slip-Gaji-' . $pay->bulan . '.pdf');
+    }
+
+    // print laporan penggajian
+    public function printLaporan(Request $request)
+    {
+        $bulan = (int) ($request->bulan ?: date('n'));
+        $tahun = (int) ($request->tahun ?: date('Y'));
+
+        $data = Penggajian::with('pegawai')
+            ->whereMonth('periode_mulai', $bulan)
+            ->whereYear('periode_mulai', $tahun)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $namaBulan = Carbon::create()
+            ->month($bulan)
+            ->locale('id')
+            ->translatedFormat('F');
+
+        $pdf = Pdf::loadView(
+            'ekspor_pdf.laporan_gaji',
+            compact('data',
+                    'bulan',
+                    'tahun', 
+                    'namaBulan'
+                   )
+        );
+
+        $pdf->setPaper('a4', 'landscape');
+        
+        return $pdf->download('Laporan-Gaji-' . $namaBulan . '-' . $tahun . '.pdf');
     }
 }

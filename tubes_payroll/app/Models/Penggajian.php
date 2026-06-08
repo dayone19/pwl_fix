@@ -27,7 +27,7 @@ class Penggajian extends Model
 
     public function pegawai()
     {
-        return $this->belongsTo(ProfilPegawai::class, 'id_pegawai', 'id');
+        return $this->belongsTo(ProfilPegawai::class, 'nip', 'nip');
     }
 
     public function rincian()
