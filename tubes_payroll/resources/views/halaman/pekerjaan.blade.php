@@ -281,16 +281,46 @@
 
                         <div class="mt-4 grid grid-cols-1 gap-4">
                             @forelse($pekerjaanList->where('status', 'done') as $job)
-                                <div class="border border-slate-100 bg-slate-50/50 rounded-2xl p-4 flex justify-between items-center opacity-70">
+
+                                @php
+                                    $milikSaya = in_array($job->pekerjaan_id, $pekerjaanSaya);
+                                @endphp
+
+                                <div class="
+                                    rounded-2xl p-4 flex justify-between items-center
+                                    {{ $milikSaya
+                                        ? 'bg-blue-50 border border-blue-200'
+                                        : 'bg-slate-50/50 border border-slate-100 opacity-70' }}
+                                ">
                                     <div>
-                                        <h5 class="text-sm font-black uppercase text-slate-700">{{ $job->kendaraan }} - <span class="text-xs font-bold text-slate-400">{{ $job->plat_nomor }}</span></h5>
-                                        <p class="text-[11px] font-bold text-slate-400 mt-1">Kategori: {{ $job->keluhan->kategori }}</p>
+                                        <h5 class="text-sm font-black uppercase text-slate-700">
+                                            {{ $job->kendaraan }}
+                                            -
+                                            <span class="text-xs font-bold text-slate-400">
+                                                {{ $job->plat_nomor }}
+                                            </span>
+                                        </h5>
+
+                                        <p class="text-[11px] font-bold text-slate-400 mt-1">
+                                            Kategori: {{ $job->keluhan->kategori }}
+                                        </p>
                                     </div>
-                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-xl text-[10px] font-black uppercase">Done</span>
+
+                                    <span class="
+                                        px-3 py-1 rounded-xl text-[10px] font-black uppercase
+                                        {{ $milikSaya
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : 'bg-green-100 text-green-700' }}
+                                    ">
+                                        Done
+                                    </span>
                                 </div>
+
                             @empty
                                 <div class="text-center py-12 bg-white rounded-[24px] border border-slate-100 shadow-sm">
-                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Belum Ada Riwayat</p>
+                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">
+                                        Belum Ada Riwayat
+                                    </p>
                                 </div>
                             @endforelse
                         </div>

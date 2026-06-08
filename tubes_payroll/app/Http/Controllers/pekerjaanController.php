@@ -17,10 +17,10 @@ class pekerjaanController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $idTeknisi = auth()->user()->id;
+        $idTeknisi = auth()->user()->profilPegawai->nip;
         $jabatanId = $user->profilPegawai?->id_jabatan;
 
-        $pekerjaanList = Pekerjaan::with('keluhan')
+        $pekerjaanList = Pekerjaan::with(['keluhan', 'terimaKerjaan'])
                             ->where('id_jabatan', $jabatanId)
                             ->orderBy('created_at', 'desc')
                             ->get();
@@ -56,6 +56,12 @@ class pekerjaanController extends Controller
 
         $keluhanList = Keluhan::all();
 
+        $nipTeknisi = Auth::user()->profilPegawai->nip;
+
+        $pekerjaanSaya = TerimaKerjaan::where('teknisi_id', $nipTeknisi)
+            ->pluck('pekerjaan_id')
+            ->toArray();
+
         return view('halaman.pekerjaan', compact(
             'pekerjaanList',
             'totalPekerjaan',
@@ -67,6 +73,8 @@ class pekerjaanController extends Controller
             'keluhanList',
             'divisi',
             'jabatan',
+            'nipTeknisi',
+            'pekerjaanSaya'
         ));
     }
 
@@ -78,7 +86,7 @@ class pekerjaanController extends Controller
 
         $pekerjaan->save();
 
-        $teknisiId = Auth::user()->profilPegawai?->id;
+        $teknisiId = Auth::user()->profilPegawai?->nip;
 
         TerimaKerjaan::create([
             'pekerjaan_id' => $pekerjaan->pekerjaan_id,
@@ -95,15 +103,16 @@ class pekerjaanController extends Controller
         $pekerjaan = Pekerjaan::findOrFail($id);
 
         $pekerjaan->status = 'done';
-
         $pekerjaan->save();
 
-        TerimaKerjaan::where('pekerjaan_id', $id)
-        ->where('status', 'in_progress')
-        ->update([
-            'status' => 'done',
-            'selesai_pada'   => now() 
-        ]);
+        $nipTeknisi = Auth::user()->profilPegawai->nip;
+
+        TerimaKerjaan::where('pekerjaan_id', $pekerjaan->pekerjaan_id)
+            ->where('teknisi_id', $nipTeknisi)
+            ->update([
+                'status' => 'done',
+                'selesai_pada' => now(),
+            ]);
 
         return redirect()->back()
             ->with('success', 'Pekerjaan selesai dikerjakan');
