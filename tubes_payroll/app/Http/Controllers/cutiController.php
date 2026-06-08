@@ -93,6 +93,7 @@ if ($request->hasFile('bukti')) {
     // Hitung total cuti yang sudah disetujui
     $totalCutiDiambil = Cuti::where('id_pegawai', auth()->id())
         ->where('status_persetujuan', 'Disetujui')
+        ->where('jenis_pengajuan', 'Cuti')
         ->get()
         ->sum(function ($cuti) {
             return Carbon::parse($cuti->tanggal_mulai)

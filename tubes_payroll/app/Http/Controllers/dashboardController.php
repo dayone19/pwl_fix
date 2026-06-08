@@ -46,6 +46,7 @@ class DashboardController extends Controller
 
         $cutiDiambil = Cuti::where('id_pegawai', $user->id)
         ->where('status_persetujuan', 'Disetujui')
+        ->where('jenis_pengajuan', 'Cuti')
         ->get()
         ->sum(function ($cuti) {
             return Carbon::parse($cuti->tanggal_mulai)

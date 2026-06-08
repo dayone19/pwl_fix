@@ -15,7 +15,8 @@ class Cuti extends Model
         'alasan',
         'status_persetujuan',
         'jenis_pengajuan',
-        'disetujui_oleh_id'
+        'disetujui_oleh_id',
+        'bukti',
     ];
 
     public function pegawai()
